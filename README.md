@@ -1,3 +1,5 @@
+Live deployed link : https://queuemanage.vercel.app
+
 <div align="center">
   <img src="./public/logo.png" alt="QueueOS logo" width="96" />
   <h1>QueueOS</h1>
