@@ -56,6 +56,15 @@ export async function GET(
       .sort({ position: 1 })
       .lean();
 
+    // Fetch recent HISTORY tokens (COMPLETED & CANCELLED)
+    const historyTokens = await Token.find({
+      queueId: queueObjectId,
+      status: { $in: ["COMPLETED", "CANCELLED"] },
+    })
+      .sort({ updatedAt: -1 })
+      .limit(100)
+      .lean();
+
     return NextResponse.json({
       queue: {
         ...queue,
@@ -71,6 +80,12 @@ export async function GET(
           }
         : null,
       waitingTokens: waitingTokens.map((t) => ({
+        ...t,
+        _id: t._id.toString(),
+        queueId: t.queueId.toString(),
+        managerId: t.managerId.toString(),
+      })),
+      historyTokens: historyTokens.map((t) => ({
         ...t,
         _id: t._id.toString(),
         queueId: t.queueId.toString(),

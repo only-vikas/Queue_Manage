@@ -60,6 +60,10 @@ function QueueWorkspace() {
   const [selectedQueue, setSelectedQueue] = useState<QueueData | null>(null);
   const [servingToken, setServingToken] = useState<TokenItem | null>(null);
   const [waitingTokens, setWaitingTokens] = useState<TokenItem[]>([]);
+  const [historyTokens, setHistoryTokens] = useState<TokenItem[]>([]);
+  const [activeTab, setActiveTab] = useState<"WAITING" | "HISTORY">("WAITING");
+  const [historySearch, setHistorySearch] = useState("");
+  const [historyFilter, setHistoryFilter] = useState<"ALL" | "COMPLETED" | "CANCELLED">("ALL");
   const [isLoading, setIsLoading] = useState(true);
   const [isAssigning, setIsAssigning] = useState(false);
   const [servingElapsed, setServingElapsed] = useState("00m 00s");
@@ -136,6 +140,7 @@ function QueueWorkspace() {
           setSelectedQueue(data.queue);
           setServingToken(data.servingToken);
           setWaitingTokens(data.waitingTokens || []);
+          setHistoryTokens(data.historyTokens || []);
         } else if (res.status === 404) {
           // Fall back to first queue if active ID is obsolete
           const all = await loadQueues();
@@ -221,6 +226,9 @@ function QueueWorkspace() {
 
       setServingToken(data.servingToken);
       setWaitingTokens((prev) => prev.slice(1));
+      if (data.completedToken) {
+        setHistoryTokens((prev) => [data.completedToken, ...prev]);
+      }
 
       if (data.servingToken) {
         toastServing(
@@ -246,10 +254,17 @@ function QueueWorkspace() {
         body: JSON.stringify({ status: "COMPLETED" }),
       });
 
+      const data = await res.json();
       if (!res.ok) {
-        const data = await res.json();
         throw new Error(data.error || "Failed to complete consultation");
       }
+
+      const completed = data.token || {
+        ...servingToken,
+        status: "COMPLETED",
+        completedAt: new Date().toISOString(),
+      };
+      setHistoryTokens((prev) => [completed, ...prev]);
 
       success(
         `Consultation finished for ${servingToken.tokenNumber}`,
@@ -271,12 +286,20 @@ function QueueWorkspace() {
         body: JSON.stringify({ status: "CANCELLED" }),
       });
 
+      const data = await res.json();
       if (!res.ok) {
-        const data = await res.json();
         throw new Error(data.error || "Failed to cancel token");
       }
 
+      const cancelled = data.token || {
+        ...tokenToCancel,
+        _id: tokenId,
+        status: "CANCELLED",
+        completedAt: new Date().toISOString(),
+      };
+
       setWaitingTokens((prev) => prev.filter((t) => t._id !== tokenId));
+      setHistoryTokens((prev) => [cancelled, ...prev]);
       if (servingToken?._id === tokenId) {
         setServingToken(null);
       }
@@ -335,6 +358,23 @@ function QueueWorkspace() {
     const mins = Math.floor(totalSec / 60);
     const secs = totalSec % 60;
     return `${mins.toString().padStart(2, "0")}m ${secs.toString().padStart(2, "0")}s`;
+  };
+
+  // Calculate duration for completed/cancelled history tokens
+  const getHistoryDuration = (tok: TokenItem) => {
+    const start = new Date(tok.createdAt).getTime();
+    const end = tok.completedAt ? new Date(tok.completedAt).getTime() : Date.now();
+    const diff = Math.max(0, end - start);
+    const totalSec = Math.floor(diff / 1000);
+    const mins = Math.floor(totalSec / 60);
+    const secs = totalSec % 60;
+    return `${mins.toString().padStart(2, "0")}m ${secs.toString().padStart(2, "0")}s`;
+  };
+
+  const formatTime = (iso?: string) => {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
   };
 
   // ---------------------------------------------------------------------------
@@ -609,7 +649,71 @@ function QueueWorkspace() {
         </div>
       </div>
 
-      {/* 64px Currently Serving Banner */}
+      {/* Tabs Navigation Bar (Screen 12) */}
+      <div
+        style={{
+          height: "38px",
+          backgroundColor: "var(--bg-surface)",
+          borderBottom: "1px solid var(--border-hairline)",
+          padding: "0 16px",
+          display: "flex",
+          alignItems: "center",
+          gap: "24px",
+          flexShrink: 0,
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => setActiveTab("WAITING")}
+          style={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            background: "none",
+            border: "none",
+            borderBottom:
+              activeTab === "WAITING"
+                ? "2px solid var(--accent-primary)"
+                : "2px solid transparent",
+            color: activeTab === "WAITING" ? "var(--text-primary)" : "var(--text-secondary)",
+            fontSize: "13px",
+            fontWeight: activeTab === "WAITING" ? 600 : 500,
+            cursor: "pointer",
+            padding: "0 2px",
+            transition: "all 120ms ease",
+          }}
+        >
+          Waiting ({waitingTokens.length})
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("HISTORY")}
+          style={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            background: "none",
+            border: "none",
+            borderBottom:
+              activeTab === "HISTORY"
+                ? "2px solid var(--accent-primary)"
+                : "2px solid transparent",
+            color: activeTab === "HISTORY" ? "var(--text-primary)" : "var(--text-secondary)",
+            fontSize: "13px",
+            fontWeight: activeTab === "HISTORY" ? 600 : 500,
+            cursor: "pointer",
+            padding: "0 2px",
+            transition: "all 120ms ease",
+          }}
+        >
+          History ({historyTokens.length})
+        </button>
+      </div>
+
+      {activeTab === "WAITING" ? (
+        <>
+          {/* 64px Currently Serving Banner */}
       {servingToken ? (
         <div
           data-flip-id="serving-banner"
@@ -1344,6 +1448,283 @@ function QueueWorkspace() {
           </div>
         )}
       </div>
+      </>
+      ) : (
+        /* SCREEN 12: SERVED TOKEN HISTORY COMPLETED LOG */
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          {/* History Filter and Summary Bar */}
+          <div
+            style={{
+              height: "44px",
+              padding: "0 16px",
+              borderBottom: "1px solid var(--border-hairline)",
+              backgroundColor: "var(--bg-canvas)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexShrink: 0,
+              gap: "12px",
+              flexWrap: "wrap",
+            }}
+          >
+            {/* Left: Summary Breakdown */}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px" }}>
+              <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>
+                {historyTokens.length} Tokens Recorded
+              </span>
+              <span style={{ color: "var(--border-strong)" }}>/</span>
+              <span style={{ color: "var(--text-secondary)", fontFamily: "var(--font-mono)" }}>
+                {historyTokens.filter((t) => t.status === "COMPLETED").length} Completed ·{" "}
+                {historyTokens.filter((t) => t.status === "CANCELLED").length} Cancelled
+              </span>
+            </div>
+
+            {/* Right: Status Filter & Search */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              {/* Segmented Filter Pills */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  borderRadius: "4px",
+                  border: "1px solid var(--border-hairline)",
+                  backgroundColor: "var(--bg-surface)",
+                  padding: "2px",
+                }}
+              >
+                {(["ALL", "COMPLETED", "CANCELLED"] as const).map((filterVal) => (
+                  <button
+                    key={filterVal}
+                    type="button"
+                    onClick={() => setHistoryFilter(filterVal)}
+                    style={{
+                      height: "24px",
+                      padding: "0 8px",
+                      border: "none",
+                      borderRadius: "3px",
+                      fontSize: "11px",
+                      fontWeight: historyFilter === filterVal ? 600 : 500,
+                      backgroundColor:
+                        historyFilter === filterVal ? "var(--bg-hover)" : "transparent",
+                      color:
+                        historyFilter === filterVal
+                          ? "var(--text-primary)"
+                          : "var(--text-secondary)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {filterVal === "ALL" ? "All" : filterVal === "COMPLETED" ? "Completed" : "Cancelled"}
+                  </button>
+                ))}
+              </div>
+
+              {/* Search Input */}
+              <div style={{ width: "180px" }}>
+                <input
+                  type="text"
+                  value={historySearch}
+                  onChange={(e) => setHistorySearch(e.target.value)}
+                  placeholder="Filter history..."
+                  style={{
+                    width: "100%",
+                    height: "28px",
+                    padding: "0 8px",
+                    backgroundColor: "var(--bg-surface)",
+                    border: "1px solid var(--border-hairline)",
+                    borderRadius: "4px",
+                    fontSize: "12px",
+                    color: "var(--text-primary)",
+                    outline: "none",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Table Headers */}
+          <div
+            style={{
+              height: "32px",
+              backgroundColor: "var(--bg-canvas)",
+              borderBottom: "1px solid var(--border-hairline)",
+              padding: "0 16px",
+              display: "flex",
+              alignItems: "center",
+              fontFamily: "var(--font-mono)",
+              fontSize: "11px",
+              fontWeight: 600,
+              color: "var(--text-muted)",
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              userSelect: "none",
+              flexShrink: 0,
+            }}
+          >
+            <div style={{ width: "90px", flexShrink: 0 }}>TOKEN</div>
+            <div style={{ flex: 1, minWidth: 0, padding: "0 12px" }}>PERSON / DETAILS</div>
+            <div style={{ width: "120px", flexShrink: 0 }}>STATUS</div>
+            <div style={{ width: "110px", textAlign: "right", paddingRight: "16px", flexShrink: 0 }}>
+              WAIT DURATION
+            </div>
+            <div style={{ width: "110px", textAlign: "right", flexShrink: 0 }}>LOGGED TIME</div>
+          </div>
+
+          {/* History Rows List */}
+          <div style={{ flex: 1, overflowY: "auto", backgroundColor: "var(--bg-surface)" }}>
+            {historyTokens
+              .filter((t) => {
+                if (historyFilter !== "ALL" && t.status !== historyFilter) return false;
+                if (!historySearch.trim()) return true;
+                const q = historySearch.toLowerCase();
+                return (
+                  t.tokenNumber.toLowerCase().includes(q) ||
+                  t.personName.toLowerCase().includes(q) ||
+                  (t.notes && t.notes.toLowerCase().includes(q))
+                );
+              })
+              .map((token) => (
+                <div
+                  key={token._id}
+                  style={{
+                    height: "44px",
+                    padding: "0 16px",
+                    display: "flex",
+                    alignItems: "center",
+                    borderBottom: "1px solid var(--border-hairline)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "90px",
+                      flexShrink: 0,
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      color: "var(--text-primary)",
+                      fontVariantNumeric: "tabular-nums",
+                    }}
+                  >
+                    {token.tokenNumber}
+                  </div>
+
+                  <div
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      padding: "0 12px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        color: "var(--text-primary)",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {token.personName}
+                    </span>
+                    {token.notes && (
+                      <span
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "11px",
+                          color: "var(--text-secondary)",
+                          backgroundColor: "var(--bg-canvas)",
+                          border: "1px solid var(--border-hairline)",
+                          padding: "1px 6px",
+                          borderRadius: "4px",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {token.notes}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Status Badge */}
+                  <div style={{ width: "120px", flexShrink: 0 }}>
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        padding: "2px 8px",
+                        borderRadius: "4px",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        fontFamily: "var(--font-mono)",
+                        backgroundColor:
+                          token.status === "COMPLETED"
+                            ? "var(--status-completed-bg)"
+                            : "var(--status-cancelled-bg)",
+                        color:
+                          token.status === "COMPLETED"
+                            ? "var(--status-completed-text)"
+                            : "var(--status-cancelled-text)",
+                        border:
+                          token.status === "COMPLETED"
+                            ? "1px solid #BBF7D0"
+                            : "1px solid #FECACA",
+                      }}
+                    >
+                      {token.status === "COMPLETED" ? <Check size={11} /> : <X size={11} />}
+                      <span>{token.status}</span>
+                    </span>
+                  </div>
+
+                  {/* Wait Duration */}
+                  <div
+                    style={{
+                      width: "110px",
+                      textAlign: "right",
+                      paddingRight: "16px",
+                      flexShrink: 0,
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "12px",
+                      color: "var(--text-secondary)",
+                      fontVariantNumeric: "tabular-nums",
+                    }}
+                  >
+                    {getHistoryDuration(token)}
+                  </div>
+
+                  {/* Logged Time */}
+                  <div
+                    style={{
+                      width: "110px",
+                      textAlign: "right",
+                      flexShrink: 0,
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "12px",
+                      color: "var(--text-muted)",
+                      fontVariantNumeric: "tabular-nums",
+                    }}
+                  >
+                    {formatTime(token.completedAt || token.servedAt || token.createdAt)}
+                  </div>
+                </div>
+              ))}
+
+            {historyTokens.length === 0 && (
+              <div
+                style={{
+                  padding: "48px 16px",
+                  textAlign: "center",
+                  color: "var(--text-muted)",
+                  fontSize: "13px",
+                }}
+              >
+                No completed or cancelled tokens in history yet.
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Tonal Bottom Status Bar */}
       <footer

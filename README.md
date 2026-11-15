@@ -106,6 +106,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000), create an account, and set up a queue.
 
+## Demo Credentials
+
+For quick evaluation and testing:
+- **Email:** `demo@rugas.tech`
+- **Password:** `RugasQueue2026!`
+
+*(You can also sign up with any new email to experience the zero-queue first-time onboarding flow).*
+
 ## Available scripts
 
 | Command | Description |
@@ -114,6 +122,15 @@ Open [http://localhost:3000](http://localhost:3000), create an account, and set 
 | `npm run build` | Create a production build |
 | `npm run start` | Start the production server |
 | `npm run lint` | Run ESLint |
+
+## Deployment to Vercel
+
+QueueOS is optimized for deployment on [Vercel](https://vercel.com):
+1. Import repository `only-vikas/Queue_Manage`.
+2. Under **Project Settings → Environment Variables**, configure:
+   - `MONGODB_URI`: MongoDB Atlas connection string pointing to the `queueos` database.
+   - `JWT_SECRET`: Random 256-bit secret string for JOSE JWT signing.
+3. Deploy! Next.js 16 with Turbopack and Serverless Route Handlers will deploy automatically.
 
 ## Data model
 

@@ -73,14 +73,14 @@ export async function PATCH(
         .sort({ position: 1 });
     }
 
-    // Boundary check: No adjacent token to swap with (no-op)
+    // Boundary check: No adjacent token to swap with
     if (!adjacentToken) {
-      return NextResponse.json({
-        success: true,
-        reordered: false,
-        message: `Token is already at the ${direction === "UP" ? "top" : "bottom"} of the queue`,
-        token: currentToken,
-      });
+      return NextResponse.json(
+        {
+          error: `Cannot reorder: token is already at the ${direction === "UP" ? "top" : "bottom"} of the queue`,
+        },
+        { status: 400 }
+      );
     }
 
     const currentPos = currentToken.position;
