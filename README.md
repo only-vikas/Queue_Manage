@@ -30,3 +30,18 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to access the desk.
+
+## Deploying to Vercel
+
+1. Push your latest code to GitHub:
+```bash
+git push origin main
+```
+
+2. Go to [Vercel](https://vercel.com) and import the repository `only-vikas/Queue_Manage`.
+
+3. In **Settings -> Environment Variables**, add the following keys:
+   - `MONGODB_URI`: Your MongoDB Atlas URI pointing to the `queueos` database.
+   - `JWT_SECRET`: A strong secret key for signing JWT cookies.
+
+4. Deploy! Next.js App Router with Serverless Functions will automatically build and deploy the application.
