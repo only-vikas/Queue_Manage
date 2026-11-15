@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "status-serving-border": "#99F6E4", "primary": "#ad2b00", "inverse-primary": "#ffb5a1", "on-secondary-container": "#fffbff", "inverse-surface": "#2f3130", "bg-canvas": "#F7F7F5", "border-serving": "#F5C7B8", "status-completed-text": "#166534", "on-secondary": "#ffffff", "secondary-container": "#4069f2", "secondary": "#1d4ed8", "primary-container": "#d14219", "text-primary": "#181816", "border-focus": "#D9481E", "error-container": "#ffdad6", "inverse-on-surface": "#f1f1ef", "on-tertiary-container": "#fdfcff", "on-secondary-fixed-variant": "#0039b5", "on-error": "#ffffff", "surface-tint": "#b22c00", "surface-variant": "#e2e3e1", "surface-container-high": "#e8e8e6", "accent-primary-active": "#A33110", "on-surface-variant": "#5a413a", "on-primary-container": "#fffbff", "error": "#ba1a1a", "text-muted": "#8C8980", "on-error-container": "#93000a", "tertiary-fixed-dim": "#9ccaff", "status-serving-bg": "#F0FDFA", "accent-primary-hover": "#BF3B15", "status-cancelled-text": "#B91C1C", "secondary-fixed-dim": "#b7c4ff", "background": "#f9f9f7", "bg-serving": "#FEF5F1", "surface-container-highest": "#e2e3e1", "surface-container-lowest": "#ffffff", "on-tertiary-fixed": "#001d35", "surface": "#f9f9f7", "status-completed-bg": "#F0FDF4", "status-serving-text": "#0F766E", "on-primary": "#ffffff", "on-secondary-fixed": "#001551", "on-surface": "#1a1c1b", "surface-container": "#eeeeec", "border-strong": "#CFCBC2", "bg-surface": "#FFFFFF", "outline": "#8e7069", "surface-dim": "#dadad8", "text-on-accent": "#FFFFFF", "bg-active-row": "#EBEAE4", "tertiary-fixed": "#d0e4ff", "on-primary-fixed": "#3b0900", "tertiary": "#005f9d", "outline-variant": "#e2bfb5", "on-primary-fixed-variant": "#882000", "surface-container-low": "#f4f4f2", "border-hairline": "#E4E3DD", "text-secondary": "#57554E", "on-background": "#1a1c1b", "on-tertiary-fixed-variant": "#00497b", "bg-input": "#FAFAF9", "primary-fixed-dim": "#ffb5a1", "surface-bright": "#f9f9f7", "on-tertiary": "#ffffff", "status-cancelled-bg": "#FEF2F2", "bg-hover": "F1F0EC", "primary-fixed": "#ffdbd1", "secondary-fixed": "#dce1ff", "tertiary-container": "#0078c5" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-xl": "1.5rem", "gutter": "1rem", "margin-desktop": "1.5rem", "space-lg": "1rem", "space-md": "0.75rem", "space-xs": "0.25rem", "gutter-desktop": "1.5rem", "margin": "1rem", "space-sm": "0.5rem" }, "fontFamily": { "headline-kpi-mobile": [ "JetBrains Mono" ], "headline-kpi": [ "JetBrains Mono" ], "banner-token": [ "JetBrains Mono" ], "headline-lg": [ "Plus Jakarta Sans" ], "body-row-primary": [ "Plus Jakarta Sans" ], "headline-md": [ "Plus Jakarta Sans" ], "body-mono-token": [ "JetBrains Mono" ], "label-timer": [ "JetBrains Mono" ], "label-xs": [ "Plus Jakarta Sans" ], "body-sm-medium": [ "Plus Jakarta Sans" ], "body-sm": [ "Plus Jakarta Sans" ], "label-mono-xs": [ "JetBrains Mono" ], "body-default": [ "Plus Jakarta Sans" ] }, "fontSize": { "headline-kpi-mobile": [ "24px", { "lineHeight": "24px", "fontWeight": "700" } ], "headline-kpi": [ "28px", { "lineHeight": "28px", "fontWeight": "700" } ], "banner-token": [ "20px", { "lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "700" } ], "headline-lg": [ "20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "body-row-primary": [ "15px", { "lineHeight": "20px", "fontWeight": "500" } ], "headline-md": [ "16px", { "lineHeight": "22px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "body-mono-token": [ "15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" } ], "label-timer": [ "13px", { "lineHeight": "18px", "fontWeight": "500" } ], "label-xs": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" } ], "body-sm-medium": [ "13px", { "lineHeight": "18px", "fontWeight": "500" } ], "body-sm": [ "13px", { "lineHeight": "18px", "fontWeight": "400" } ], "label-mono-xs": [ "11px", { "lineHeight": "14px", "fontWeight": "600" } ], "body-default": [ "14px", { "lineHeight": "21px", "fontWeight": "400" } ] } } } };</script></head><body class="bg-bg-canvas font-body-default text-text-primary min-h-screen"><header class="fixed top-0 left-0 right-0 h-[52px] bg-bg-canvas border-b border-border-hairline z-40 flex items-center justify-between px-space-lg select-none"><div class="flex items-center h-full"><div class="flex items-center gap-space-sm pr-space-md"><span class="w-2.5 h-2.5 bg-primary rounded-none"></span><span class="font-body-mono-token text-body-mono-token font-bold text-text-primary tracking-tight">QueueOS</span></div><div class="h-4 w-[1px] bg-border-hairline"></div><div class="flex items-center pl-space-md text-text-secondary font-body-sm-medium text-body-sm-medium"><span class="material-symbols-outlined text-[16px] text-text-muted mr-space-xs">desk</span><span>Rugas Desk</span></div></div><div class="flex items-center h-full gap-space-lg"><nav class="flex items-center h-full gap-space-md" data-active-classes="text-text-primary font-semibold border-b-2 border-border-focus"><a class="h-full flex items-center px-space-xs text-text-secondary hover:text-text-primary text-body-sm-medium font-body-sm-medium border-b-2 border-transparent transition-colors" data-path="queue-console" href="#">Queues</a><a class="h-full flex items-center px-space-xs text-text-secondary hover:text-text-primary text-body-sm-medium font-body-sm-medium border-b-2 border-transparent transition-colors" data-path="operational-analytics" href="#">Analytics</a><a class="h-full flex items-center px-space-xs text-text-secondary hover:text-text-primary text-body-sm-medium font-body-sm-medium border-b-2 border-transparent transition-colors" data-path="triage-settings" href="#">Settings</a></nav><div class="h-4 w-[1px] bg-border-hairline"></div><div class="flex items-center gap-space-sm"><div class="w-7 h-7 rounded bg-surface border border-border-strong flex items-center justify-center font-headline-kpi text-[11px] font-bold text-text-primary tracking-tighter">RM</div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-[52px] bottom-0 w-[240px] bg-bg-canvas border-r border-border-hairline z-30 flex flex-col justify-between select-none"><div class="flex flex-col pt-space-md"><div class="px-space-md pb-space-xs flex items-center justify-between"><span class="font-label-mono-xs text-label-mono-xs text-text-muted uppercase tracking-wider">QUEUES</span><span class="font-label-mono-xs text-label-mono-xs text-text-secondary">03 ACTIVE</span></div><nav class="flex flex-col w-full" data-active-classes="bg-bg-active-row text-text-primary border-l-2 border-border-focus font-semibold"><a class="flex items-center justify-between px-space-md py-space-sm border-l-2 border-transparent text-text-secondary hover:bg-bg-hover hover:text-text-primary text-body-sm-medium font-body-sm-medium transition-colors" data-path="queue-console" href="#"><span class="truncate">General Consultation</span><span class="font-body-mono-token text-[11px] px-1.5 py-0.5 rounded bg-surface border border-border-hairline text-text-primary">12</span></a><a class="flex items-center justify-between px-space-md py-space-sm border-l-2 border-transparent text-text-secondary hover:bg-bg-hover hover:text-text-primary text-body-sm-medium font-body-sm-medium transition-colors" data-path="billing-desk" href="#"><span class="truncate">Billing Desk</span><span class="font-body-mono-token text-[11px] px-1.5 py-0.5 rounded bg-surface border border-border-hairline text-text-primary">4</span></a><a class="flex items-center justify-between px-space-md py-space-sm border-l-2 border-transparent text-text-secondary hover:bg-bg-hover hover:text-text-primary text-body-sm-medium font-body-sm-medium transition-colors" data-path="vip-support" href="#"><span class="truncate">VIP Support</span><span class="font-body-mono-token text-[11px] px-1.5 py-0.5 rounded bg-surface border border-border-hairline text-text-muted">0</span></a></nav></div><div class="p-space-md border-t border-border-hairline"><button class="w-full h-8 flex items-center justify-center gap-space-xs text-primary border border-border-focus hover:bg-bg-serving text-body-sm-medium font-body-sm-medium rounded transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">add</span><span>New Queue</span></button></div></aside><div class="pl-[240px]"><main class="relative pt-[52px] bg-bg-canvas min-h-screen"><div class="flex flex-col w-full relative">
+<!-- STATION SUB-HEADER METRIC STRIP -->
+<div class="h-[52px] bg-bg-surface border-b border-border-hairline px-space-lg flex items-center justify-between select-none">
+<div class="flex items-center gap-space-md">
+<div class="flex items-baseline gap-space-xs">
+<h1 class="font-headline-md text-headline-md text-text-primary tracking-tight">General Consultation</h1>
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted px-1.5 py-0.5 bg-surface-container-low rounded border border-border-hairline ml-space-xs">STATION 02</span>
+</div>
+<div class="h-3.5 w-[1px] bg-border-hairline"></div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-status-serving-text inline-block"></span>
+<span class="font-label-mono-xs text-label-mono-xs text-text-secondary uppercase">12 QUEUED</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-1 px-2 py-1 bg-surface-container-low border border-border-hairline rounded font-label-mono-xs text-label-mono-xs text-text-secondary">
+<span class="text-text-muted">AVG WAIT:</span>
+<span class="text-text-primary font-bold">07m 14s</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 bg-surface-container-low border border-border-hairline rounded font-label-mono-xs text-label-mono-xs text-text-secondary">
+<span class="text-text-muted">SERVED TODAY:</span>
+<span class="text-text-primary font-bold">38</span>
+</div>
+<button class="h-8 px-space-md bg-surface border border-border-strong rounded text-body-sm-medium font-body-sm-medium text-text-primary hover:bg-bg-hover flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px] text-text-secondary">tune</span>
+<span>Filter</span>
+</button>
+</div>
+</div>
+<!-- CURRENTLY SERVING BEACON BANNER (64px) -->
+<div class="h-16 bg-bg-serving border-b-2 border-border-serving px-space-lg flex items-center justify-between">
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-xs bg-surface border border-border-serving px-2 py-1 rounded">
+<span class="font-label-mono-xs text-label-mono-xs text-primary font-bold tracking-wider">NOW SERVING</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-banner-token text-banner-token text-primary tabular-nums tracking-tight">A-014</span>
+<div class="h-4 w-[1px] bg-border-serving"></div>
+<span class="font-body-row-primary text-body-row-primary text-text-primary font-semibold">Rohan Sharma</span>
+<span class="font-label-xs text-label-xs text-text-secondary px-1.5 py-0.5 rounded bg-surface border border-border-hairline">Triage: Standard</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-xs font-label-timer text-label-timer text-text-secondary">
+<span class="material-symbols-outlined text-[16px] text-text-muted">timer</span>
+<span class="font-bold tabular-nums text-text-primary">08m 42s</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="h-8 px-space-md bg-status-completed-bg text-status-completed-text border border-status-completed-text/30 hover:bg-status-completed-bg/80 text-body-sm-medium font-body-sm-medium rounded flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">done</span>
+<span>Complete</span>
+</button>
+<button class="h-8 px-space-md bg-primary text-on-primary hover:bg-accent-primary-hover text-body-sm-medium font-body-sm-medium rounded flex items-center gap-1 font-semibold" type="button">
+<span>Call Next</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- QUICK-ADD ACTION SHELF (48px) -->
+<div class="h-12 bg-bg-surface border-b border-border-hairline px-space-lg flex items-center gap-space-md">
+<div class="flex items-center text-text-muted">
+<span class="material-symbols-outlined text-[18px]">add_circle_outline</span>
+</div>
+<div class="flex-1 flex items-center gap-space-md">
+<input class="h-8 w-64 bg-bg-input border border-border-strong rounded px-space-sm text-body-sm font-body-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-border-focus" placeholder="Patient/Client Name..." type="text"/>
+<input class="h-8 w-56 bg-bg-input border border-border-strong rounded px-space-sm text-body-sm font-body-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-border-focus" placeholder="Contact or MRN (Optional)" type="text"/>
+<div class="flex items-center gap-1 bg-bg-input border border-border-strong rounded px-2 h-8">
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted uppercase">PRIORITY:</span>
+<select class="bg-transparent text-body-sm font-body-sm text-text-primary focus:outline-none">
+<option>Normal (P3)</option>
+<option>Urgent (P2)</option>
+<option>Critical (P1)</option>
+</select>
+</div>
+</div>
+<button class="h-8 px-space-md bg-inverse-surface text-inverse-on-surface hover:bg-text-primary text-body-sm-medium font-body-sm-medium rounded flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span>Issue Token</span>
+</button>
+</div>
+<!-- QUEUE TABLE / LIST -->
+<div class="w-full bg-bg-surface">
+<!-- TABLE COLUMN HEADERS -->
+<div class="h-8 bg-surface-container-low border-b border-border-hairline px-space-lg grid grid-cols-[36px_96px_1fr_120px_100px_140px] items-center text-left select-none">
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted uppercase">#</span>
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted uppercase">TOKEN</span>
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted uppercase">CLIENT / DETAILS</span>
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted uppercase">CATEGORY</span>
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted uppercase text-right">WAIT TIME</span>
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted uppercase text-right">ACTIONS</span>
+</div>
+<!-- ROW 01 (TARGET TOKEN A-015 - IN SELECTION STATE) -->
+<div class="h-11 bg-bg-active-row border-b border-border-hairline px-space-lg grid grid-cols-[36px_96px_1fr_120px_100px_140px] items-center text-left">
+<span class="font-label-mono-xs text-label-mono-xs text-primary font-bold">01</span>
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-primary rounded-none"></span>
+<span class="font-body-mono-token text-body-mono-token text-primary tabular-nums">A-015</span>
+</div>
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="font-body-row-primary text-body-row-primary text-text-primary truncate font-semibold">Priya Nair</span>
+<span class="font-label-xs text-label-xs text-text-secondary bg-surface border border-border-hairline px-1 rounded truncate">ID: 8841-K</span>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-text-secondary bg-surface border border-border-hairline px-1.5 py-0.5 rounded">Regular</span>
+</div>
+<div class="text-right font-label-timer text-label-timer text-text-primary tabular-nums font-semibold">
+        06m 12s
+      </div>
+<div class="flex items-center justify-end gap-1">
+<button class="w-7 h-7 rounded border border-border-strong bg-surface flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-hover" type="button">
+<span class="material-symbols-outlined text-[16px]">call</span>
+</button>
+<button class="w-7 h-7 rounded border border-status-cancelled-text bg-status-cancelled-bg flex items-center justify-center text-status-cancelled-text" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- ROW 02 -->
+<div class="h-11 bg-bg-surface hover:bg-bg-hover border-b border-border-hairline px-space-lg grid grid-cols-[36px_96px_1fr_120px_100px_140px] items-center text-left transition-colors">
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted">02</span>
+<div class="flex items-center gap-1.5">
+<span class="font-body-mono-token text-body-mono-token text-text-primary tabular-nums">A-016</span>
+</div>
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="font-body-row-primary text-body-row-primary text-text-primary truncate">Karthik Rao</span>
+<span class="font-label-xs text-label-xs text-text-secondary bg-surface-container-low border border-border-hairline px-1 rounded truncate">ID: 9022-M</span>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-status-serving-text bg-status-serving-bg border border-status-serving-border px-1.5 py-0.5 rounded">Specialist</span>
+</div>
+<div class="text-right font-label-timer text-label-timer text-text-secondary tabular-nums">
+        05m 30s
+      </div>
+<div class="flex items-center justify-end gap-1 opacity-70 hover:opacity-100">
+<button class="w-7 h-7 rounded border border-border-hairline bg-surface flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-bg-hover" type="button">
+<span class="material-symbols-outlined text-[16px]">call</span>
+</button>
+<button class="w-7 h-7 rounded border border-border-hairline bg-surface flex items-center justify-center text-text-muted hover:text-status-cancelled-text hover:bg-status-cancelled-bg" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- ROW 03 -->
+<div class="h-11 bg-bg-surface hover:bg-bg-hover border-b border-border-hairline px-space-lg grid grid-cols-[36px_96px_1fr_120px_100px_140px] items-center text-left transition-colors">
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted">03</span>
+<div class="flex items-center gap-1.5">
+<span class="font-body-mono-token text-body-mono-token text-text-primary tabular-nums">A-017</span>
+</div>
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="font-body-row-primary text-body-row-primary text-text-primary truncate">Ananya Hegde</span>
+<span class="font-label-xs text-label-xs text-text-secondary bg-surface-container-low border border-border-hairline px-1 rounded truncate">ID: 3314-P</span>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-text-secondary bg-surface-container-low border border-border-hairline px-1.5 py-0.5 rounded">Regular</span>
+</div>
+<div class="text-right font-label-timer text-label-timer text-text-secondary tabular-nums">
+        04m 45s
+      </div>
+<div class="flex items-center justify-end gap-1 opacity-70 hover:opacity-100">
+<button class="w-7 h-7 rounded border border-border-hairline bg-surface flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-bg-hover" type="button">
+<span class="material-symbols-outlined text-[16px]">call</span>
+</button>
+<button class="w-7 h-7 rounded border border-border-hairline bg-surface flex items-center justify-center text-text-muted hover:text-status-cancelled-text hover:bg-status-cancelled-bg" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- ROW 04 -->
+<div class="h-11 bg-bg-surface hover:bg-bg-hover border-b border-border-hairline px-space-lg grid grid-cols-[36px_96px_1fr_120px_100px_140px] items-center text-left transition-colors">
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted">04</span>
+<div class="flex items-center gap-1.5">
+<span class="font-body-mono-token text-body-mono-token text-text-primary tabular-nums">A-018</span>
+</div>
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="font-body-row-primary text-body-row-primary text-text-primary truncate">Devendra Varma</span>
+<span class="font-label-xs text-label-xs text-text-secondary bg-surface-container-low border border-border-hairline px-1 rounded truncate">ID: 4402-R</span>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-text-secondary bg-surface-container-low border border-border-hairline px-1.5 py-0.5 rounded">Regular</span>
+</div>
+<div class="text-right font-label-timer text-label-timer text-text-secondary tabular-nums">
+        03m 18s
+      </div>
+<div class="flex items-center justify-end gap-1 opacity-70 hover:opacity-100">
+<button class="w-7 h-7 rounded border border-border-hairline bg-surface flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-bg-hover" type="button">
+<span class="material-symbols-outlined text-[16px]">call</span>
+</button>
+<button class="w-7 h-7 rounded border border-border-hairline bg-surface flex items-center justify-center text-text-muted hover:text-status-cancelled-text hover:bg-status-cancelled-bg" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- ROW 05 -->
+<div class="h-11 bg-bg-surface hover:bg-bg-hover border-b border-border-hairline px-space-lg grid grid-cols-[36px_96px_1fr_120px_100px_140px] items-center text-left transition-colors">
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted">05</span>
+<div class="flex items-center gap-1.5">
+<span class="font-body-mono-token text-body-mono-token text-text-primary tabular-nums">A-019</span>
+</div>
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="font-body-row-primary text-body-row-primary text-text-primary truncate">Sunita Mehra</span>
+<span class="font-label-xs text-label-xs text-text-secondary bg-surface-container-low border border-border-hairline px-1 rounded truncate">ID: 5120-K</span>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-primary bg-primary-fixed border border-outline-variant px-1.5 py-0.5 rounded font-medium">Urgent</span>
+</div>
+<div class="text-right font-label-timer text-label-timer text-text-secondary tabular-nums">
+        02m 04s
+      </div>
+<div class="flex items-center justify-end gap-1 opacity-70 hover:opacity-100">
+<button class="w-7 h-7 rounded border border-border-hairline bg-surface flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-bg-hover" type="button">
+<span class="material-symbols-outlined text-[16px]">call</span>
+</button>
+<button class="w-7 h-7 rounded border border-border-hairline bg-surface flex items-center justify-center text-text-muted hover:text-status-cancelled-text hover:bg-status-cancelled-bg" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ================================================================= -->
+<!-- MODAL OVERLAY (DARK, PURE BLUR-FREE, SOLID DISCIPLINE)          -->
+<!-- ================================================================= -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(24,24,22,0.40)] select-none" id="cancel-dialog-overlay">
+<!-- CONFIRM CANCEL TOKEN DIALOG (EXACTLY 320px WIDE) -->
+<div aria-labelledby="dialog-title" aria-modal="true" class="w-[320px] bg-bg-surface border border-border-strong rounded-[6px] shadow-[0_8px_24px_rgba(0,0,0,0.08)] flex flex-col overflow-hidden" role="dialog">
+<!-- DIALOG TOP SECTION -->
+<div class="p-[20px_16px_16px_16px] flex flex-col">
+<!-- FLAT DANGER INDICATOR ICON (32x32px) -->
+<div class="w-8 h-8 rounded-[4px] bg-[#FEF2F2] border border-[#FECACA] flex items-center justify-center text-status-cancelled-text">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" viewbox="0 0 16 16">
+<line x1="3.5" x2="12.5" y1="3.5" y2="12.5"></line>
+<line x1="12.5" x2="3.5" y1="3.5" y2="12.5"></line>
+</svg>
+</div>
+<!-- TITLE -->
+<h2 class="font-headline-md text-headline-md font-semibold text-text-primary mt-3 mb-1.5 tracking-tight" id="dialog-title">
+          Cancel this token?
+        </h2>
+<!-- BODY COPY -->
+<p class="font-body-sm text-body-sm text-text-secondary leading-[1.6] mb-3.5">
+<strong class="font-medium text-text-primary">A-015 · Priya Nair</strong> will be removed from the waiting list. This action cannot be undone.
+        </p>
+<!-- TOKEN INSET DISPLAY STRIP -->
+<div class="bg-bg-input border border-border-hairline rounded-[4px] px-3 py-2 flex items-center gap-2">
+<!-- Token ID in tabular monospace -->
+<span class="font-body-mono-token text-[13px] leading-[18px] font-bold text-text-primary tabular-nums tracking-tight">
+            [A-015]
+          </span>
+<!-- Person Name -->
+<span class="font-body-sm-medium text-[13px] leading-[18px] font-medium text-text-primary truncate">
+            Priya Nair
+          </span>
+<!-- Wait duration -->
+<span class="ml-auto font-label-mono-xs text-[12px] leading-[16px] text-text-muted tabular-nums whitespace-nowrap">
+            Waiting 06m
+          </span>
+</div>
+</div>
+<!-- DIALOG FOOTER ACTIONS -->
+<div class="p-[12px_16px] border-t border-border-hairline flex items-center justify-end gap-2 bg-bg-surface">
+<!-- SECONDARY BUTTON [Keep Token] -->
+<button class="h-8 px-3 border border-border-strong bg-transparent hover:bg-bg-hover text-text-primary font-body-sm-medium text-[13px] font-medium rounded-[4px] transition-colors focus:outline-none focus:ring-1 focus:ring-text-primary" id="btn-keep-token" type="button">
+          Keep Token
+        </button>
+<!-- DANGER BUTTON [Cancel Token] -->
+<button class="h-8 px-3.5 bg-status-cancelled-text text-on-error hover:bg-[#991B1B] font-body-sm-medium text-[13px] font-semibold rounded-[4px] border-0 transition-colors focus:outline-none focus:ring-2 focus:ring-status-cancelled-text focus:ring-offset-1" id="btn-confirm-cancel" type="button">
+          Cancel Token
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const overlay = document.getElementById('cancel-dialog-overlay');
+    const keepBtn = document.getElementById('btn-keep-token');
+    const cancelBtn = document.getElementById('btn-confirm-cancel');
+
+    function closeDialog() {
+      if (overlay) {
+        overlay.classList.add('hidden');
+      }
+    }
+
+    if (keepBtn) {
+      keepBtn.addEventListener('click', closeDialog);
+    }
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', function() {
+        closeDialog();
+      });
+    }
+
+    // Escape key listener for standard ergonomic modal compliance
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay && !overlay.classList.contains('hidden')) {
+        closeDialog();
+      }
+    });
+  })();
+</script></main></div></body></html>

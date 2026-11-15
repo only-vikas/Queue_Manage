@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QueueOS - SCREEN 07 Modal</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "text-secondary": "#57554E",
+            "status-serving-text": "#0F766E",
+            "status-cancelled-bg": "#FEF2F2",
+            "tertiary-fixed-dim": "#9ccaff",
+            "status-serving-bg": "#F0FDFA",
+            "border-serving": "#F5C7B8",
+            "on-primary-fixed": "#3b0900",
+            "surface-bright": "#f9f9f7",
+            "border-focus": "#D9481E",
+            "error": "#ba1a1a",
+            "on-primary-container": "#fffbff",
+            "primary-fixed": "#ffdbd1",
+            "on-primary-fixed-variant": "#882000",
+            "on-primary": "#ffffff",
+            "secondary-fixed-dim": "#b7c4ff",
+            "primary": "#ad2b00",
+            "background": "#f9f9f7",
+            "inverse-primary": "#ffb5a1",
+            "primary-container": "#d14219",
+            "tertiary-fixed": "#d0e4ff",
+            "surface-tint": "#b22c00",
+            "on-tertiary-fixed-variant": "#00497b",
+            "primary-fixed-dim": "#ffb5a1",
+            "secondary-container": "#4069f2",
+            "on-tertiary-container": "#fdfcff",
+            "tertiary": "#005f9d",
+            "outline-variant": "#e2bfb5",
+            "status-completed-bg": "#F0FDF4",
+            "accent-primary-hover": "#BF3B15",
+            "text-primary": "#181816",
+            "surface-container-low": "#f4f4f2",
+            "bg-surface": "#FFFFFF",
+            "text-muted": "#8C8980",
+            "surface": "#f9f9f7",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#f1f1ef",
+            "text-on-accent": "#FFFFFF",
+            "tertiary-container": "#0078c5",
+            "surface-container": "#eeeeec",
+            "status-serving-border": "#99F6E4",
+            "on-secondary-fixed": "#001551",
+            "accent-primary-active": "#A33110",
+            "bg-canvas": "#F7F7F5",
+            "on-secondary-container": "#fffbff",
+            "bg-serving": "#FEF5F1",
+            "on-background": "#1a1c1b",
+            "on-surface-variant": "#5a413a",
+            "surface-container-highest": "#e2e3e1",
+            "bg-input": "#FAFAF9",
+            "on-tertiary-fixed": "#001d35",
+            "surface-container-high": "#e8e8e6",
+            "on-error-container": "#93000a",
+            "inverse-surface": "#2f3130",
+            "on-secondary": "#ffffff",
+            "border-hairline": "#E4E3DD",
+            "surface-dim": "#dadad8",
+            "on-surface": "#1a1c1b",
+            "error-container": "#ffdad6",
+            "bg-hover": "#F1F0EC",
+            "secondary": "#1d4ed8",
+            "on-error": "#ffffff",
+            "bg-active-row": "#EBEAE4",
+            "surface-variant": "#e2e3e1",
+            "outline": "#8e7069",
+            "border-strong": "#CFCBC2",
+            "on-secondary-fixed-variant": "#0039b5",
+            "secondary-fixed": "#dce1ff",
+            "status-cancelled-text": "#B91C1C",
+            "status-completed-text": "#166534",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-mono-xs": ["JetBrains Mono"],
+            "body-mono-token": ["JetBrains Mono"],
+            "label-timer": ["JetBrains Mono"],
+            "label-xs": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-default": ["Plus Jakarta Sans"],
+            "headline-kpi-mobile": ["JetBrains Mono"],
+            "body-row-primary": ["Plus Jakarta Sans"],
+            "banner-token": ["JetBrains Mono"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-kpi": ["JetBrains Mono"],
+            "body-sm-medium": ["Plus Jakarta Sans"]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    @keyframes modalEnter {
+      from {
+        opacity: 0;
+        transform: scale(0.97) translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes overlayFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .animate-modal-enter {
+      animation: modalEnter 200ms cubic-bezier(0, 0, 0.2, 1) forwards;
+    }
+
+    .animate-overlay-fade {
+      animation: overlayFade 200ms cubic-bezier(0, 0, 0.2, 1) forwards;
+    }
+
+    .tabular-numbers {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="bg-bg-canvas text-text-primary antialiased min-h-screen relative overflow-hidden font-body-default">
+<!-- Underlying Workspace UI -->
+<div class="flex flex-col min-h-screen w-full select-none" id="workspace-root">
+<!-- Topbar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-border-hairline bg-bg-surface px-6 h-14">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 text-text-primary">
+<div class="w-4 h-4 text-border-focus">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-text-primary text-[15px] font-semibold tracking-tight">QueueOS <span class="text-text-muted font-normal">| Rugas Desk</span></h1>
+</div>
+<div class="h-4 w-px bg-border-hairline"></div>
+<nav class="flex items-center gap-6">
+<a class="text-text-primary text-sm font-semibold border-b-2 border-border-focus py-4 leading-normal" href="#">Queues</a>
+<a class="text-text-secondary hover:text-text-primary text-sm font-medium py-4 leading-normal transition-colors" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded flex items-center justify-center text-text-secondary hover:bg-bg-hover">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-text-secondary hover:bg-bg-hover">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+<div class="flex items-center gap-2 pl-2 border-l border-border-hairline">
+<div class="w-7 h-7 rounded-full bg-border-serving text-border-focus text-xs font-semibold flex items-center justify-center">RM</div>
+<span class="text-xs font-medium text-text-secondary">Desk #04</span>
+</div>
+</div>
+</header>
+<!-- Main Body Container -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Left Sidebar (240px) -->
+<aside class="w-[240px] bg-bg-surface border-r border-border-hairline flex flex-col justify-between flex-shrink-0">
+<div class="p-3 flex flex-col gap-1">
+<div class="px-2 py-1.5 text-[11px] font-semibold tracking-wider text-text-muted uppercase font-label-mono-xs">Active Queues</div>
+<button class="flex items-center justify-between px-2.5 py-2 rounded bg-bg-hover text-text-primary text-sm font-medium w-full text-left">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-border-focus text-[18px]">groups</span>
+<span class="truncate">General Consultation</span>
+</div>
+<span class="text-xs font-label-mono-xs bg-border-hairline text-text-secondary px-1.5 py-0.5 rounded">12</span>
+</button>
+<button class="flex items-center justify-between px-2.5 py-2 rounded text-text-secondary hover:bg-bg-hover hover:text-text-primary text-sm font-medium w-full text-left transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-muted text-[18px]">receipt_long</span>
+<span class="truncate">Billing Desk</span>
+</div>
+<span class="text-xs font-label-mono-xs text-text-muted px-1.5 py-0.5">4</span>
+</button>
+<button class="flex items-center justify-between px-2.5 py-2 rounded text-text-secondary hover:bg-bg-hover hover:text-text-primary text-sm font-medium w-full text-left transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-muted text-[18px]">workspace_premium</span>
+<span class="truncate">VIP Support</span>
+</div>
+<span class="text-xs font-label-mono-xs text-text-muted px-1.5 py-0.5">0</span>
+</button>
+</div>
+<!-- Pinned bottom item -->
+<div class="p-3 border-t border-border-hairline">
+<button class="w-full h-8 flex items-center justify-center gap-1.5 rounded bg-border-focus text-text-on-accent text-xs font-semibold hover:bg-accent-primary-hover shadow-sm">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>New Queue</span>
+</button>
+</div>
+</aside>
+<!-- Main Workspace (Screen 04 style behind modal) -->
+<main class="flex-1 flex flex-col p-6 gap-6 bg-bg-canvas overflow-y-auto">
+<!-- Queue KPI / Top Serving Banner -->
+<div class="grid grid-cols-4 gap-4">
+<div class="col-span-3 bg-bg-surface border border-border-hairline rounded p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-bg-serving border border-border-serving flex flex-col items-center justify-center">
+<span class="text-[10px] font-label-mono-xs text-border-focus font-bold uppercase leading-none">Serving</span>
+<span class="text-base font-banner-token text-border-focus leading-tight">A-101</span>
+</div>
+<div>
+<div class="text-base font-semibold text-text-primary">Eleanor Vance</div>
+<div class="text-xs text-text-secondary flex items-center gap-2">
+<span>General Intake</span>
+<span class="inline-block w-1 h-1 rounded-full bg-border-strong"></span>
+<span class="font-label-timer text-status-serving-text">Serving 04:32</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-8 px-3 rounded border border-border-strong text-xs font-medium bg-bg-surface text-text-primary">Hold</button>
+<button class="h-8 px-3 rounded bg-border-focus text-text-on-accent text-xs font-semibold">Finish Consultation</button>
+</div>
+</div>
+<div class="bg-bg-surface border border-border-hairline rounded p-4 flex flex-col justify-center">
+<span class="text-[11px] font-label-mono-xs text-text-muted uppercase tracking-wider">Avg Waiting Time</span>
+<span class="text-headline-kpi text-text-primary font-bold">18m</span>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-bg-surface border border-border-hairline rounded overflow-hidden flex flex-col">
+<div class="px-4 py-3 border-b border-border-hairline flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="text-sm font-semibold text-text-primary">Waiting Queue</h2>
+<span class="text-xs font-label-mono-xs bg-bg-canvas text-text-secondary px-2 py-0.5 rounded border border-border-hairline">12 remaining</span>
+</div>
+<span class="text-xs text-text-muted">Live sync active</span>
+</div>
+<table class="w-full text-left text-sm">
+<thead class="bg-surface-container-low text-text-secondary text-xs border-b border-border-hairline font-medium">
+<tr>
+<th class="px-4 py-2.5 font-label-mono-xs">Ticket</th>
+<th class="px-4 py-2.5">Visitor</th>
+<th class="px-4 py-2.5">Priority</th>
+<th class="px-4 py-2.5">Wait Time</th>
+<th class="px-4 py-2.5">Status</th>
+<th class="px-4 py-2.5 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-hairline text-text-primary">
+<tr>
+<td class="px-4 py-3 font-body-mono-token text-border-focus font-bold">A-102</td>
+<td class="px-4 py-3 font-medium">Sarah Jenkins</td>
+<td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-[11px] font-label-mono-xs bg-primary-fixed text-on-primary-fixed-variant">HIGH</span></td>
+<td class="px-4 py-3 text-text-secondary font-label-timer">14 min</td>
+<td class="px-4 py-3"><span class="text-xs text-text-secondary">Waiting</span></td>
+<td class="px-4 py-3 text-right"><button class="text-border-focus text-xs font-semibold hover:underline">Call</button></td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-body-mono-token text-text-primary font-bold">A-103</td>
+<td class="px-4 py-3 font-medium">David Chen</td>
+<td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-[11px] font-label-mono-xs bg-surface-container-high text-text-secondary">NORMAL</span></td>
+<td class="px-4 py-3 text-text-secondary font-label-timer">19 min</td>
+<td class="px-4 py-3"><span class="text-xs text-text-secondary">Waiting</span></td>
+<td class="px-4 py-3 text-right"><button class="text-border-focus text-xs font-semibold hover:underline">Call</button></td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-body-mono-token text-text-primary font-bold">A-104</td>
+<td class="px-4 py-3 font-medium">Amira Patel</td>
+<td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-[11px] font-label-mono-xs bg-surface-container-high text-text-secondary">NORMAL</span></td>
+<td class="px-4 py-3 text-text-secondary font-label-timer">24 min</td>
+<td class="px-4 py-3"><span class="text-xs text-text-secondary">Waiting</span></td>
+<td class="px-4 py-3 text-right"><button class="text-border-focus text-xs font-semibold hover:underline">Call</button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</div>
+<!-- State Switcher Float (Interactive demonstration of prompt states) -->
+<div class="fixed top-4 right-4 z-50 bg-bg-surface border border-border-strong rounded shadow-sm px-2 py-1.5 flex items-center gap-1.5 text-xs">
+<span class="text-text-muted font-medium text-[11px] mr-1">STATE:</span>
+<button class="px-2 py-1 rounded font-medium transition-colors bg-border-focus text-text-on-accent" id="btn-state-default" onclick="setState('default')">Default</button>
+<button class="px-2 py-1 rounded font-medium text-text-secondary hover:bg-bg-hover transition-colors" id="btn-state-error" onclick="setState('error')">Duplicate Error</button>
+<button class="px-2 py-1 rounded font-medium text-text-secondary hover:bg-bg-hover transition-colors" id="btn-state-loading" onclick="setState('loading')">Loading</button>
+</div>
+<!-- Modal Overlay -->
+<!-- Specification: position: fixed; inset: 0; background: rgba(24, 24, 22, 0.40); blur-free (NO backdrop-filter). Centered flex container. -->
+<div class="fixed inset-0 z-40 flex items-center justify-center animate-overlay-fade" id="modal-backdrop" style="background-color: rgba(24, 24, 22, 0.40);">
+<!-- Modal Panel -->
+<!-- Specification: Width 400px, background #FFFFFF, border 1px solid #CFCBC2, border-radius 6px, shadow 0 8px 24px rgba(0,0,0,0.08), strictly radius <= 6px -->
+<div class="w-[400px] bg-bg-surface border border-border-strong animate-modal-enter flex flex-col overflow-hidden" id="modal-container" style="border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
+<!-- Modal Header -->
+<!-- Padding 16px, border-bottom 1px solid #E4E3DD, flex items-center justify-between. Title: "New Queue" (15px, 600, #181816). Close: 28x28px, 4px radius, transparent, hover #F1F0EC -->
+<div class="flex items-center justify-between border-b border-border-hairline" style="padding: 16px;">
+<h3 class="text-[15px] font-semibold text-text-primary leading-none tracking-tight">New Queue</h3>
+<button class="w-7 h-7 flex items-center justify-center text-text-secondary hover:bg-bg-hover transition-colors" onclick="closeModalMock()" style="border-radius: 4px;" title="Close modal" type="button">
+<svg fill="none" height="14" viewbox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 3L3 11M3 3L11 11" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</button>
+</div>
+<!-- Modal Body -->
+<!-- Padding 16px, flex column, gap 16px -->
+<div class="flex flex-col gap-4" style="padding: 16px;">
+<!-- Form Group 1 — Queue Name -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[13px] font-medium text-text-secondary leading-none" for="queue-name">Queue name</label>
+<div class="relative">
+<input class="w-full text-sm text-text-primary bg-bg-input border border-border-strong focus:outline-none placeholder:text-text-muted transition-colors" id="queue-name" maxlength="50" onblur="handleBlur()" onfocus="handleFocus()" oninput="handleInput(event)" placeholder="e.g. OPD Counter 1, Billing Desk" style="height: 36px; padding: 0 12px; border-radius: 4px;" type="text" value="Rapid Triage Unit"/>
+</div>
+<!-- Helper / Error and Character Counter Row -->
+<div class="flex items-start justify-between min-h-[16px] text-left pt-0.5">
+<div class="flex-1 pr-2" id="error-message-container">
+<span class="text-xs text-status-cancelled-text hidden font-normal" id="name-error-text">
+                A queue named 'General Consultation' already exists.
+              </span>
+</div>
+<div class="character-counter text-[11px] text-text-muted font-label-mono-xs tabular-numbers flex-shrink-0" id="char-counter">
+              17 / 50
+            </div>
+</div>
+</div>
+<!-- Form Group 2 — Description (optional) -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-[13px] font-medium text-text-secondary leading-none" for="queue-desc">Description</label>
+<span class="text-[11px] text-text-muted">Optional</span>
+</div>
+<textarea class="w-full text-sm text-text-primary bg-bg-input border border-border-strong focus:outline-none focus:border-border-focus focus:bg-bg-surface placeholder:text-text-muted transition-colors resize-none" id="queue-desc" placeholder="Brief intake criteria or desk instructions..." rows="2" style="height: 64px; padding: 8px 12px; border-radius: 4px;"></textarea>
+</div>
+</div>
+<!-- Modal Footer -->
+<!-- Padding 12px 16px, border-top 1px solid #E4E3DD, display flex, justify-content flex-end, gap 8px -->
+<div class="flex items-center justify-end gap-2 border-t border-border-hairline" style="padding: 12px 16px;">
+<button class="text-[13px] font-medium text-text-primary border border-border-strong hover:bg-bg-hover transition-colors flex items-center justify-center" id="btn-cancel" onclick="closeModalMock()" style="height: 32px; padding: 0 12px; border-radius: 4px;" type="button">
+          Cancel
+        </button>
+<button class="text-[13px] font-semibold text-text-on-accent transition-colors flex items-center justify-center gap-1.5" id="btn-submit" onclick="handleSubmitClick()" style="height: 32px; padding: 0 14px; border-radius: 4px; background-color: #D9481E;" type="button">
+<svg class="animate-spin -ml-0.5 mr-1.5 h-3.5 w-3.5 text-white hidden" fill="none" id="loading-spinner" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+<span id="btn-submit-text">Create Queue</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+    let currentState = 'default';
+
+    const inputEl = document.getElementById('queue-name');
+    const descEl = document.getElementById('queue-desc');
+    const charCounterEl = document.getElementById('char-counter');
+    const errorTextEl = document.getElementById('name-error-text');
+    const btnSubmit = document.getElementById('btn-submit');
+    const btnCancel = document.getElementById('btn-cancel');
+    const submitText = document.getElementById('btn-submit-text');
+    const spinner = document.getElementById('loading-spinner');
+
+    const stateButtons = {
+      default: document.getElementById('btn-state-default'),
+      error: document.getElementById('btn-state-error'),
+      loading: document.getElementById('btn-state-loading')
+    };
+
+    function updateCharCount(length) {
+      charCounterEl.textContent = `${length} / 50`;
+    }
+
+    function handleInput(e) {
+      if (currentState === 'error') {
+        setState('default');
+      }
+      updateCharCount(e.target.value.length);
+    }
+
+    function handleFocus() {
+      if (currentState !== 'error') {
+        inputEl.style.borderColor = '#D9481E';
+        inputEl.style.backgroundColor = '#FFFFFF';
+      }
+    }
+
+    function handleBlur() {
+      if (currentState !== 'error') {
+        inputEl.style.borderColor = '#CFCBC2';
+        inputEl.style.backgroundColor = '#FAFAF9';
+      }
+    }
+
+    function setState(state) {
+      currentState = state;
+
+      // Update state toggle buttons
+      Object.keys(stateButtons).forEach(key => {
+        if (key === state) {
+          stateButtons[key].className = "px-2 py-1 rounded font-medium transition-colors bg-border-focus text-text-on-accent";
+        } else {
+          stateButtons[key].className = "px-2 py-1 rounded font-medium text-text-secondary hover:bg-bg-hover transition-colors";
+        }
+      });
+
+      if (state === 'default') {
+        inputEl.disabled = false;
+        descEl.disabled = false;
+        btnCancel.disabled = false;
+        btnSubmit.disabled = false;
+        
+        inputEl.value = "Rapid Triage Unit";
+        updateCharCount(inputEl.value.length);
+        
+        inputEl.style.borderColor = '#CFCBC2';
+        inputEl.style.backgroundColor = '#FAFAF9';
+        errorTextEl.classList.add('hidden');
+        
+        spinner.classList.add('hidden');
+        submitText.textContent = "Create Queue";
+        btnSubmit.style.backgroundColor = '#D9481E';
+        btnSubmit.style.opacity = '1';
+        btnSubmit.style.cursor = 'pointer';
+      } 
+      else if (state === 'error') {
+        inputEl.disabled = false;
+        descEl.disabled = false;
+        btnCancel.disabled = false;
+        btnSubmit.disabled = false;
+
+        inputEl.value = "General Consultation";
+        updateCharCount(inputEl.value.length);
+        
+        inputEl.style.borderColor = '#B91C1C';
+        inputEl.style.backgroundColor = '#FFFFFF';
+        errorTextEl.classList.remove('hidden');
+
+        spinner.classList.add('hidden');
+        submitText.textContent = "Create Queue";
+        btnSubmit.style.backgroundColor = '#D9481E';
+        btnSubmit.style.opacity = '1';
+        btnSubmit.style.cursor = 'pointer';
+      } 
+      else if (state === 'loading') {
+        inputEl.disabled = true;
+        descEl.disabled = true;
+        btnCancel.disabled = true;
+        btnSubmit.disabled = true;
+
+        inputEl.value = "Rapid Triage Unit";
+        updateCharCount(inputEl.value.length);
+
+        inputEl.style.borderColor = '#CFCBC2';
+        inputEl.style.backgroundColor = '#FAFAF9';
+        errorTextEl.classList.add('hidden');
+
+        spinner.classList.remove('hidden');
+        submitText.textContent = "Creating...";
+        btnSubmit.style.backgroundColor = '#D9481E';
+        btnSubmit.style.opacity = '0.85';
+        btnSubmit.style.cursor = 'not-allowed';
+      }
+    }
+
+    function handleSubmitClick() {
+      if (currentState === 'loading') return;
+      if (inputEl.value.trim().toLowerCase() === 'general consultation') {
+        setState('error');
+      } else {
+        setState('loading');
+        setTimeout(() => {
+          setState('default');
+        }, 2200);
+      }
+    }
+
+    function closeModalMock() {
+      const modal = document.getElementById('modal-backdrop');
+      modal.style.transition = "opacity 150ms ease";
+      modal.style.opacity = "0";
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 150);
+    }
+
+    // Initialize initial counter
+    updateCharCount(inputEl.value.length);
+  </script>
+</body></html>

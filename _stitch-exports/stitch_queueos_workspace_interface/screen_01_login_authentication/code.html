@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCREEN 01 — Login / Authentication</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       QueueOS Design Tokens & Strict Reset
+       ============================================================ */
+    :root {
+      --bg-canvas: #F7F7F5;
+      --bg-surface: #FFFFFF;
+      --bg-hover: #F1F0EC;
+      --bg-input: #FAFAF9;
+
+      --border-hairline: #E4E3DD;
+      --border-strong: #CFCBC2;
+      --border-focus: #D9481E;
+
+      --text-primary: #181816;
+      --text-secondary: #57554E;
+      --text-muted: #8C8980;
+      --text-on-accent: #FFFFFF;
+
+      --accent-primary: #D9481E;
+      --accent-primary-hover: #BF3B15;
+      --accent-primary-active: #A33110;
+
+      --status-danger: #B91C1C;
+      --status-danger-bg: #FEF2F2;
+
+      --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --transition-fast: 120ms ease-out;
+      --transition-enter: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      position: relative;
+    }
+
+    /* Fixed top environmental indicator (desk equipment aesthetic) */
+    .system-status-indicator {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .system-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #0F766E;
+    }
+
+    /* State Switcher Bar (For design review: Normal vs Error vs Loading) */
+    .mode-bar {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      padding: 3px;
+      border-radius: var(--radius-sm);
+      z-index: 10;
+    }
+
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .mode-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .mode-btn.active {
+      background: var(--text-primary);
+      color: var(--bg-surface);
+    }
+
+    /* Workspaces Display Container */
+    .workspace-stage {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       QueueOS Flat Authentication Panel (360px)
+       Strict negative constraints:
+       - 0 box shadow
+       - 0 rounded-xl (max 6px radius)
+       - 0 gradients
+       - 0 decorative icons
+       ============================================================ */
+    .login-card {
+      width: 360px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      /* Mechanical entry animation */
+      animation: cardEntrance var(--transition-enter) forwards;
+      transform-origin: center top;
+      will-change: transform, opacity;
+    }
+
+    @keyframes cardEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Micro-shake animation for authentication rejection */
+    .login-card.shake {
+      animation: authShake 220ms ease-in-out;
+    }
+
+    @keyframes authShake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Card Header */
+    .card-header {
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .wordmark {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      line-height: 1;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wordmark-badge {
+      font-size: 9px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-secondary);
+      background-color: var(--bg-hover);
+      padding: 2px 4px;
+      border-radius: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    .headline {
+      font-family: var(--font-ui);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Form Body */
+    .form-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+
+    .input-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-label {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .forgot-link {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+      color: var(--text-primary);
+    }
+
+    .forgot-link:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 2px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .input-field {
+      width: 100%;
+      height: 36px;
+      padding: 0 12px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color var(--transition-fast), background-color var(--transition-fast);
+      box-shadow: none;
+    }
+
+    .input-field::placeholder {
+      color: var(--text-muted);
+    }
+
+    .input-field:hover {
+      border-color: #B5B0A6;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent-primary);
+      background-color: var(--bg-surface);
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* Password field with toggle button */
+    .input-wrapper--password .input-field {
+      padding-right: 36px;
+    }
+
+    .pw-toggle-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 36px;
+      width: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      transition: color var(--transition-fast);
+    }
+
+    .pw-toggle-btn:hover {
+      color: var(--text-secondary);
+    }
+
+    .pw-toggle-btn:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: -2px;
+    }
+
+    /* Error State Styling */
+    .has-error .input-field {
+      border-color: var(--status-danger) !important;
+      background-color: #FFFDFD;
+    }
+
+    .has-error .input-field:focus {
+      outline: 2px solid rgba(185, 28, 28, 0.2);
+    }
+
+    .error-banner {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--status-danger);
+      background-color: var(--status-danger-bg);
+      border: 1px solid #FECACA;
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      line-height: 1.3;
+      animation: errorFadeIn 140ms ease-out forwards;
+    }
+
+    @keyframes errorFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-2px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Primary CTA Button */
+    .btn-submit {
+      width: 100%;
+      height: 36px;
+      background-color: var(--accent-primary);
+      color: var(--text-on-accent);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color var(--transition-fast), opacity var(--transition-fast);
+      user-select: none;
+      margin-top: 4px;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background-color: var(--accent-primary-hover);
+    }
+
+    .btn-submit:active:not(:disabled) {
+      background-color: var(--accent-primary-active);
+    }
+
+    .btn-submit:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 2px;
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.85;
+      cursor: wait;
+    }
+
+    /* Mechanical 3-dot loading spinner */
+    .spinner-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 12px;
+    }
+
+    .spinner-dot {
+      width: 4px;
+      height: 4px;
+      background-color: #FFFFFF;
+      border-radius: 50%;
+      animation: pulseDot 600ms infinite ease-in-out;
+    }
+
+    .spinner-dot:nth-child(2) {
+      animation-delay: 200ms;
+    }
+
+    .spinner-dot:nth-child(3) {
+      animation-delay: 400ms;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+
+    /* Card Footer */
+    .card-footer {
+      padding: 12px 24px;
+      border-top: 1px solid var(--border-hairline);
+      background-color: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .footer-text {
+      color: var(--text-muted);
+    }
+
+    .footer-link {
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: text-decoration var(--transition-fast);
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+
+    .footer-link:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 2px;
+    }
+
+    /* Equipment footnote */
+    .desk-footnote {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .desk-footnote span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* SVG Icon styles */
+    .icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.5;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .login-card,
+      .login-card.shake,
+      .spinner-dot,
+      .error-banner {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Physical Equipment Header Status -->
+  <div class="system-status-indicator">
+    <div class="system-status-dot"></div>
+    <span>QueueOS Operational Core // Node 01</span>
+  </div>
+
+  <!-- Interactive State Switcher for UX Validation -->
+  <div class="mode-bar">
+    <button class="mode-btn active" id="btnNormal" onclick="setNormalState()">Default</button>
+    <button class="mode-btn" id="btnError" onclick="triggerErrorState()">Simulate Error</button>
+    <button class="mode-btn" id="btnLoading" onclick="simulateLoadingState()">Simulate Loading</button>
+  </div>
+
+  <!-- Primary Workspace Presentation -->
+  <div class="workspace-stage">
+
+    <div class="card-wrapper">
+      <div class="card-label">Operational Terminal — Rest State</div>
+
+      <!-- Main Login Card (360px) -->
+      <div class="login-card" id="mainLoginCard">
+        
+        <!-- Header -->
+        <header class="card-header">
+          <div class="wordmark">
+            QueueOS
+            <span class="wordmark-badge">v1.0</span>
+          </div>
+          <h1 class="headline">Sign in to your workspace</h1>
+          <p class="subtitle">Queue operations command center</p>
+        </header>
+
+        <!-- Form Body -->
+        <form class="form-body" id="authForm" onsubmit="handleAuthSubmit(event)">
+          
+          <!-- Email Group -->
+          <div class="input-group" id="emailGroup">
+            <label class="input-label" for="emailInput">Email address</label>
+            <div class="input-wrapper">
+              <input 
+                type="email" 
+                id="emailInput" 
+                class="input-field" 
+                placeholder="manager@rugas.hospital" 
+                value="r.sharma@rugas.org" 
+                required 
+                autocomplete="username"
+              />
+            </div>
+          </div>
+
+          <!-- Password Group -->
+          <div class="input-group" id="passwordGroup">
+            <div class="input-header">
+              <label class="input-label" for="passwordInput">Password</label>
+              <a href="#" class="forgot-link" tabindex="0">Forgot password?</a>
+            </div>
+            <div class="input-wrapper input-wrapper--password">
+              <input 
+                type="password" 
+                id="passwordInput" 
+                class="input-field" 
+                placeholder="••••••••••••" 
+                value="TriageDesk2025!" 
+                required 
+                autocomplete="current-password"
+              />
+              <button 
+                type="button" 
+                class="pw-toggle-btn" 
+                id="pwToggle" 
+                aria-label="Toggle password visibility" 
+                onclick="togglePasswordVisibility()"
+              >
+                <!-- Eye Icon -->
+                <svg id="eyeIcon" class="icon" viewBox="0 0 24 24">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Inline Error Banner (Hidden by default, triggered on error) -->
+          <div id="authErrorMessage" class="error-banner" style="display: none;">
+            <svg class="icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>Incorrect email or password</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span id="btnText">Sign In</span>
+            <span id="btnSpinner" class="spinner-dots" style="display: none;">
+              <span class="spinner-dot"></span>
+              <span class="spinner-dot"></span>
+              <span class="spinner-dot"></span>
+            </span>
+          </button>
+
+        </form>
+
+        <!-- Card Footer -->
+        <footer class="card-footer">
+          <span class="footer-text">Don't have an account?</span>
+          <a href="#" class="footer-link">Create one</a>
+        </footer>
+
+      </div>
+
+      <!-- Equipment Footnote -->
+      <div class="desk-footnote">
+        <span>SECURITY: 256-BIT ENCRYPTION</span>
+        <span>•</span>
+        <span>SWISS TRIAGE SPEC 1.0</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Password toggle interaction
+    function togglePasswordVisibility() {
+      const pwInput = document.getElementById('passwordInput');
+      const eyeIcon = document.getElementById('eyeIcon');
+      
+      if (pwInput.type === 'password') {
+        pwInput.type = 'text';
+        // Eye-off icon
+        eyeIcon.innerHTML = `
+          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+          <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+          <line x1="2" y1="2" x2="22" y2="22"></line>
+        `;
+      } else {
+        pwInput.type = 'password';
+        // Normal eye icon
+        eyeIcon.innerHTML = `
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        `;
+      }
+    }
+
+    // Shake animation using Web Animations API (as specified in DESIGN.md)
+    function executeCardShake() {
+      const card = document.getElementById('mainLoginCard');
+      if (card && card.animate) {
+        card.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-4px)' },
+          { transform: 'translateX(4px)' },
+          { transform: 'translateX(-3px)' },
+          { transform: 'translateX(3px)' },
+          { transform: 'translateX(0)' }
+        ], {
+          duration: 220,
+          easing: 'ease-in-out'
+        });
+      }
+    }
+
+    // Set Default/Normal State
+    function setNormalState() {
+      setActiveModeBtn('btnNormal');
+      document.getElementById('emailGroup').classList.remove('has-error');
+      document.getElementById('passwordGroup').classList.remove('has-error');
+      document.getElementById('authErrorMessage').style.display = 'none';
+      
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = false;
+      document.getElementById('btnText').style.display = 'inline';
+      document.getElementById('btnSpinner').style.display = 'none';
+    }
+
+    // Trigger Error State with Shake & Inline Banner
+    function triggerErrorState() {
+      setActiveModeBtn('btnError');
+      const emailGroup = document.getElementById('emailGroup');
+      const passwordGroup = document.getElementById('passwordGroup');
+      const errorBanner = document.getElementById('authErrorMessage');
+      const submitBtn = document.getElementById('submitBtn');
+
+      // Reset loading
+      submitBtn.disabled = false;
+      document.getElementById('btnText').style.display = 'inline';
+      document.getElementById('btnSpinner').style.display = 'none';
+
+      // Apply error styling
+      emailGroup.classList.add('has-error');
+      passwordGroup.classList.add('has-error');
+      errorBanner.style.display = 'flex';
+
+      // Execute mechanical micro-shake
+      executeCardShake();
+    }
+
+    // Simulate 120ms to Loading State
+    function simulateLoadingState() {
+      setActiveModeBtn('btnLoading');
+      document.getElementById('emailGroup').classList.remove('has-error');
+      document.getElementById('passwordGroup').classList.remove('has-error');
+      document.getElementById('authErrorMessage').style.display = 'none';
+
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const btnSpinner = document.getElementById('btnSpinner');
+
+      submitBtn.disabled = true;
+      btnText.style.display = 'none';
+      btnSpinner.style.display = 'inline-flex';
+    }
+
+    // Handle Form Submission
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      simulateLoadingState();
+      
+      // After brief simulated auth validation delay, demonstrate the micro-shake rejection
+      setTimeout(() => {
+        triggerErrorState();
+      }, 1000);
+    }
+
+    function setActiveModeBtn(activeId) {
+      document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(activeId);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+  </script>
+</body>
+</html>

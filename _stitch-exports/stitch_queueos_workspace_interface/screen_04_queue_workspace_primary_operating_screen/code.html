@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QueueOS — Queue Workspace (Screen 04)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       QueueOS Design System — Swiss Triage / Signal Vermilion
+       Screen 04: Queue Workspace (Primary Operating Screen)
+       ============================================================ */
+
+    :root {
+      /* Surface Scale */
+      --bg-canvas:          #F7F7F5;   /* Outer frame, sidebar, topbar */
+      --bg-surface:         #FFFFFF;   /* Main work surface, table */
+      --bg-hover:           #F1F0EC;   /* Row hover, item hover */
+      --bg-active-row:      #EBEAE4;   /* Selected queue in sidebar */
+      --bg-serving:         #FEF5F1;   /* Currently Serving banner */
+      --bg-table-header:    #FAFAF9;   /* Table header background */
+      --bg-input:           #FAFAF9;   /* Input field background */
+      --bg-modal-overlay:   rgba(24, 24, 22, 0.40);
+
+      /* Border Scale */
+      --border-hairline:    #E4E3DD;   /* 1px structural hairline */
+      --border-strong:      #CFCBC2;   /* Button outlines, input borders */
+      --border-serving:     #F5C7B8;   /* Serving banner bottom border */
+      --border-focus:       #D9481E;   /* Vermilion focus ring */
+
+      /* Ink / Typography */
+      --text-primary:       #181816;   /* Warm charcoal */
+      --text-secondary:     #57554E;   /* Sub-labels, secondary nav */
+      --text-muted:         #8C8980;   /* Timestamps, micro-labels */
+      --text-on-accent:     #FFFFFF;   /* Text on Vermilion CTA */
+
+      /* Brand Accent & Semantic Tokens */
+      --accent-primary:         #D9481E;  /* Signal Vermilion */
+      --accent-primary-hover:   #BF3B15;  /* Pressed/hover Vermilion */
+      --accent-primary-active:  #A33110;
+
+      --status-serving-text:    #0F766E;
+      --status-serving-bg:      #F0FDFA;
+      --status-serving-border:  #99F6E4;
+
+      --status-danger:          #B91C1C;
+      --status-danger-bg:       #FEF2F2;
+
+      /* Typography */
+      --font-ui:    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono:  'JetBrains Mono', ui-monospace, monospace;
+
+      /* Geometry */
+      --topbar-height:        52px;
+      --sidebar-width:        240px;
+      --serving-banner-height: 64px;
+      --quickadd-height:      48px;
+      --token-row-height:     44px;
+      --header-row-height:    36px;
+      --radius-sm:            4px;
+      --radius-md:            6px;
+      --radius-dot:           50%;
+
+      /* Elevation for Modal / Dropdowns ONLY */
+      --shadow-modal:         0 1px 0 var(--border-hairline), 0 8px 24px rgba(0, 0, 0, 0.08);
+
+      /* Transitions */
+      --transition-instant:   120ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border-color: var(--border-hairline);
+    }
+
+    html, body {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden; /* Strict 100vh locked shell, no outer scroll */
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      user-select: none;
+    }
+
+    /* Monospace Utility */
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+    }
+
+    /* Base Layout Container */
+    .app-frame {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       TOPBAR (52px)
+       ============================================================ */
+    .topbar {
+      height: var(--topbar-height);
+      background-color: var(--bg-canvas);
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    .topbar__left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar__wordmark {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .topbar__divider {
+      width: 1px;
+      height: 14px;
+      background-color: var(--border-hairline);
+    }
+
+    .topbar__workspace {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .topbar__right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .topbar__nav-link {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: background-color var(--transition-instant), color var(--transition-instant);
+      cursor: pointer;
+    }
+
+    .topbar__nav-link:hover {
+      background-color: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .topbar__nav-link.active {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .topbar__nav-divider {
+      width: 1px;
+      height: 16px;
+      background-color: var(--border-hairline);
+      margin: 0 8px;
+    }
+
+    .topbar__avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-dot);
+      background-color: #E2DFD8;
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    /* ============================================================
+       BODY WORKSPACE: SIDEBAR + MAIN CONTENT
+       ============================================================ */
+    .workspace-body {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - var(--topbar-height));
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       LEFT SIDEBAR (240px fixed)
+       ============================================================ */
+    .sidebar {
+      width: var(--sidebar-width);
+      min-width: var(--sidebar-width);
+      height: 100%;
+      background-color: var(--bg-canvas);
+      border-right: 1px solid var(--border-hairline);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .sidebar__section-label {
+      padding: 16px 16px 8px 16px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .sidebar__queue-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar__queue-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      gap: 8px;
+      text-decoration: none;
+      transition: background-color var(--transition-instant);
+    }
+
+    .sidebar__queue-item:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .sidebar__queue-item.active {
+      background-color: var(--bg-active-row);
+    }
+
+    /* 2px Vermilion left accent bar (GSAP layoutId active-queue-pill resting position) */
+    .sidebar__active-bar {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 20px;
+      background-color: var(--accent-primary);
+      border-radius: 0 2px 2px 0;
+      display: none;
+    }
+
+    .sidebar__queue-item.active .sidebar__active-bar {
+      display: block;
+    }
+
+    .sidebar__queue-name {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar__queue-item.active .sidebar__queue-name {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .sidebar__queue-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-secondary);
+      background-color: var(--bg-hover);
+      min-width: 20px;
+      height: 18px;
+      padding: 0 4px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar__queue-item.active .sidebar__queue-count {
+      background-color: #DFDDD6;
+      color: var(--text-primary);
+    }
+
+    .sidebar__footer {
+      padding: 12px 8px;
+      border-top: 1px solid var(--border-hairline);
+      flex-shrink: 0;
+    }
+
+    .btn-new-queue {
+      width: 100%;
+      height: 32px;
+      border: 1px dashed var(--border-strong);
+      background: transparent;
+      border-radius: var(--radius-sm);
+      color: var(--accent-primary);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color var(--transition-instant), border-color var(--transition-instant);
+    }
+
+    .btn-new-queue:hover {
+      background-color: var(--bg-hover);
+      border-style: solid;
+      border-color: var(--border-strong);
+    }
+
+    /* ============================================================
+       MAIN CONTENT (Queue Workspace)
+       ============================================================ */
+    .main-content {
+      flex: 1;
+      height: 100%;
+      background-color: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Zone 1 — Queue Panel Header (52px) */
+    .queue-header {
+      height: 52px;
+      min-height: 52px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--bg-surface);
+      flex-shrink: 0;
+    }
+
+    .queue-header__left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .queue-header__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .queue-header__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-secondary);
+      background-color: var(--bg-hover);
+      border: 1px solid var(--border-hairline);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .queue-header__actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Buttons Standard */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color var(--transition-instant), color var(--transition-instant), border-color var(--transition-instant), opacity var(--transition-instant);
+      outline: none;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 1px;
+    }
+
+    .btn-secondary {
+      height: 32px;
+      padding: 0 12px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .btn-primary {
+      height: 32px;
+      padding: 0 14px;
+      background-color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+      color: var(--text-on-accent);
+      font-weight: 600;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--accent-primary-hover);
+      border-color: var(--accent-primary-hover);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      background-color: var(--accent-primary-active);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Zone 2 — Currently Serving Banner (64px) */
+    .serving-banner {
+      height: var(--serving-banner-height);
+      min-height: var(--serving-banner-height);
+      background-color: var(--bg-serving);
+      border-bottom: 2px solid var(--border-serving);
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .serving-banner__left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .serving-banner__status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot-serving {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-dot);
+      background-color: var(--status-serving-text);
+      flex-shrink: 0;
+    }
+
+    .serving-banner__label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--status-serving-text);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+
+    .serving-banner__token {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--status-serving-text);
+      letter-spacing: 0.01em;
+      line-height: 1;
+    }
+
+    .serving-banner__separator {
+      color: #D19F90;
+      font-size: 12px;
+    }
+
+    .serving-banner__name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--status-serving-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .serving-banner__timer {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      color: var(--status-serving-text);
+      opacity: 0.75;
+      background-color: rgba(15, 118, 110, 0.08);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    .serving-banner__actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-serving-complete {
+      height: 30px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border-serving);
+      background-color: #FFFFFF;
+      color: var(--status-serving-text);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background-color var(--transition-instant);
+    }
+
+    .btn-serving-complete:hover {
+      background-color: #F0FDFA;
+      border-color: #99F6E4;
+    }
+
+    .btn-serving-cancel {
+      height: 30px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 500;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: color var(--transition-instant), background-color var(--transition-instant);
+    }
+
+    .btn-serving-cancel:hover {
+      color: var(--status-danger);
+      background-color: rgba(185, 28, 28, 0.06);
+    }
+
+    /* Zone 3 — Quick-Add Entry Bar (48px) */
+    .quickadd-bar {
+      height: var(--quickadd-height);
+      min-height: var(--quickadd-height);
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-hairline);
+      background-color: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .quickadd-bar__icon {
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .quickadd-bar__name-input {
+      flex: 1;
+      height: 100%;
+      border: none;
+      background: transparent;
+      font-family: var(--font-ui);
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+    }
+
+    .quickadd-bar__name-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .quickadd-bar__v-divider {
+      width: 1px;
+      height: 20px;
+      background-color: var(--border-hairline);
+      flex-shrink: 0;
+    }
+
+    .quickadd-bar__phone-input {
+      width: 150px;
+      height: 100%;
+      border: none;
+      background: transparent;
+      font-family: var(--font-ui);
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+    }
+
+    .quickadd-bar__phone-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .quickadd-bar__submit {
+      height: 28px;
+      padding: 0 10px;
+      background-color: var(--bg-active-row);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: background-color var(--transition-instant), color var(--transition-instant);
+      flex-shrink: 0;
+    }
+
+    .quickadd-bar__submit:hover {
+      background-color: #E2DFD8;
+      color: var(--text-primary);
+    }
+
+    /* Zone 4 — Waiting List Table (Flex-1 scrollable) */
+    .waiting-table-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-color: var(--bg-surface);
+    }
+
+    /* Column Width Standard: 32px · 88px · 1fr · 96px · 108px */
+    .col-pos     { width: 32px;  flex-shrink: 0; }
+    .col-token   { width: 88px;  flex-shrink: 0; }
+    .col-name    { flex: 1; min-width: 0; }
+    .col-timer   { width: 96px;  flex-shrink: 0; text-align: right; }
+    .col-actions { width: 108px; flex-shrink: 0; display: flex; justify-content: flex-end; }
+
+    /* Headers Row */
+    .table-header {
+      height: var(--header-row-height);
+      min-height: var(--header-row-height);
+      padding: 0 16px;
+      background-color: var(--bg-table-header);
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .table-header__cell {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .table-header__cell.text-right {
+      text-align: right;
+    }
+
+    /* Rows List */
+    .token-row-list {
+      flex: 1;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .token-row {
+      height: var(--token-row-height);
+      min-height: var(--token-row-height);
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-hairline);
+      background-color: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: background-color var(--transition-instant);
+      position: relative;
+    }
+
+    .token-row:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .token-row__pos {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-muted);
+    }
+
+    .token-row__id {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+      letter-spacing: 0.01em;
+    }
+
+    .token-row__name-cell {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      line-height: 1.25;
+      min-width: 0;
+    }
+
+    .token-row__name-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .token-row__note {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 1px;
+    }
+
+    .token-row__timer {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-secondary);
+      text-align: right;
+    }
+
+    .token-row__actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.5; /* Opacity 0.5 at rest */
+      transition: opacity var(--transition-instant);
+    }
+
+    .token-row:hover .token-row__actions {
+      opacity: 1.0; /* 1.0 on row hover */
+    }
+
+    .action-icon-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background-color var(--transition-instant), color var(--transition-instant);
+    }
+
+    .action-icon-btn:hover:not(:disabled) {
+      background-color: var(--bg-active-row);
+      color: var(--text-primary);
+    }
+
+    .action-icon-btn:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+
+    .action-icon-btn--cancel:hover {
+      color: var(--status-danger) !important;
+      background-color: var(--status-danger-bg) !important;
+    }
+
+    /* ============================================================
+       Zone 5 — Add Token Modal (Floating Panel Demonstration)
+       Visible as interactive dialog overlay with toggle
+       ============================================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: var(--bg-modal-overlay);
+      display: none; /* Toggled via button click */
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: 400px;
+      max-width: calc(100vw - 32px);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-modal);
+      overflow: hidden;
+      animation: modalEnter 180ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalEnter {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-panel__header {
+      height: 48px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-panel__title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .modal-panel__close {
+      width: 28px;
+      height: 28px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .modal-panel__close:hover {
+      background-color: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .modal-panel__body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .form-input, .form-textarea {
+      height: 34px;
+      padding: 0 10px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--text-primary);
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color var(--transition-instant);
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-primary);
+      background-color: var(--bg-surface);
+      outline: 2px solid var(--border-focus);
+      outline-offset: 1px;
+    }
+
+    .form-textarea {
+      height: 60px;
+      padding: 8px 10px;
+      resize: none;
+    }
+
+    .modal-panel__footer {
+      height: 52px;
+      padding: 0 16px;
+      border-top: 1px solid var(--border-hairline);
+      background-color: var(--bg-canvas);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-frame">
+    <!-- ============================================================
+         TOPBAR (52px, #F7F7F5, 1px bottom border #E4E3DD)
+         ============================================================ -->
+    <header class="topbar">
+      <div class="topbar__left">
+        <span class="topbar__wordmark">QueueOS</span>
+        <div class="topbar__divider"></div>
+        <span class="topbar__workspace">Rugas Desk</span>
+      </div>
+
+      <div class="topbar__right">
+        <a class="topbar__nav-link active" href="#queues">Queues</a>
+        <a class="topbar__nav-link" href="#analytics">Analytics</a>
+        <div class="topbar__nav-divider"></div>
+        <div class="topbar__avatar" title="Manager: Rugas Desk">RM</div>
+      </div>
+    </header>
+
+    <!-- ============================================================
+         MAIN WORKSPACE: SIDEBAR + MAIN CONTENT
+         ============================================================ -->
+    <div class="workspace-body">
+      <!-- LEFT SIDEBAR (240px, fixed) -->
+      <aside class="sidebar">
+        <div class="sidebar__section-label">QUEUES</div>
+        <nav class="sidebar__queue-list">
+          <!-- Active Queue: General Consultation -->
+          <div class="sidebar__queue-item active" id="queue-general">
+            <div class="sidebar__active-bar" data-flip-id="active-queue-pill"></div>
+            <span class="sidebar__queue-name">General Consultation</span>
+            <span class="sidebar__queue-count" id="sidebar-queue-count">12</span>
+          </div>
+
+          <!-- Inactive Queue 1: Billing Desk -->
+          <div class="sidebar__queue-item" id="queue-billing">
+            <div class="sidebar__active-bar" data-flip-id="active-queue-pill"></div>
+            <span class="sidebar__queue-name">Billing Desk</span>
+            <span class="sidebar__queue-count">4</span>
+          </div>
+
+          <!-- Inactive Queue 2: VIP Support -->
+          <div class="sidebar__queue-item" id="queue-vip">
+            <div class="sidebar__active-bar" data-flip-id="active-queue-pill"></div>
+            <span class="sidebar__queue-name">VIP Support</span>
+            <span class="sidebar__queue-count">0</span>
+          </div>
+        </nav>
+
+        <div class="sidebar__footer">
+          <button class="btn-new-queue" type="button" onclick="alert('Open Create Queue dialog')">
+            + New Queue
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT AREA -->
+      <main class="main-content">
+        <!-- ZONE 1 — Queue Panel Header (52px) -->
+        <section class="queue-header">
+          <div class="queue-header__left">
+            <h1 class="queue-header__title">General Consultation</h1>
+            <span class="queue-header__badge" id="header-waiting-badge">12 waiting</span>
+          </div>
+
+          <div class="queue-header__actions">
+            <button class="btn btn-secondary" type="button" id="btn-open-modal">
+              + Add Token
+            </button>
+            <button class="btn btn-primary" type="button" id="btn-assign-next">
+              Assign Next Token &rarr;
+            </button>
+          </div>
+        </section>
+
+        <!-- ZONE 2 — Currently Serving Banner (64px) -->
+        <section class="serving-banner" id="serving-banner-slot" data-flip-id="serving-token-A-014">
+          <div class="serving-banner__left">
+            <div class="serving-banner__status-pill">
+              <span class="status-dot-serving"></span>
+              <span class="serving-banner__label">SERVING</span>
+            </div>
+            <span class="serving-banner__token mono" id="serving-token-id">A-014</span>
+            <span class="serving-banner__separator">&bull;</span>
+            <span class="serving-banner__name" id="serving-name">Rohan Sharma</span>
+            <span class="serving-banner__timer mono" id="serving-timer">08m 42s</span>
+          </div>
+
+          <div class="serving-banner__actions">
+            <button class="btn-serving-complete" type="button" id="btn-complete-serving">Complete</button>
+            <button class="btn-serving-cancel" type="button" id="btn-cancel-serving">Cancel Serving</button>
+          </div>
+        </section>
+
+        <!-- ZONE 3 — Quick-Add Entry Bar (48px) -->
+        <section class="quickadd-bar">
+          <div class="quickadd-bar__icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 3.5V12.5M3.5 8H12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <input type="text" class="quickadd-bar__name-input" id="quickadd-name" placeholder="Person name..." autocomplete="off">
+          <div class="quickadd-bar__v-divider"></div>
+          <input type="text" class="quickadd-bar__phone-input" id="quickadd-phone" placeholder="Phone (optional)" autocomplete="off">
+          <button class="quickadd-bar__submit" type="button" id="quickadd-submit">
+            Issue Token
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 6H9.5M9.5 6L6.5 3M9.5 6L6.5 9" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </section>
+
+        <!-- ZONE 4 — Waiting List Table (Flex-1 scrollable) -->
+        <section class="waiting-table-container">
+          <!-- Column Headers (32px · 88px · 1fr · 96px · 108px) -->
+          <div class="table-header">
+            <div class="col-pos table-header__cell">#</div>
+            <div class="col-token table-header__cell">TOKEN</div>
+            <div class="col-name table-header__cell">NAME</div>
+            <div class="col-timer table-header__cell text-right">WAIT TIME</div>
+            <div class="col-actions table-header__cell text-right">ACTIONS</div>
+          </div>
+
+          <!-- Token Rows List -->
+          <div class="token-row-list" id="waiting-rows-list">
+            <!-- Row #01 (A-015) -->
+            <div class="token-row" data-flip-id="token-A-015" data-index="1">
+              <div class="col-pos token-row__pos">#01</div>
+              <div class="col-token token-row__id mono">A-015</div>
+              <div class="col-name token-row__name-cell">
+                <span class="token-row__name-text">Priya Nair</span>
+                <span class="token-row__note">Insurance claim pre-verification check</span>
+              </div>
+              <div class="col-timer token-row__timer mono">06m 14s</div>
+              <div class="col-actions token-row__actions">
+                <button class="action-icon-btn btn-move-up" title="Move Up" disabled aria-label="Move Up">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11V3M7 3L3.5 6.5M7 3L10.5 6.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn btn-move-down" title="Move Down" aria-label="Move Down">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3V11M7 11L3.5 7.5M7 11L10.5 7.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn action-icon-btn--cancel btn-cancel-row" title="Cancel Token" aria-label="Cancel Token">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 4L10 10M10 4L4 10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Row #02 (A-016) -->
+            <div class="token-row" data-flip-id="token-A-016" data-index="2">
+              <div class="col-pos token-row__pos">#02</div>
+              <div class="col-token token-row__id mono">A-016</div>
+              <div class="col-name token-row__name-cell">
+                <span class="token-row__name-text">Karthik Rao</span>
+                <span class="token-row__note">Follow-up appointment with Dr. Mehta</span>
+              </div>
+              <div class="col-timer token-row__timer mono">04m 02s</div>
+              <div class="col-actions token-row__actions">
+                <button class="action-icon-btn btn-move-up" title="Move Up" aria-label="Move Up">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11V3M7 3L3.5 6.5M7 3L10.5 6.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn btn-move-down" title="Move Down" aria-label="Move Down">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3V11M7 11L3.5 7.5M7 11L10.5 7.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn action-icon-btn--cancel btn-cancel-row" title="Cancel Token" aria-label="Cancel Token">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 4L10 10M10 4L4 10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Row #03 (A-017) -->
+            <div class="token-row" data-flip-id="token-A-017" data-index="3">
+              <div class="col-pos token-row__pos">#03</div>
+              <div class="col-token token-row__id mono">A-017</div>
+              <div class="col-name token-row__name-cell">
+                <span class="token-row__name-text">Ananya Hegde</span>
+                <span class="token-row__note">Prescription renewal request</span>
+              </div>
+              <div class="col-timer token-row__timer mono">01m 55s</div>
+              <div class="col-actions token-row__actions">
+                <button class="action-icon-btn btn-move-up" title="Move Up" aria-label="Move Up">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11V3M7 3L3.5 6.5M7 3L10.5 6.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn btn-move-down" title="Move Down" aria-label="Move Down">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3V11M7 11L3.5 7.5M7 11L10.5 7.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn action-icon-btn--cancel btn-cancel-row" title="Cancel Token" aria-label="Cancel Token">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 4L10 10M10 4L4 10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Row #04 (A-018) -->
+            <div class="token-row" data-flip-id="token-A-018" data-index="4">
+              <div class="col-pos token-row__pos">#04</div>
+              <div class="col-token token-row__id mono">A-018</div>
+              <div class="col-name token-row__name-cell">
+                <span class="token-row__name-text">Dev Patel</span>
+                <span class="token-row__note">New patient registration packet</span>
+              </div>
+              <div class="col-timer token-row__timer mono">00m 48s</div>
+              <div class="col-actions token-row__actions">
+                <button class="action-icon-btn btn-move-up" title="Move Up" aria-label="Move Up">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11V3M7 3L3.5 6.5M7 3L10.5 6.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn btn-move-down" title="Move Down" aria-label="Move Down">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3V11M7 11L3.5 7.5M7 11L10.5 7.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn action-icon-btn--cancel btn-cancel-row" title="Cancel Token" aria-label="Cancel Token">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 4L10 10M10 4L4 10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Row #05 (A-019) -->
+            <div class="token-row" data-flip-id="token-A-019" data-index="5">
+              <div class="col-pos token-row__pos">#05</div>
+              <div class="col-token token-row__id mono">A-019</div>
+              <div class="col-name token-row__name-cell">
+                <span class="token-row__name-text">Meera Krishnan</span>
+                <span class="token-row__note">Blood lab result collection</span>
+              </div>
+              <div class="col-timer token-row__timer mono">00m 22s</div>
+              <div class="col-actions token-row__actions">
+                <button class="action-icon-btn btn-move-up" title="Move Up" aria-label="Move Up">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11V3M7 3L3.5 6.5M7 3L10.5 6.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn btn-move-down" title="Move Down" aria-label="Move Down">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3V11M7 11L3.5 7.5M7 11L10.5 7.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn action-icon-btn--cancel btn-cancel-row" title="Cancel Token" aria-label="Cancel Token">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 4L10 10M10 4L4 10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Row #06 (A-020) Boundary state: Move Down disabled -->
+            <div class="token-row" data-flip-id="token-A-020" data-index="6">
+              <div class="col-pos token-row__pos">#06</div>
+              <div class="col-token token-row__id mono">A-020</div>
+              <div class="col-name token-row__name-cell">
+                <span class="token-row__name-text">Sanjay Verma</span>
+                <span class="token-row__note">Radiology imaging consultation</span>
+              </div>
+              <div class="col-timer token-row__timer mono">00m 06s</div>
+              <div class="col-actions token-row__actions">
+                <button class="action-icon-btn btn-move-up" title="Move Up" aria-label="Move Up">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11V3M7 3L3.5 6.5M7 3L10.5 6.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn btn-move-down" title="Move Down" disabled aria-label="Move Down">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3V11M7 11L3.5 7.5M7 11L10.5 7.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="action-icon-btn action-icon-btn--cancel btn-cancel-row" title="Cancel Token" aria-label="Cancel Token">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 4L10 10M10 4L4 10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ZONE 5 — Add Token Modal (400px wide, floating panel variant)
+       ============================================================ -->
+  <div class="modal-overlay" id="modal-add-token">
+    <div class="modal-panel">
+      <div class="modal-panel__header">
+        <h3 class="modal-panel__title">Add Token</h3>
+        <button class="modal-panel__close" type="button" id="btn-close-modal" aria-label="Close dialog">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-panel__body">
+        <div class="form-group">
+          <label class="form-label" for="modal-input-name">Person Name <span style="color: var(--accent-primary);">*</span></label>
+          <input type="text" id="modal-input-name" class="form-input" placeholder="e.g. Ramesh Chandra" autofocus>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="modal-input-phone">Phone Number (optional)</label>
+          <input type="tel" id="modal-input-phone" class="form-input" placeholder="+91 98450 12345">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="modal-textarea-notes">Notes (optional)</label>
+          <textarea id="modal-textarea-notes" class="form-textarea" placeholder="Chief complaint or triage instructions..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-panel__footer">
+        <button class="btn btn-secondary" type="button" id="btn-modal-cancel">Cancel</button>
+        <button class="btn btn-primary" type="button" id="btn-modal-submit">Issue Token</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operational Interactivity (Pure Vanilla JS for instant physical responsiveness) -->
+  <script>
+    (function() {
+      // Elements
+      const modal = document.getElementById('modal-add-token');
+      const btnOpenModal = document.getElementById('btn-open-modal');
+      const btnCloseModal = document.getElementById('btn-close-modal');
+      const btnModalCancel = document.getElementById('btn-modal-cancel');
+      const btnModalSubmit = document.getElementById('btn-modal-submit');
+      const modalName = document.getElementById('modal-input-name');
+      const modalPhone = document.getElementById('modal-input-phone');
+      const modalNotes = document.getElementById('modal-textarea-notes');
+
+      const quickaddName = document.getElementById('quickadd-name');
+      const quickaddPhone = document.getElementById('quickadd-phone');
+      const quickaddSubmit = document.getElementById('quickadd-submit');
+
+      const waitingRowsList = document.getElementById('waiting-rows-list');
+      const btnAssignNext = document.getElementById('btn-assign-next');
+      const servingTokenId = document.getElementById('serving-token-id');
+      const servingName = document.getElementById('serving-name');
+      const servingTimer = document.getElementById('serving-timer');
+      const headerWaitingBadge = document.getElementById('header-waiting-badge');
+      const sidebarQueueCount = document.getElementById('sidebar-queue-count');
+
+      let currentTokenNum = 20;
+
+      // Update row indices and disabled boundaries
+      function refreshRowBoundaries() {
+        const rows = waitingRowsList.querySelectorAll('.token-row');
+        const count = rows.length;
+        sidebarQueueCount.textContent = count;
+        headerWaitingBadge.textContent = count + ' waiting';
+
+        rows.forEach((row, i) => {
+          const posEl = row.querySelector('.token-row__pos');
+          if (posEl) posEl.textContent = '#' + String(i + 1).padStart(2, '0');
+
+          const btnUp = row.querySelector('.btn-move-up');
+          const btnDown = row.querySelector('.btn-move-down');
+
+          if (btnUp) btnUp.disabled = (i === 0);
+          if (btnDown) btnDown.disabled = (i === count - 1);
+        });
+
+        if (count === 0) {
+          btnAssignNext.disabled = true;
+        } else {
+          btnAssignNext.disabled = false;
+        }
+      }
+
+      // Modal Toggling
+      btnOpenModal.addEventListener('click', () => {
+        modal.classList.add('active');
+        setTimeout(() => modalName.focus(), 50);
+      });
+
+      function closeModal() {
+        modal.classList.remove('active');
+        modalName.value = '';
+        modalPhone.value = '';
+        modalNotes.value = '';
+      }
+
+      btnCloseModal.addEventListener('click', closeModal);
+      btnModalCancel.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Add Token from Modal
+      btnModalSubmit.addEventListener('click', () => {
+        const name = modalName.value.trim();
+        if (!name) {
+          modalName.focus();
+          return;
+        }
+        addNewTokenRow(name, modalNotes.value.trim());
+        closeModal();
+      });
+
+      // Quick Add
+      function handleQuickAdd() {
+        const name = quickaddName.value.trim();
+        if (!name) {
+          quickaddName.focus();
+          return;
+        }
+        const note = quickaddPhone.value.trim() ? 'Phone: ' + quickaddPhone.value.trim() : '';
+        addNewTokenRow(name, note);
+        quickaddName.value = '';
+        quickaddPhone.value = '';
+        quickaddName.focus();
+      }
+
+      quickaddSubmit.addEventListener('click', handleQuickAdd);
+      quickaddName.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleQuickAdd();
+      });
+      quickaddPhone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleQuickAdd();
+      });
+
+      function addNewTokenRow(name, note) {
+        currentTokenNum++;
+        const tokenString = 'A-0' + currentTokenNum;
+        const newRow = document.createElement('div');
+        newRow.className = 'token-row';
+        newRow.setAttribute('data-flip-id', 'token-' + tokenString);
+        newRow.innerHTML = `
+          <div class="col-pos token-row__pos">#00</div>
+          <div class="col-token token-row__id mono">${tokenString}</div>
+          <div class="col-name token-row__name-cell">
+            <span class="token-row__name-text">${name}</span>
+            ${note ? `<span class="token-row__note">${note}</span>` : ''}
+          </div>
+          <div class="col-timer token-row__timer mono">00m 00s</div>
+          <div class="col-actions token-row__actions">
+            <button class="action-icon-btn btn-move-up" title="Move Up" aria-label="Move Up">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11V3M7 3L3.5 6.5M7 3L10.5 6.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="action-icon-btn btn-move-down" title="Move Down" aria-label="Move Down">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3V11M7 11L3.5 7.5M7 11L10.5 7.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="action-icon-btn action-icon-btn--cancel btn-cancel-row" title="Cancel Token" aria-label="Cancel Token">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 4L10 10M10 4L4 10" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        `;
+        waitingRowsList.appendChild(newRow);
+        refreshRowBoundaries();
+      }
+
+      // Reorder and Cancel via Event Delegation
+      waitingRowsList.addEventListener('click', (e) => {
+        const btnUp = e.target.closest('.btn-move-up');
+        const btnDown = e.target.closest('.btn-move-down');
+        const btnCancel = e.target.closest('.btn-cancel-row');
+        const row = e.target.closest('.token-row');
+
+        if (btnUp && row) {
+          const prev = row.previousElementSibling;
+          if (prev) {
+            waitingRowsList.insertBefore(row, prev);
+            refreshRowBoundaries();
+          }
+        } else if (btnDown && row) {
+          const next = row.nextElementSibling;
+          if (next) {
+            waitingRowsList.insertBefore(next, row);
+            refreshRowBoundaries();
+          }
+        } else if (btnCancel && row) {
+          row.style.transition = 'opacity 140ms ease-in, transform 140ms ease-in';
+          row.style.opacity = '0';
+          row.style.transform = 'translateX(16px)';
+          setTimeout(() => {
+            row.remove();
+            refreshRowBoundaries();
+          }, 140);
+        }
+      });
+
+      // Assign Top Token CTA
+      btnAssignNext.addEventListener('click', () => {
+        const firstRow = waitingRowsList.querySelector('.token-row');
+        if (!firstRow) return;
+
+        btnAssignNext.disabled = true;
+        btnAssignNext.textContent = 'Assigning...';
+
+        setTimeout(() => {
+          const id = firstRow.querySelector('.token-row__id').textContent;
+          const name = firstRow.querySelector('.token-row__name-text').textContent;
+
+          servingTokenId.textContent = id;
+          servingName.textContent = name;
+          servingTimer.textContent = '00m 01s';
+
+          firstRow.remove();
+          refreshRowBoundaries();
+
+          btnAssignNext.disabled = false;
+          btnAssignNext.innerHTML = 'Assign Next Token &rarr;';
+        }, 240);
+      });
+
+      // Serving banner actions
+      document.getElementById('btn-complete-serving').addEventListener('click', () => {
+        servingTokenId.textContent = '—';
+        servingName.textContent = 'Desk Ready for Next Patient';
+        servingTimer.textContent = '00m 00s';
+      });
+
+      document.getElementById('btn-cancel-serving').addEventListener('click', () => {
+        if (confirm('Cancel currently serving token?')) {
+          servingTokenId.textContent = '—';
+          servingName.textContent = 'Desk Ready for Next Patient';
+          servingTimer.textContent = '00m 00s';
+        }
+      });
+
+      // Sidebar switching demonstration
+      document.querySelectorAll('.sidebar__queue-item').forEach(item => {
+        item.addEventListener('click', () => {
+          document.querySelectorAll('.sidebar__queue-item').forEach(q => q.classList.remove('active'));
+          item.classList.add('active');
+        });
+      });
+
+      // Live Timer incrementing (subtle mechanical feel)
+      let servingSeconds = 522; // 08m 42s
+      setInterval(() => {
+        if (servingTokenId.textContent !== '—') {
+          servingSeconds++;
+          const mins = String(Math.floor(servingSeconds / 60)).padStart(2, '0');
+          const secs = String(servingSeconds % 60).padStart(2, '0');
+          servingTimer.textContent = `${mins}m ${secs}s`;
+        }
+      }, 1000);
+
+      refreshRowBoundaries();
+    })();
+  </script>
+</body>
+</html>

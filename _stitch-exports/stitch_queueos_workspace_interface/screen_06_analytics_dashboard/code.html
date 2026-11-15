@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QueueOS | Analytics Dashboard</title>
+<!-- Typography: Plus Jakarta Sans & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-surface": "#1a1c1b",
+            "on-tertiary-container": "#fdfcff",
+            "inverse-surface": "#2f3130",
+            "bg-active-row": "#EBEAE4",
+            "background": "#f9f9f7",
+            "on-tertiary-fixed-variant": "#00497b",
+            "error-container": "#ffdad6",
+            "tertiary-container": "#0078c5",
+            "text-on-accent": "#FFFFFF",
+            "accent-primary-hover": "#BF3B15",
+            "status-cancelled-text": "#B91C1C",
+            "secondary-fixed-dim": "#b7c4ff",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#882000",
+            "tertiary": "#005f9d",
+            "status-serving-border": "#99F6E4",
+            "secondary": "#1d4ed8",
+            "on-primary-container": "#fffbff",
+            "surface-container-high": "#e8e8e6",
+            "surface-bright": "#f9f9f7",
+            "bg-input": "#FAFAF9",
+            "bg-surface": "#FFFFFF",
+            "status-cancelled-bg": "#FEF2F2",
+            "on-secondary-fixed": "#001551",
+            "on-tertiary-fixed": "#001d35",
+            "on-secondary-container": "#fffbff",
+            "surface": "#f9f9f7",
+            "outline": "#8e7069",
+            "tertiary-fixed-dim": "#9ccaff",
+            "primary-fixed-dim": "#ffb5a1",
+            "text-muted": "#8C8980",
+            "on-error-container": "#93000a",
+            "primary": "#ad2b00",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e2e3e1",
+            "on-surface-variant": "#5a413a",
+            "accent-primary-active": "#A33110",
+            "text-secondary": "#57554E",
+            "on-secondary-fixed-variant": "#0039b5",
+            "status-serving-text": "#0F766E",
+            "surface-dim": "#dadad8",
+            "border-focus": "#D9481E",
+            "primary-container": "#d14219",
+            "tertiary-fixed": "#d0e4ff",
+            "border-serving": "#F5C7B8",
+            "outline-variant": "#e2bfb5",
+            "inverse-on-surface": "#f1f1ef",
+            "bg-hover": "#F1F0EC",
+            "status-completed-text": "#166534",
+            "surface-container-highest": "#e2e3e1",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "on-background": "#1a1c1b",
+            "inverse-primary": "#ffb5a1",
+            "bg-serving": "#FEF5F1",
+            "surface-tint": "#b22c00",
+            "text-primary": "#181816",
+            "surface-container": "#eeeeec",
+            "on-secondary": "#ffffff",
+            "secondary-fixed": "#dce1ff",
+            "bg-canvas": "#F7F7F5",
+            "on-primary-fixed": "#3b0900",
+            "status-completed-bg": "#F0FDF4",
+            "primary-fixed": "#ffdbd1",
+            "border-strong": "#CFCBC2",
+            "secondary-container": "#4069f2",
+            "surface-container-low": "#f4f4f2",
+            "border-hairline": "#E4E3DD",
+            "status-serving-bg": "#F0FDFA"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            mono: ["'JetBrains Mono'", "monospace"],
+            "label-mono-xs": ["'JetBrains Mono'", "monospace"],
+            "label-timer": ["'JetBrains Mono'", "monospace"],
+            "headline-kpi": ["'JetBrains Mono'", "monospace"],
+            "label-xs": ["'Plus Jakarta Sans'", "sans-serif"],
+            "headline-lg": ["'Plus Jakarta Sans'", "sans-serif"],
+            "banner-token": ["'JetBrains Mono'", "monospace"],
+            "body-sm-medium": ["'Plus Jakarta Sans'", "sans-serif"],
+            "body-default": ["'Plus Jakarta Sans'", "sans-serif"],
+            "headline-md": ["'Plus Jakarta Sans'", "sans-serif"],
+            "body-row-primary": ["'Plus Jakarta Sans'", "sans-serif"],
+            "body-mono-token": ["'JetBrains Mono'", "monospace"],
+            "body-sm": ["'Plus Jakarta Sans'", "sans-serif"],
+            "headline-kpi-mobile": ["'JetBrains Mono'", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      background-color: #F7F7F5;
+      color: #181816;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .tooltip-shadow {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col select-none">
+<!-- TOPBAR (52px height) -->
+<header class="h-[52px] bg-bg-canvas border-b border-border-hairline px-4 flex items-center justify-between shrink-0 z-30">
+<div class="flex items-center gap-6">
+<!-- Wordmark -->
+<div class="flex items-center gap-2">
+<span class="font-mono text-[14px] font-bold text-text-primary tracking-tight">QueueOS</span>
+<span class="text-border-strong text-xs font-light">|</span>
+<span class="text-[13px] font-normal text-text-secondary">Rugas Desk</span>
+</div>
+<!-- Navigation Links -->
+<nav class="flex items-center gap-6 ml-2">
+<a class="text-[13px] font-medium text-text-secondary hover:text-text-primary transition-colors" href="#">Queues</a>
+<a class="relative text-[13px] font-medium text-border-focus flex items-center h-[52px]" href="#">
+          Analytics
+          <span class="absolute bottom-0 left-0 right-0 h-[2px] bg-border-focus"></span>
+</a>
+</nav>
+</div>
+<!-- Manager Avatar -->
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-full bg-bg-active-row border border-border-strong flex items-center justify-center font-mono text-[11px] font-semibold text-text-primary">
+        RM
+      </div>
+</div>
+</header>
+<!-- WORKSPACE BODY (Sidebar + Main) -->
+<div class="flex flex-1 overflow-hidden relative">
+<!-- LEFT SIDEBAR (240px fixed) -->
+<aside class="w-[240px] bg-bg-canvas border-r border-border-hairline flex flex-col justify-between shrink-0 h-full">
+<div class="flex flex-col">
+<!-- Section label -->
+<div class="px-4 pt-4 pb-2">
+<span class="font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-text-muted">QUEUES</span>
+</div>
+<!-- Queue Nav List -->
+<div class="flex flex-col px-2 gap-0.5">
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-[4px] hover:bg-bg-hover text-text-primary group transition-colors" href="#">
+<span class="text-[13px] font-normal group-hover:text-text-primary">General Consultation</span>
+<span class="font-mono text-[11px] text-text-muted tabular-nums">12</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-[4px] hover:bg-bg-hover text-text-primary group transition-colors" href="#">
+<span class="text-[13px] font-normal group-hover:text-text-primary">Billing Desk</span>
+<span class="font-mono text-[11px] text-text-muted tabular-nums">4</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-[4px] hover:bg-bg-hover text-text-primary group transition-colors" href="#">
+<span class="text-[13px] font-normal group-hover:text-text-primary">VIP Support</span>
+<span class="font-mono text-[11px] text-text-muted tabular-nums">0</span>
+</a>
+</div>
+</div>
+<!-- Bottom: + New Queue ghost button -->
+<div class="p-3 border-t border-border-hairline">
+<button class="w-full h-8 px-3 rounded-[4px] border border-border-hairline hover:border-border-strong bg-transparent text-[13px] font-medium text-text-secondary hover:text-text-primary flex items-center justify-center gap-1.5 transition-colors">
+<span class="text-[14px] leading-none">+</span>
+<span>New Queue</span>
+</button>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="flex-1 bg-bg-surface flex flex-col overflow-y-auto">
+<!-- 1. ANALYTICS HEADER BAR -->
+<div class="h-[52px] px-4 border-b border-border-hairline flex items-center justify-between shrink-0 bg-bg-surface sticky top-0 z-20">
+<div>
+<h1 class="text-[16px] font-semibold text-text-primary tracking-[-0.02em]">Analytics</h1>
+</div>
+<div class="flex items-center gap-2">
+<!-- Queue Filter Dropdown -->
+<button class="h-7 px-2.5 border border-border-strong rounded-[4px] text-[13px] font-medium text-text-primary bg-transparent flex items-center gap-1.5 hover:bg-bg-hover transition-colors">
+<span>All Queues</span>
+<span class="material-symbols-outlined text-text-secondary text-[14px]">expand_more</span>
+</button>
+<!-- Date Range Selector -->
+<div class="flex items-center h-7 border border-border-strong rounded-[4px] overflow-hidden text-[13px]">
+<button class="h-full px-2.5 bg-bg-active-row text-text-primary font-medium hover:bg-bg-hover transition-colors">Today</button>
+<span class="h-full w-[1px] bg-border-hairline"></span>
+<button class="h-full px-2 text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-colors">7D</button>
+<span class="h-full w-[1px] bg-border-hairline"></span>
+<button class="h-full px-2 text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-colors">30D</button>
+</div>
+<!-- Export CSV -->
+<button class="h-7 px-3 border border-border-strong rounded-[4px] text-[13px] font-medium text-text-secondary hover:text-text-primary hover:bg-bg-hover bg-transparent flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[13px]">file_download</span>
+<span>Export CSV</span>
+</button>
+</div>
+</div>
+<!-- 2. ZONE 1 — KPI STRIP (4 equal columns, 1px divider, pure typography) -->
+<section class="grid grid-cols-4 border-b border-border-hairline shrink-0">
+<!-- Col 1 -->
+<div class="h-[76px] px-6 py-3.5 border-r border-border-hairline flex flex-col justify-between">
+<span class="font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-text-secondary">AVG WAIT TIME</span>
+<div class="flex items-baseline gap-1.5 leading-none">
+<span class="font-mono text-[28px] font-bold text-text-primary tabular-nums tracking-tight">12.4</span>
+<span class="font-mono text-[13px] font-normal text-text-muted">min</span>
+</div>
+</div>
+<!-- Col 2 -->
+<div class="h-[76px] px-6 py-3.5 border-r border-border-hairline flex flex-col justify-between">
+<span class="font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-text-secondary">TOKENS SERVED</span>
+<div class="flex items-baseline gap-1.5 leading-none">
+<span class="font-mono text-[28px] font-bold text-text-primary tabular-nums tracking-tight">47</span>
+<span class="font-mono text-[13px] font-normal text-text-muted">today</span>
+</div>
+</div>
+<!-- Col 3 -->
+<div class="h-[76px] px-6 py-3.5 border-r border-border-hairline flex flex-col justify-between">
+<span class="font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-text-secondary">ACTIVE NOW</span>
+<div class="flex items-baseline gap-1.5 leading-none">
+<span class="font-mono text-[28px] font-bold text-text-primary tabular-nums tracking-tight">3</span>
+<span class="font-mono text-[13px] font-normal text-text-muted">serving</span>
+</div>
+</div>
+<!-- Col 4 -->
+<div class="h-[76px] px-6 py-3.5 flex flex-col justify-between">
+<span class="font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-text-secondary">CANCEL RATE</span>
+<div class="flex items-baseline gap-1.5 leading-none">
+<span class="font-mono text-[28px] font-bold text-text-primary tabular-nums tracking-tight">8.5%</span>
+</div>
+</div>
+</section>
+<!-- 3. ZONE 2 — CHARTS ROW -->
+<section class="grid grid-cols-10 border-b border-border-hairline">
+<!-- Left Panel: 60% Width -->
+<div class="col-span-6 p-[20px_24px] border-r border-border-hairline flex flex-col">
+<div class="flex items-baseline justify-between mb-4">
+<div class="flex items-center gap-2.5">
+<span class="font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-text-secondary">QUEUE LENGTH OVER TIME</span>
+<span class="text-[12px] text-text-muted font-normal">• Hourly load peak at 11:00 AM</span>
+</div>
+<span class="font-mono text-[11px] text-text-muted">UNITS: TOKENS WAITING</span>
+</div>
+<!-- Visx-Style Bar Chart Container -->
+<div class="relative w-full h-[220px] select-none">
+<!-- Y Axis & Gridlines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<!-- Y: 20 -->
+<div class="flex items-center w-full">
+<span class="w-6 font-mono text-[10px] text-text-muted tabular-nums leading-none">20</span>
+<div class="flex-1 h-[1px] bg-border-hairline ml-2"></div>
+</div>
+<!-- Y: 15 -->
+<div class="flex items-center w-full">
+<span class="w-6 font-mono text-[10px] text-text-muted tabular-nums leading-none">15</span>
+<div class="flex-1 h-[1px] bg-border-hairline ml-2"></div>
+</div>
+<!-- Y: 10 -->
+<div class="flex items-center w-full">
+<span class="w-6 font-mono text-[10px] text-text-muted tabular-nums leading-none">10</span>
+<div class="flex-1 h-[1px] bg-border-hairline ml-2"></div>
+</div>
+<!-- Y: 5 -->
+<div class="flex items-center w-full">
+<span class="w-6 font-mono text-[10px] text-text-muted tabular-nums leading-none">5</span>
+<div class="flex-1 h-[1px] bg-border-hairline ml-2"></div>
+</div>
+<!-- Y: 0 baseline -->
+<div class="flex items-center w-full">
+<span class="w-6 font-mono text-[10px] text-text-muted tabular-nums leading-none">0</span>
+<div class="flex-1 h-[1px] bg-border-strong ml-2"></div>
+</div>
+</div>
+<!-- Interactive Bar Slots (offset left by 32px to clear y-labels) -->
+<div class="absolute top-0 bottom-[18px] left-8 right-0 flex items-end justify-between px-2">
+<!-- 8 AM: 4 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 20%;"></div>
+</div>
+<!-- 9 AM: 7 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 35%;"></div>
+</div>
+<!-- 10 AM: 13 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 65%;"></div>
+</div>
+<!-- 11 AM: 18 (Peak with hover state visible) -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<!-- Visible active sample tooltip -->
+<div class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-bg-surface border border-border-strong px-2 py-0.5 rounded-[4px] tooltip-shadow z-10 pointer-events-none flex items-center gap-1.5">
+<span class="font-mono text-[10px] text-text-secondary">11:00 AM</span>
+<span class="font-mono text-[10px] font-bold text-text-primary">18 waiting</span>
+</div>
+<div class="w-[60%] bg-[#D9481E]" style="height: 90%;"></div>
+</div>
+<!-- 12 PM: 11 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 55%;"></div>
+</div>
+<!-- 1 PM: 6 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 30%;"></div>
+</div>
+<!-- 2 PM: 9 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 45%;"></div>
+</div>
+<!-- 3 PM: 14 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 70%;"></div>
+</div>
+<!-- 4 PM: 10 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 50%;"></div>
+</div>
+<!-- 5 PM: 5 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 25%;"></div>
+</div>
+<!-- 6 PM: 3 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 15%;"></div>
+</div>
+<!-- 7 PM: 2 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 10%;"></div>
+</div>
+<!-- 8 PM: 1 -->
+<div class="group relative flex-1 flex flex-col items-center h-full justify-end cursor-crosshair">
+<div class="w-[60%] bg-[#D9481E] transition-opacity group-hover:opacity-85" style="height: 5%;"></div>
+</div>
+</div>
+<!-- X Axis Labels -->
+<div class="absolute bottom-0 left-8 right-0 flex justify-between px-2 text-[10px] font-mono text-text-muted">
+<span class="flex-1 text-center">8A</span>
+<span class="flex-1 text-center">9A</span>
+<span class="flex-1 text-center">10A</span>
+<span class="flex-1 text-center font-bold text-text-primary">11A</span>
+<span class="flex-1 text-center">12P</span>
+<span class="flex-1 text-center">1P</span>
+<span class="flex-1 text-center">2P</span>
+<span class="flex-1 text-center">3P</span>
+<span class="flex-1 text-center">4P</span>
+<span class="flex-1 text-center">5P</span>
+<span class="flex-1 text-center">6P</span>
+<span class="flex-1 text-center">7P</span>
+<span class="flex-1 text-center">8P</span>
+</div>
+</div>
+</div>
+<!-- Right Panel: 40% Width (Token Outcomes) -->
+<div class="col-span-4 p-[20px_24px] flex flex-col justify-between">
+<div>
+<!-- Header -->
+<div class="flex items-baseline justify-between mb-4">
+<span class="font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-text-secondary">TOKEN OUTCOMES</span>
+<span class="font-mono text-[11px] text-text-secondary tracking-tight font-semibold">47 TOTAL DISPATCHED</span>
+</div>
+<!-- Proportional Segmented Bar -->
+<div class="w-full h-3 flex gap-0.5 rounded-[2px] overflow-hidden bg-bg-canvas mb-5">
+<div class="bg-[#166534]" style="width: 76.6%;" title="Completed: 76.6%"></div>
+<div class="bg-[#B91C1C]" style="width: 8.5%;" title="Cancelled: 8.5%"></div>
+<div class="bg-[#CFCBC2]" style="width: 14.9%;" title="Waiting: 14.9%"></div>
+</div>
+<!-- Breakdown Legend Table -->
+<div class="flex flex-col text-[12px]">
+<!-- Row 1: Completed -->
+<div class="flex items-center justify-between py-2 border-b border-border-hairline">
+<div class="flex items-center gap-2.5">
+<div class="w-1.5 h-1.5 rounded-full bg-[#166534]"></div>
+<span class="font-medium text-text-primary">COMPLETED</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-mono text-text-primary tabular-nums">36 tokens</span>
+<span class="font-mono font-semibold text-[#166534] tabular-nums w-12 text-right">76.6%</span>
+</div>
+</div>
+<!-- Row 2: Cancelled -->
+<div class="flex items-center justify-between py-2 border-b border-border-hairline">
+<div class="flex items-center gap-2.5">
+<div class="w-1.5 h-1.5 rounded-full bg-[#B91C1C]"></div>
+<span class="font-medium text-text-primary">CANCELLED</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-mono text-text-primary tabular-nums">4 tokens</span>
+<span class="font-mono font-semibold text-[#B91C1C] tabular-nums w-12 text-right">8.5%</span>
+</div>
+</div>
+<!-- Row 3: Waiting -->
+<div class="flex items-center justify-between py-2 border-b border-border-hairline">
+<div class="flex items-center gap-2.5">
+<div class="w-1.5 h-1.5 rounded-full bg-[#8C8980]"></div>
+<span class="font-medium text-text-primary">WAITING</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-mono text-text-primary tabular-nums">7 tokens</span>
+<span class="font-mono font-semibold text-text-secondary tabular-nums w-12 text-right">14.9%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Velocity Note -->
+<div class="pt-4 border-t border-border-hairline mt-4 flex items-center justify-between">
+<span class="text-[11px] text-text-muted">Throughput velocity</span>
+<span class="font-mono text-[11px] text-text-secondary font-medium">4.8 tokens/hr avg</span>
+</div>
+</div>
+</section>
+<!-- 4. ZONE 3 — SECONDARY CHARTS ROW (Hourly Token Inflow) -->
+<section class="p-[20px_24px] border-b border-border-hairline flex flex-col">
+<!-- Chart Header -->
+<div class="flex items-baseline justify-between mb-3">
+<div class="flex items-center gap-2.5">
+<span class="font-sans text-[11px] font-medium uppercase tracking-[0.04em] text-text-secondary">HOURLY TOKEN INFLOW</span>
+<span class="text-[12px] text-text-muted font-normal">• Peak arrival window: 09:30 – 11:30</span>
+</div>
+<div class="flex items-center gap-3 font-mono text-[11px] text-text-muted">
+<span>SAMPLING RATE: 15 MIN</span>
+<span>MAX INFLOW: 22 TOKENS/HR</span>
+</div>
+</div>
+<!-- SVG Area Chart -->
+<div class="relative w-full h-[140px] select-none">
+<!-- Horizontal Gridlines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full h-[1px] bg-border-hairline"></div>
+<div class="w-full h-[1px] bg-border-hairline"></div>
+<div class="w-full h-[1px] bg-border-hairline"></div>
+<div class="w-full h-[1px] bg-border-strong"></div>
+</div>
+<!-- Crosshair Guide (Interactive State Indicator at ~28% width / 10:30 AM) -->
+<div class="absolute top-0 bottom-[18px] left-[26%] w-[1px] bg-border-strong z-10 pointer-events-none">
+<!-- Pin dot -->
+<div class="absolute top-[28px] -left-[3px] w-[7px] h-[7px] bg-[#D9481E] border border-bg-surface rounded-full"></div>
+<!-- Mini Tooltip -->
+<div class="absolute top-2 left-2 bg-bg-surface border border-border-strong px-2 py-0.5 rounded-[4px] tooltip-shadow whitespace-nowrap">
+<span class="font-mono text-[10px] text-text-secondary">10:30 AM — </span>
+<span class="font-mono text-[10px] font-semibold text-text-primary">19 tokens/hr</span>
+</div>
+</div>
+<!-- SVG Path Area -->
+<svg class="w-full h-[122px] overflow-visible" preserveaspectratio="none" viewbox="0 0 1000 120">
+<!-- Area Fill: flat rgba(217, 72, 30, 0.08) NO gradient -->
+<polygon fill="rgba(217, 72, 30, 0.08)" points="0,120 0,105 80,95 160,70 240,30 320,40 400,65 480,85 560,60 640,45 720,75 800,90 880,105 960,112 1000,115 1000,120"></polygon>
+<!-- Crisp 1.5px Stroke in Signal Vermilion -->
+<polyline fill="none" points="0,105 80,95 160,70 240,30 320,40 400,65 480,85 560,60 640,45 720,75 800,90 880,105 960,112 1000,115" stroke="#D9481E" stroke-width="1.5"></polyline>
+</svg>
+<!-- X-Axis Hours (8 AM to 8 PM) -->
+<div class="absolute bottom-0 left-0 right-0 flex justify-between font-mono text-[10px] text-text-muted pt-1">
+<span>08:00</span>
+<span>09:00</span>
+<span>10:00</span>
+<span>11:00</span>
+<span>12:00</span>
+<span>13:00</span>
+<span>14:00</span>
+<span>15:00</span>
+<span>16:00</span>
+<span>17:00</span>
+<span>18:00</span>
+<span>19:00</span>
+<span>20:00</span>
+</div>
+</div>
+</section>
+<!-- 5. FOOTER / SYSTEM STATUS STRIP -->
+<footer class="mt-auto px-4 py-2 bg-bg-canvas border-t border-border-hairline flex items-center justify-between text-[11px] font-mono text-text-muted shrink-0">
+<div class="flex items-center gap-2">
+<span>PORT: 8084</span>
+<span>|</span>
+<span>LATENCY: 14ms</span>
+<span>|</span>
+<span>TELEMETRY STREAM: ACTIVE // AGGREGATION INTERVAL: 1H</span>
+</div>
+<div class="flex items-center gap-1.5 text-text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-[#166534] inline-block"></span>
+<span>SYNCED TO CLOUD</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

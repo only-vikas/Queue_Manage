@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QueueOS — Served Token History</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            neutral: {
+              surface: '#FFFFFF',
+              canvas: '#F7F7F5',
+              subtle: '#FAFAF9',
+              active: '#EBEAE4',
+              badge: '#F1F0EC',
+              border: '#E4E3DD',
+              'border-subtle': '#CFCBC2',
+              primary: '#181816',
+              secondary: '#57554E',
+              muted: '#8C8980',
+            },
+            vermilion: {
+              DEFAULT: '#D9481E',
+              hover: '#C23E17',
+            },
+            teal: {
+              accent: '#0F766E',
+              badge: '#F0FDFA',
+              border: '#99F6E4',
+            },
+            green: {
+              accent: '#166534',
+              badge: '#F0FDF4',
+              border: '#BBF7D0',
+            },
+            red: {
+              accent: '#B91C1C',
+              badge: '#FEF2F2',
+              border: '#FECACA',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Style Overrides -->
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #181816;
+      background-color: #F7F7F5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-feature-settings: 'tnum' on, 'zero' on;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Remove default focus outlines and use clean border rings */
+    input:focus, button:focus {
+      outline: none;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<!-- END: Custom Style Overrides -->
+</head>
+<body class="h-full flex flex-col min-w-[1280px] overflow-hidden select-none">
+<!-- BEGIN: Topbar -->
+<header class="h-[52px] bg-neutral-canvas border-b border-neutral-border px-5 flex items-center justify-between shrink-0 z-20" data-purpose="global-header">
+<!-- Brand / Workplace identity -->
+<div class="flex items-center space-x-3">
+<span class="font-mono font-bold text-[14px] tracking-tight text-neutral-primary">QueueOS</span>
+<span class="text-neutral-border text-[14px] leading-none select-none">|</span>
+<span class="text-[13px] font-medium text-neutral-secondary">Rugas Desk</span>
+</div>
+<!-- Navigation items & User Avatar -->
+<div class="flex items-center space-x-6">
+<nav class="flex items-center space-x-6">
+<a class="text-[13px] font-medium text-vermilion hover:text-vermilion-hover transition-colors" data-purpose="nav-queues" href="#">Queues</a>
+<a class="text-[13px] font-medium text-neutral-secondary hover:text-neutral-primary transition-colors" data-purpose="nav-analytics" href="#">Analytics</a>
+</nav>
+<div class="h-4 w-[1px] bg-neutral-border"></div>
+<!-- User Profile Initials badge -->
+<button class="w-7 h-7 rounded-full bg-neutral-active border border-neutral-border-subtle flex items-center justify-center text-[11px] font-semibold text-neutral-primary hover:border-neutral-muted transition-colors cursor-pointer" title="Rugas Manager">
+        RM
+      </button>
+</div>
+</header>
+<!-- END: Topbar -->
+<!-- BEGIN: Main Workspace Container -->
+<div class="flex-1 flex overflow-hidden">
+<!-- BEGIN: Left Sidebar -->
+<aside class="w-[240px] bg-neutral-canvas border-r border-neutral-border flex flex-col justify-between shrink-0" data-purpose="queue-sidebar">
+<!-- Queue Navigation List -->
+<div class="pt-4">
+<div class="px-5 pb-2 text-[11px] font-medium uppercase tracking-wider text-neutral-muted">
+          Queues
+        </div>
+<nav aria-label="Queues selection" class="space-y-[1px]">
+<!-- Active Queue Item: General Consultation -->
+<a class="relative flex items-center justify-between px-5 py-2 bg-neutral-active text-[13px] font-medium text-neutral-primary transition-colors" data-purpose="sidebar-queue-active" href="#">
+<!-- Left Accent indicator strictly 2px Vermilion -->
+<span class="absolute left-0 top-0 bottom-0 w-[2px] bg-vermilion"></span>
+<span class="truncate pr-2">General Consultation</span>
+<span class="font-mono text-[11px] text-neutral-secondary bg-neutral-badge px-1.5 py-0.5 rounded-[4px]">12</span>
+</a>
+<!-- Inactive Queue Item: Billing Desk -->
+<a class="relative flex items-center justify-between px-5 py-2 text-[13px] font-medium text-neutral-secondary hover:bg-neutral-badge hover:text-neutral-primary transition-colors" href="#">
+<span class="truncate pr-2">Billing Desk</span>
+<span class="font-mono text-[11px] text-neutral-muted px-1.5 py-0.5">4</span>
+</a>
+<!-- Inactive Queue Item: VIP Support -->
+<a class="relative flex items-center justify-between px-5 py-2 text-[13px] font-medium text-neutral-secondary hover:bg-neutral-badge hover:text-neutral-primary transition-colors" href="#">
+<span class="truncate pr-2">VIP Support</span>
+<span class="font-mono text-[11px] text-neutral-muted px-1.5 py-0.5">0</span>
+</a>
+</nav>
+</div>
+<!-- Bottom action: Create Queue button -->
+<div class="p-3 border-t border-neutral-border">
+<button class="w-full h-8 flex items-center justify-center space-x-1.5 text-[12px] font-medium text-neutral-secondary bg-transparent hover:bg-neutral-active border border-dashed border-neutral-border-subtle rounded-[4px] transition-colors" data-purpose="btn-new-queue">
+<svg class="w-3.5 h-3.5 text-neutral-secondary" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>New Queue</span>
+</button>
+</div>
+</aside>
+<!-- END: Left Sidebar -->
+<!-- BEGIN: Main Content Area -->
+<main class="flex-1 bg-neutral-surface flex flex-col min-w-0 overflow-hidden" data-purpose="token-history-workspace">
+<!-- BEGIN: Panel Header -->
+<div class="h-[52px] px-5 border-b border-neutral-border flex items-center justify-between shrink-0" data-purpose="panel-header">
+<!-- Title and live counter badge -->
+<div class="flex items-center space-x-3">
+<h1 class="text-[18px] font-semibold text-neutral-primary tracking-tight leading-none">General Consultation</h1>
+<span class="font-mono text-[11px] font-medium text-neutral-secondary bg-neutral-badge px-2 py-0.5 rounded-[4px] border border-neutral-border select-none">
+            12 waiting
+          </span>
+</div>
+<!-- Action tools -->
+<div class="flex items-center space-x-2">
+<button class="h-7 px-3 border border-neutral-border-subtle rounded-[4px] text-[12px] font-medium text-neutral-primary hover:bg-neutral-canvas flex items-center space-x-1.5 transition-colors cursor-pointer" data-purpose="btn-export-csv">
+<svg class="w-3.5 h-3.5 text-neutral-secondary" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Export CSV</span>
+</button>
+</div>
+</div>
+<!-- END: Panel Header -->
+<!-- BEGIN: Tabs Navigation Bar -->
+<div class="h-[38px] px-5 border-b border-neutral-border flex items-center space-x-6 shrink-0 bg-neutral-surface" data-purpose="section-tabs">
+<!-- Inactive Tab: Waiting -->
+<button class="h-full text-[13px] font-medium text-neutral-secondary hover:text-neutral-primary border-b-2 border-transparent transition-colors cursor-pointer flex items-center" data-purpose="tab-waiting">
+          Waiting (12)
+        </button>
+<!-- Active Tab: History (Strictly flat underline #D9481E, no pill shape) -->
+<button class="h-full text-[13px] font-semibold text-neutral-primary border-b-2 border-vermilion transition-colors cursor-pointer flex items-center" data-purpose="tab-history">
+          History (38)
+        </button>
+</div>
+<!-- END: Tabs Navigation Bar -->
+<!-- BEGIN: Filter and Summary Bar -->
+<div class="h-[44px] px-5 border-b border-neutral-border bg-neutral-subtle flex items-center justify-between shrink-0" data-purpose="filters-summary-bar">
+<!-- Left: Summary Breakdown counts -->
+<div class="flex items-center space-x-2">
+<span class="text-[13px] font-semibold text-neutral-primary">38 Tokens Recorded</span>
+<span class="text-neutral-border-subtle text-[12px] select-none">/</span>
+<span class="text-[12px] text-neutral-muted tracking-tight">34 Completed · 3 Cancelled · 1 Serving</span>
+</div>
+<!-- Right: Time Filters & Search Input -->
+<div class="flex items-center space-x-3">
+<!-- Segmented Date Filter Buttons -->
+<div aria-label="Date range filters" class="flex items-center space-x-1" role="group">
+<button class="h-7 px-2.5 text-[12px] font-semibold text-neutral-primary bg-neutral-active border border-neutral-border-subtle rounded-[4px] transition-colors cursor-pointer" type="button">
+              Today
+            </button>
+<button class="h-7 px-2.5 text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary border border-neutral-border-subtle rounded-[4px] hover:bg-neutral-canvas transition-colors cursor-pointer" type="button">
+              Yesterday
+            </button>
+<button class="h-7 px-2.5 text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary border border-neutral-border-subtle rounded-[4px] hover:bg-neutral-canvas transition-colors cursor-pointer" type="button">
+              Last 7 days
+            </button>
+</div>
+<!-- History Search Input -->
+<div class="relative w-[180px]">
+<span class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none text-neutral-muted">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</span>
+<input class="h-7 w-full pl-7 pr-2 text-[12px] placeholder-neutral-muted bg-neutral-surface border border-neutral-border-subtle rounded-[4px] focus:border-neutral-primary focus:ring-0 transition-colors" data-purpose="history-search-input" placeholder="Filter history..." type="text"/>
+</div>
+</div>
+</div>
+<!-- END: Filter and Summary Bar -->
+<!-- BEGIN: Table Column Headers -->
+<div class="h-[34px] px-5 border-b border-neutral-border bg-neutral-subtle flex items-center text-[11px] font-medium uppercase text-neutral-muted tracking-[0.04em] shrink-0" data-purpose="table-header">
+<div class="w-[88px]">Token</div>
+<div class="flex-1">Patient / Reason</div>
+<div class="w-[110px]">Status</div>
+<div class="w-[90px]">Wait Time</div>
+<div class="w-[100px]">Served At</div>
+<div class="w-[60px] text-right">Actions</div>
+</div>
+<!-- END: Table Column Headers -->
+<!-- BEGIN: Table Rows List (Scrollable Area) -->
+<div class="flex-1 overflow-y-auto divide-y divide-neutral-border" data-purpose="table-body">
+<!-- Row 1: Serving (Active attention) -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors relative" data-purpose="token-row-serving">
+<!-- Serving Accent Indicator 2px teal -->
+<div class="absolute left-0 top-0 bottom-0 w-[2px] bg-teal-accent"></div>
+<div class="w-[88px] font-mono-num font-bold text-neutral-primary text-[13px]">A-014</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Rohan Sharma</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-secondary truncate">General Medicine Follow-up</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-teal-badge text-teal-accent border border-teal-border">
+<span class="w-1.5 h-1.5 rounded-full bg-teal-accent mr-1.5 animate-pulse"></span>
+              SERVING
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-primary">08m 42s</div>
+<div class="w-[100px] text-[12px] font-medium text-teal-accent">In Progress</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 2: Completed -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors" data-purpose="token-row">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-013</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Pooja Venkatesh</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-secondary truncate">Prescription Refill</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-green-badge text-green-accent border border-green-border">
+              COMPLETED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-secondary">12m 34s</div>
+<div class="w-[100px] text-[12px] text-neutral-secondary">10:42 AM</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 3: Completed -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors" data-purpose="token-row">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-012</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Virender Sahni</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-secondary truncate">Blood Pressure &amp; Glucose Review</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-green-badge text-green-accent border border-green-border">
+              COMPLETED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-secondary">09m 15s</div>
+<div class="w-[100px] text-[12px] text-neutral-secondary">10:28 AM</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 4: Cancelled -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors bg-[#FCFBFB]" data-purpose="token-row-cancelled">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-011</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Ananya Rao</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-muted truncate italic">Client left before triage call</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-red-badge text-red-accent border border-red-border">
+              CANCELLED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-muted">18m 12s</div>
+<div class="w-[100px] text-[12px] text-neutral-muted">—</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 5: Completed -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors" data-purpose="token-row">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-010</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Meera Joshi</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-secondary truncate">Routine Health Checkup</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-green-badge text-green-accent border border-green-border">
+              COMPLETED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-secondary">14m 20s</div>
+<div class="w-[100px] text-[12px] text-neutral-secondary">10:14 AM</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 6: Completed -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors" data-purpose="token-row">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-009</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Arjun Mehra</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-secondary truncate">Post-op Dressing Inspection</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-green-badge text-green-accent border border-green-border">
+              COMPLETED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-secondary">11m 45s</div>
+<div class="w-[100px] text-[12px] text-neutral-secondary">09:58 AM</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 7: Completed -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors" data-purpose="token-row">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-008</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Kavita Iyer</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-secondary truncate">Lab Report Consultation</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-green-badge text-green-accent border border-green-border">
+              COMPLETED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-secondary">06m 50s</div>
+<div class="w-[100px] text-[12px] text-neutral-secondary">09:44 AM</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 8: Cancelled -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors bg-[#FCFBFB]" data-purpose="token-row-cancelled">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-007</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Devendra Swamy</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-muted truncate italic">Did not respond to 3 recalls</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-red-badge text-red-accent border border-red-border">
+              CANCELLED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-muted">21m 40s</div>
+<div class="w-[100px] text-[12px] text-neutral-muted">—</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 9: Completed -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors" data-purpose="token-row">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-006</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Rajesh Gupta</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-secondary truncate">Cardiology Follow-up</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-green-badge text-green-accent border border-green-border">
+              COMPLETED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-secondary">15m 10s</div>
+<div class="w-[100px] text-[12px] text-neutral-secondary">09:30 AM</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+<!-- Row 10: Completed -->
+<div class="h-[42px] px-5 flex items-center text-[13px] hover:bg-neutral-subtle transition-colors" data-purpose="token-row">
+<div class="w-[88px] font-mono-num font-medium text-neutral-primary text-[13px]">A-005</div>
+<div class="flex-1 flex items-center truncate pr-4 text-neutral-primary">
+<span class="font-medium text-neutral-primary truncate">Sunita Roy</span>
+<span class="mx-1.5 text-neutral-muted select-none">—</span>
+<span class="text-neutral-secondary truncate">Seasonal Allergy Assessment</span>
+</div>
+<div class="w-[110px]">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-[4px] text-[11px] font-medium bg-green-badge text-green-accent border border-green-border">
+              COMPLETED
+            </span>
+</div>
+<div class="w-[90px] font-mono-num text-[12px] text-neutral-secondary">08m 05s</div>
+<div class="w-[100px] text-[12px] text-neutral-secondary">09:12 AM</div>
+<div class="w-[60px] text-right">
+<button class="text-[12px] font-medium text-neutral-secondary hover:text-neutral-primary hover:underline cursor-pointer">View</button>
+</div>
+</div>
+</div>
+<!-- END: Table Rows List -->
+<!-- BEGIN: Table Pagination Footer -->
+<footer class="h-[36px] px-5 border-t border-neutral-border bg-neutral-subtle flex items-center justify-between shrink-0" data-purpose="table-footer">
+<div class="text-[12px] text-neutral-muted font-normal">
+          Showing <span class="font-mono-num text-neutral-secondary font-medium">1</span>–<span class="font-mono-num text-neutral-secondary font-medium">10</span> of <span class="font-mono-num text-neutral-secondary font-medium">38</span> records
+        </div>
+<!-- Numeric Pagination controls -->
+<nav aria-label="Pagination" class="flex items-center space-x-1">
+<button class="h-6 px-2 border border-neutral-border-subtle rounded-[4px] text-[11px] font-medium text-neutral-muted cursor-not-allowed bg-transparent" disabled="">
+            Prev
+          </button>
+<button class="h-6 w-6 border border-neutral-border-subtle bg-neutral-active rounded-[4px] text-[11px] font-bold text-neutral-primary flex items-center justify-center font-mono-num">
+            1
+          </button>
+<button class="h-6 w-6 border border-transparent hover:border-neutral-border-subtle rounded-[4px] text-[11px] font-medium text-neutral-secondary hover:bg-neutral-canvas flex items-center justify-center font-mono-num transition-colors">
+            2
+          </button>
+<button class="h-6 w-6 border border-transparent hover:border-neutral-border-subtle rounded-[4px] text-[11px] font-medium text-neutral-secondary hover:bg-neutral-canvas flex items-center justify-center font-mono-num transition-colors">
+            3
+          </button>
+<button class="h-6 px-2 border border-neutral-border-subtle hover:bg-neutral-canvas rounded-[4px] text-[11px] font-medium text-neutral-secondary hover:text-neutral-primary flex items-center justify-center transition-colors">
+            Next
+          </button>
+</nav>
+</footer>
+<!-- END: Table Pagination Footer -->
+</main>
+<!-- END: Main Content Area -->
+</div>
+<!-- END: Main Workspace Container -->
+</body></html>

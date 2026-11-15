@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCREEN 02 — Signup / Create Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-canvas: #F7F7F5;
+      --bg-surface: #FFFFFF;
+      --bg-input: #FAFAF9;
+      --border-hairline: #E4E3DD;
+      --border-strong: #CFCBC2;
+      --border-focus: #D9481E;
+      --text-primary: #181816;
+      --text-secondary: #57554E;
+      --text-muted: #8C8980;
+      --text-on-accent: #FFFFFF;
+      --accent-primary: #D9481E;
+      --accent-primary-hover: #BF3B15;
+      --status-danger: #B91C1C;
+      --status-warning: #D97716;
+      --status-success: #166534;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      position: relative;
+      overflow-y: auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* System Telemetry Header */
+    .telemetry-tag {
+      position: fixed;
+      top: 20px;
+      left: 24px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .telemetry-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #0F766E;
+    }
+
+    /* Interactive State Switcher for Review */
+    .state-switcher {
+      position: fixed;
+      top: 16px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      padding: 2px;
+      gap: 2px;
+      z-index: 20;
+    }
+
+    .state-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background-color 120ms ease-out, color 120ms ease-out;
+    }
+
+    .state-btn:hover {
+      background: #EBEAE4;
+      color: var(--text-primary);
+    }
+
+    .state-btn.active {
+      background: #181816;
+      color: #FFFFFF;
+      font-weight: 500;
+    }
+
+    .system-status-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: block;
+      text-align: center;
+    }
+
+    /* Signup Card */
+    .signup-card {
+      width: 100%;
+      max-width: 360px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      box-shadow: none; /* STRICT BANNED: NO SHADOWS */
+      overflow: hidden;
+      animation: cardEntrance 180ms ease-out forwards;
+    }
+
+    @keyframes cardEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Card Header */
+    .card-header {
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .wordmark {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .version-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background-color: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      padding: 1px 5px;
+      border-radius: 2px;
+      line-height: 1.2;
+    }
+
+    .headline {
+      font-family: var(--font-ui);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Card Form Body */
+    .card-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-field {
+      width: 100%;
+      height: 36px;
+      padding: 0 12px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 120ms ease-out, background-color 120ms ease-out;
+    }
+
+    .input-field::placeholder {
+      color: var(--text-muted);
+    }
+
+    .input-field:hover {
+      border-color: #B5B2A9;
+    }
+
+    .input-field:focus {
+      border-color: var(--border-focus);
+      background-color: var(--bg-surface);
+      outline: none;
+    }
+
+    .input-field.input-has-icon {
+      padding-right: 36px;
+    }
+
+    .input-field.has-error {
+      border-color: var(--status-danger);
+      background-color: #FFFDFD;
+    }
+
+    .input-field.has-error:focus {
+      border-color: var(--status-danger);
+    }
+
+    .icon-toggle-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 36px;
+      width: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      transition: color 120ms ease-out;
+    }
+
+    .icon-toggle-btn:hover {
+      color: var(--text-secondary);
+    }
+
+    /* Password Strength Progress Bar */
+    .strength-container {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .strength-container.is-visible {
+      display: flex;
+    }
+
+    .strength-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      height: 4px;
+      background-color: transparent;
+      border: 1px solid var(--border-hairline);
+      padding: 1px;
+      border-radius: 0; /* STRICT: 0 radius, no rounded ends */
+    }
+
+    .strength-seg {
+      height: 100%;
+      background-color: transparent;
+      border-radius: 0;
+      transition: background-color 120ms ease-out;
+    }
+
+    .strength-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .strength-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .strength-status-text {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* Strength Levels */
+    .level-1 .strength-seg:nth-child(1) { background-color: var(--status-danger); }
+    .level-1 .strength-status-text { color: var(--status-danger); }
+
+    .level-2 .strength-seg:nth-child(1),
+    .level-2 .strength-seg:nth-child(2) { background-color: var(--status-warning); }
+    .level-2 .strength-status-text { color: var(--status-warning); }
+
+    .level-3 .strength-seg:nth-child(1),
+    .level-3 .strength-seg:nth-child(2),
+    .level-3 .strength-seg:nth-child(3) { background-color: var(--status-success); }
+    .level-3 .strength-status-text { color: var(--status-success); }
+
+    .level-4 .strength-seg:nth-child(1),
+    .level-4 .strength-seg:nth-child(2),
+    .level-4 .strength-seg:nth-child(3),
+    .level-4 .strength-seg:nth-child(4) { background-color: var(--status-success); }
+    .level-4 .strength-status-text { color: var(--status-success); }
+
+    /* Helper text */
+    .helper-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-top: 1px;
+    }
+
+    .field-error-msg {
+      font-size: 11px;
+      color: var(--status-danger);
+      line-height: 1.3;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .field-error-msg.is-visible {
+      display: block;
+    }
+
+    /* Global Error Banner */
+    .form-error-banner {
+      display: none;
+      padding: 8px 10px;
+      background-color: #FEF2F2;
+      border: 1px solid #FCA5A5;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--status-danger);
+      line-height: 1.4;
+    }
+
+    .form-error-banner.is-visible {
+      display: block;
+    }
+
+    /* Primary CTA Button */
+    .btn-submit {
+      width: 100%;
+      height: 36px;
+      background-color: var(--accent-primary);
+      color: var(--text-on-accent);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 120ms ease-out;
+      margin-top: 4px;
+      user-select: none;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background-color: var(--accent-primary-hover);
+    }
+
+    .btn-submit:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 2px;
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Staggered pulse spinner for loading state */
+    .spinner-dots {
+      display: none;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .spinner-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #FFFFFF;
+      animation: pulseDot 600ms infinite ease-in-out both;
+    }
+
+    .spinner-dot:nth-child(1) { animation-delay: -200ms; }
+    .spinner-dot:nth-child(2) { animation-delay: -100ms; }
+    .spinner-dot:nth-child(3) { animation-delay: 0ms; }
+
+    @keyframes pulseDot {
+      0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .btn-submit.is-loading .btn-text {
+      display: none;
+    }
+
+    .btn-submit.is-loading .spinner-dots {
+      display: flex;
+    }
+
+    /* Card Footer */
+    .card-footer {
+      padding: 12px 24px;
+      border-top: 1px solid var(--border-hairline);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .card-footer a {
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 4px;
+      transition: text-decoration 120ms ease-out;
+    }
+
+    .card-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Security Spec Footnote */
+    .security-spec {
+      margin-top: 20px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      text-align: center;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Operational Telemetry Micro-Label -->
+  <div class="telemetry-tag">
+    <span class="telemetry-dot"></span>
+    <span>QUEUEOS OPERATIONAL CORE // NODE 01</span>
+  </div>
+
+  <!-- Interactive State Switcher for reviewer inspection -->
+  <div class="state-switcher" role="toolbar" aria-label="Screen State Switcher">
+    <button class="state-btn active" id="btnStateDefault" onclick="setScreenState('default')">Default</button>
+    <button class="state-btn" id="btnStateTyped" onclick="setScreenState('typed')">Strength: Good</button>
+    <button class="state-btn" id="btnStateError" onclick="setScreenState('error')">Simulate Error</button>
+    <button class="state-btn" id="btnStateLoading" onclick="setScreenState('loading')">Simulate Loading</button>
+  </div>
+
+  <span class="system-status-badge">OPERATIONAL TERMINAL — ACCOUNT PROVISIONING</span>
+
+  <!-- Signup Card Panel -->
+  <main class="signup-card" id="signupCard">
+    
+    <!-- Card Header -->
+    <header class="card-header">
+      <div class="brand-row">
+        <span class="wordmark">QueueOS</span>
+        <span class="version-tag">v1.0</span>
+      </div>
+      <h1 class="headline">Create your account</h1>
+      <p class="subtitle">Start managing queues in minutes</p>
+    </header>
+
+    <!-- Card Form Body -->
+    <form class="card-body" id="signupForm" onsubmit="handleFormSubmit(event)" novalidate>
+      
+      <!-- Error notification banner (hidden by default) -->
+      <div class="form-error-banner" id="formErrorBanner" role="alert">
+        Work email is already registered on this node.
+      </div>
+
+      <!-- Full Name -->
+      <div class="form-group">
+        <label class="input-label" for="fullName">Full Name</label>
+        <input 
+          type="text" 
+          id="fullName" 
+          name="fullName"
+          class="input-field" 
+          placeholder="Dr. Ronald Craig" 
+          value="Ronald Craig"
+          autocomplete="name"
+          required
+        />
+        <span class="field-error-msg" id="nameError">Full name is required.</span>
+      </div>
+
+      <!-- Work Email -->
+      <div class="form-group">
+        <label class="input-label" for="workEmail">Work Email</label>
+        <input 
+          type="email" 
+          id="workEmail" 
+          name="workEmail"
+          class="input-field" 
+          placeholder="ronald.craig@rugas.org" 
+          value="ronald.craig@rugas.org"
+          autocomplete="email"
+          required
+        />
+        <span class="field-error-msg" id="emailError">Please enter a valid operational work email.</span>
+      </div>
+
+      <!-- Password with strength indicator -->
+      <div class="form-group">
+        <label class="input-label" for="password">Password</label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password" 
+            name="password"
+            class="input-field input-has-icon" 
+            placeholder="••••••••••••••••"
+            value="Tr1ag3-K0ntrol#24"
+            autocomplete="new-password"
+            oninput="handlePasswordInput(this.value)"
+            required
+          />
+          <button 
+            type="button" 
+            class="icon-toggle-btn" 
+            id="togglePasswordBtn" 
+            onclick="togglePasswordVisibility()" 
+            aria-label="Toggle password visibility"
+            title="Toggle visibility"
+          >
+            <!-- Eye icon -->
+            <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 4-segment strength indicator (flat 4px height, 0 radius, 1px hairline track) -->
+        <div class="strength-container is-visible" id="strengthContainer">
+          <div class="strength-track level-3" id="strengthTrack">
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+            <div class="strength-seg"></div>
+          </div>
+          <div class="strength-meta">
+            <span class="strength-label">STRENGTH</span>
+            <span class="strength-status-text" id="strengthStatusText">Good (3/4)</span>
+          </div>
+        </div>
+        <span class="field-error-msg" id="passwordError">Password must be at least 8 characters.</span>
+      </div>
+
+      <!-- Workspace Name -->
+      <div class="form-group">
+        <label class="input-label" for="workspaceName">Workspace Name</label>
+        <input 
+          type="text" 
+          id="workspaceName" 
+          name="workspaceName"
+          class="input-field" 
+          placeholder="Rugas Clinic West" 
+          value="Rugas Clinic Central"
+          required
+        />
+        <span class="helper-text">Used as your team identifier (e.g. Rugas Clinic)</span>
+        <span class="field-error-msg" id="workspaceError">Workspace name is required.</span>
+      </div>
+
+      <!-- Primary CTA button -->
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="btn-text">Create Account</span>
+        <span class="spinner-dots" aria-hidden="true">
+          <span class="spinner-dot"></span>
+          <span class="spinner-dot"></span>
+          <span class="spinner-dot"></span>
+        </span>
+      </button>
+
+    </form>
+
+    <!-- Card Footer -->
+    <footer class="card-footer">
+      <span>Already have an account?</span>
+      <a href="#" onclick="event.preventDefault(); alert('Redirecting to SCREEN 01 — Login');">Sign in</a>
+    </footer>
+
+  </main>
+
+  <!-- Technical Spec & Security Line -->
+  <div class="security-spec">
+    SECURITY: 256-BIT ENCRYPTION &nbsp;•&nbsp; SWISS TRIAGE SPEC 1.0 &nbsp;•&nbsp; PROVISIONING V1.0
+  </div>
+
+  <script>
+    // Password visibility toggle
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        eyeIcon.innerHTML = `
+          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+          <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+          <line x1="2" y1="2" x2="22" y2="22"/>
+        `;
+      } else {
+        pwdInput.type = 'password';
+        eyeIcon.innerHTML = `
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+          <circle cx="12" cy="12" r="3"/>
+        `;
+      }
+    }
+
+    // Dynamic Password Strength Calculator
+    function handlePasswordInput(val) {
+      const container = document.getElementById('strengthContainer');
+      const track = document.getElementById('strengthTrack');
+      const statusText = document.getElementById('strengthStatusText');
+
+      if (!val || val.length === 0) {
+        container.classList.remove('is-visible');
+        return;
+      }
+
+      container.classList.add('is-visible');
+
+      let score = 0;
+      if (val.length >= 6) score++;
+      if (val.length >= 10) score++;
+      if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      // Clamp score between 1 and 4
+      score = Math.max(1, Math.min(4, score));
+
+      track.className = 'strength-track level-' + score;
+
+      const labels = {
+        1: 'Weak (1/4)',
+        2: 'Fair (2/4)',
+        3: 'Good (3/4)',
+        4: 'Strong (4/4)'
+      };
+      statusText.textContent = labels[score];
+    }
+
+    // State Switcher for Review
+    function setScreenState(state) {
+      document.querySelectorAll('.state-btn').forEach(btn => btn.classList.remove('active'));
+      const card = document.getElementById('signupCard');
+      const submitBtn = document.getElementById('submitBtn');
+      const errorBanner = document.getElementById('formErrorBanner');
+      const emailField = document.getElementById('workEmail');
+      const emailError = document.getElementById('emailError');
+      const strengthContainer = document.getElementById('strengthContainer');
+      const pwdField = document.getElementById('password');
+
+      // Reset states
+      submitBtn.classList.remove('is-loading');
+      submitBtn.disabled = false;
+      errorBanner.classList.remove('is-visible');
+      emailField.classList.remove('has-error');
+      emailError.classList.remove('is-visible');
+
+      if (state === 'default') {
+        document.getElementById('btnStateDefault').classList.add('active');
+        pwdField.value = 'Tr1ag3-K0ntrol#24';
+        handlePasswordInput(pwdField.value);
+      } else if (state === 'typed') {
+        document.getElementById('btnStateTyped').classList.add('active');
+        pwdField.value = 'RugasConsult#88';
+        handlePasswordInput(pwdField.value);
+      } else if (state === 'error') {
+        document.getElementById('btnStateError').classList.add('active');
+        errorBanner.classList.add('is-visible');
+        emailField.classList.add('has-error');
+        emailError.classList.add('is-visible');
+        // Negative constraint respected: NO shake animation on signup error (only on login)
+      } else if (state === 'loading') {
+        document.getElementById('btnStateLoading').classList.add('active');
+        submitBtn.classList.add('is-loading');
+        submitBtn.disabled = true;
+      }
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      setScreenState('loading');
+      setTimeout(() => {
+        setScreenState('default');
+      }, 1400);
+    }
+  </script>
+</body>
+</html>

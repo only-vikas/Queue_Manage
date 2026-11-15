@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QueueOS - Manager Profile &amp; Settings</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "text-on-accent": "#FFFFFF",
+            "outline-variant": "#e2bfb5",
+            "surface-tint": "#b22c00",
+            "on-primary-fixed-variant": "#882000",
+            "on-surface": "#1a1c1b",
+            "bg-surface": "#FFFFFF",
+            "bg-active-row": "#EBEAE4",
+            "on-tertiary-fixed": "#001d35",
+            "bg-input": "#FAFAF9",
+            "inverse-primary": "#ffb5a1",
+            "surface-dim": "#dadad8",
+            "secondary-fixed": "#dce1ff",
+            "bg-hover": "#F1F0EC",
+            "on-tertiary-fixed-variant": "#00497b",
+            "border-focus": "#D9481E",
+            "surface-container-low": "#f4f4f2",
+            "surface-bright": "#f9f9f7",
+            "tertiary-fixed-dim": "#9ccaff",
+            "primary-fixed": "#ffdbd1",
+            "on-primary-container": "#fffbff",
+            "status-completed-text": "#166534",
+            "on-primary": "#ffffff",
+            "secondary-container": "#4069f2",
+            "status-cancelled-text": "#B91C1C",
+            "accent-primary-active": "#A33110",
+            "border-strong": "#CFCBC2",
+            "inverse-surface": "#2f3130",
+            "primary-container": "#d14219",
+            "primary-fixed-dim": "#ffb5a1",
+            "on-surface-variant": "#5a413a",
+            "on-secondary-fixed": "#001551",
+            "primary": "#ad2b00",
+            "text-primary": "#181816",
+            "status-serving-border": "#99F6E4",
+            "outline": "#8e7069",
+            "bg-serving": "#FEF5F1",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#fffbff",
+            "status-serving-bg": "#F0FDFA",
+            "on-secondary": "#ffffff",
+            "on-error": "#ffffff",
+            "border-serving": "#F5C7B8",
+            "surface-container": "#eeeeec",
+            "on-background": "#1a1c1b",
+            "text-secondary": "#57554E",
+            "tertiary-fixed": "#d0e4ff",
+            "background": "#f9f9f7",
+            "secondary": "#1d4ed8",
+            "bg-canvas": "#F7F7F5",
+            "border-hairline": "#E4E3DD",
+            "surface": "#f9f9f7",
+            "status-completed-bg": "#F0FDF4",
+            "tertiary-container": "#0078c5",
+            "on-tertiary-container": "#fdfcff",
+            "tertiary": "#005f9d",
+            "error": "#ba1a1a",
+            "secondary-fixed-dim": "#b7c4ff",
+            "status-serving-text": "#0F766E",
+            "on-tertiary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "text-muted": "#8C8980",
+            "status-cancelled-bg": "#FEF2F2",
+            "error-container": "#ffdad6",
+            "inverse-on-surface": "#f1f1ef",
+            "on-primary-fixed": "#3b0900",
+            "surface-variant": "#e2e3e1",
+            "accent-primary-hover": "#BF3B15",
+            "surface-container-high": "#e8e8e6",
+            "on-secondary-fixed-variant": "#0039b5",
+            "surface-container-highest": "#e2e3e1"
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            lg: "0.25rem",
+            xl: "0.375rem",
+            full: "9999px"
+          },
+          fontFamily: {
+            "body-default": ["Plus Jakarta Sans", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    input:focus {
+      outline: none;
+      border-color: #D9481E !important;
+    }
+  </style>
+</head>
+<body class="bg-bg-canvas text-text-primary antialiased font-body-default min-h-screen flex flex-col">
+<!-- Topbar Navigation -->
+<header class="relative z-30 h-14 bg-bg-surface border-b border-border-hairline px-6 flex items-center justify-between">
+<!-- Left: Brand -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2.5">
+<div class="w-4 h-4 text-text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<span class="text-base font-bold tracking-tight text-text-primary">QueueOS</span>
+</div>
+<!-- Primary Nav -->
+<nav class="hidden md:flex items-center gap-6 text-[13px] font-medium ml-4">
+<a class="text-text-secondary hover:text-text-primary transition-colors" href="#">Queues</a>
+<a class="text-text-secondary hover:text-text-primary transition-colors" href="#">Analytics</a>
+<a class="text-border-focus font-semibold" href="#">Settings</a>
+</nav>
+</div>
+<!-- Right: Workspace & Manager Trigger -->
+<div class="flex items-center gap-3">
+<span class="text-[11px] font-mono font-medium text-text-secondary bg-bg-canvas px-2 py-0.5 border border-border-hairline rounded">MAIN-DESK-01</span>
+<!-- Manager Avatar Button (Triggers/Anchors Dropdown) -->
+<button aria-expanded="true" aria-haspopup="true" class="flex items-center justify-center w-8 h-8 rounded-full bg-bg-active-row border border-border-strong text-text-primary font-mono text-[12px] font-semibold hover:border-text-secondary focus:outline-none transition-colors" id="avatar-btn">
+        RM
+      </button>
+</div>
+<!-- 1. THE TOPBAR PROFILE DROPDOWN PANEL (Anchored) -->
+<div class="absolute top-[56px] right-4 w-[240px] bg-bg-surface border border-border-strong rounded-[6px] shadow-[0_4px_12px_rgba(0,0,0,0.06)] z-50 flex flex-col py-1" id="profile-dropdown">
+<!-- Profile Header Info -->
+<div class="px-3 pt-3 pb-2 border-b border-border-hairline">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-bg-active-row border border-border-strong flex items-center justify-center shrink-0">
+<span class="font-mono text-[13px] font-semibold text-text-primary">RM</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-[13px] font-medium text-text-primary truncate leading-tight">Rugas Manager</span>
+<span class="text-[11px] font-normal text-text-muted truncate leading-normal">manager@rugas.com</span>
+</div>
+</div>
+</div>
+<!-- Menu Items -->
+<div class="p-1 space-y-0.5">
+<!-- Active Item: Account Settings -->
+<a class="h-8 px-2 rounded-[4px] bg-bg-hover flex items-center justify-between text-[13px] font-normal text-text-primary transition-colors duration-120" href="#">
+<span>Account Settings</span>
+<span class="w-1.5 h-1.5 rounded-full bg-border-focus"></span>
+</a>
+<!-- Workspace Settings -->
+<a class="h-8 px-2 rounded-[4px] hover:bg-bg-hover flex items-center text-[13px] font-normal text-text-primary transition-colors duration-120" href="#">
+<span>Workspace Settings</span>
+</a>
+<!-- 1px hairline divider -->
+<div class="my-1 border-t border-border-hairline"></div>
+<!-- Danger Sign Out -->
+<a class="h-8 px-2 rounded-[4px] hover:bg-status-cancelled-bg flex items-center text-[13px] font-normal text-status-cancelled-text transition-colors duration-120" href="#">
+<span>Sign Out</span>
+</a>
+</div>
+</div>
+</header>
+<!-- Breadcrumb / Sub-header -->
+<div class="bg-bg-surface border-b border-border-hairline px-6 py-3">
+<div class="max-w-[640px] mx-auto w-full flex items-center gap-2 text-[13px]">
+<span class="text-text-muted">Settings</span>
+<span class="text-text-muted">/</span>
+<span class="text-[16px] font-semibold text-text-primary">Account Settings</span>
+</div>
+</div>
+<!-- 2. MAIN WORKSPACE CONTENT AREA -->
+<main class="flex-1 overflow-y-auto px-4 py-8">
+<div class="max-w-[640px] mx-auto bg-bg-surface border border-border-hairline rounded-[6px] p-6 sm:p-8 space-y-6">
+<!-- SECTION 1: PROFILE INFO -->
+<section class="space-y-4">
+<div>
+<h2 class="text-[15px] font-semibold text-text-primary leading-tight">Profile Information</h2>
+<p class="text-[12px] text-text-secondary mt-0.5">Update your display information and public profile identity.</p>
+</div>
+<!-- Avatar Row -->
+<div class="flex items-center gap-4 pt-1">
+<div class="w-12 h-12 rounded-full bg-bg-active-row border border-border-strong flex items-center justify-center shrink-0">
+<span class="font-mono text-[14px] font-bold text-text-primary">RM</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<button class="h-7 px-3 border border-border-strong bg-bg-surface hover:bg-bg-hover text-text-primary text-[12px] font-medium rounded-[4px] transition-colors" type="button">
+                Change Avatar
+              </button>
+</div>
+<span class="text-[11px] font-normal text-text-muted">JPG, PNG max 2MB</span>
+</div>
+</div>
+<!-- Inputs -->
+<div class="space-y-3 pt-1">
+<div>
+<label class="block text-[12px] font-medium text-text-secondary mb-1">Full Name</label>
+<input class="w-full h-9 bg-bg-input border border-border-strong rounded-[4px] px-3 text-[13px] text-text-primary focus:bg-bg-surface transition-colors" type="text" value="Rugas Manager"/>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1">
+<label class="block text-[12px] font-medium text-text-secondary">Email Address</label>
+<span class="text-[11px] font-mono text-text-muted">Managed via workspace SSO</span>
+</div>
+<input class="w-full h-9 bg-surface-container-low border border-border-hairline rounded-[4px] px-3 text-[13px] text-text-muted cursor-not-allowed" readonly="" type="email" value="manager@rugas.com"/>
+</div>
+</div>
+</section>
+<!-- 1px hairline divider -->
+<div class="border-t border-border-hairline"></div>
+<!-- SECTION 2: CHANGE PASSWORD -->
+<section class="space-y-4">
+<div>
+<h2 class="text-[15px] font-semibold text-text-primary leading-tight">Security &amp; Password</h2>
+<p class="text-[12px] text-text-secondary mt-0.5">Ensure your credentials use at least 12 characters including symbols.</p>
+</div>
+<div class="space-y-3">
+<div>
+<label class="block text-[12px] font-medium text-text-secondary mb-1">Current Password</label>
+<input class="w-full h-9 bg-bg-input border border-border-strong rounded-[4px] px-3 text-[13px] text-text-primary placeholder:text-border-strong" placeholder="••••••••••••" type="password"/>
+</div>
+<div>
+<label class="block text-[12px] font-medium text-text-secondary mb-1">New Password</label>
+<input class="w-full h-9 bg-bg-input border border-border-strong rounded-[4px] px-3 text-[13px] text-text-primary placeholder:text-border-strong" placeholder="Enter new password" type="password"/>
+</div>
+<div>
+<label class="block text-[12px] font-medium text-text-secondary mb-1">Confirm New Password</label>
+<input class="w-full h-9 bg-bg-input border border-border-strong rounded-[4px] px-3 text-[13px] text-text-primary placeholder:text-border-strong" placeholder="Confirm new password" type="password"/>
+</div>
+</div>
+</section>
+<!-- 1px hairline divider -->
+<div class="border-t border-border-hairline"></div>
+<!-- SECTION 3: NOTIFICATION PREFERENCES -->
+<section class="space-y-3">
+<div>
+<h2 class="text-[15px] font-semibold text-text-primary leading-tight">Notification Preferences</h2>
+<p class="text-[12px] text-text-secondary mt-0.5">Real-time alerts broadcasted to dashboard notifications.</p>
+</div>
+<div class="divide-y divide-border-hairline">
+<!-- Toggle 1 -->
+<label class="h-10 flex items-center justify-between cursor-pointer group">
+<span class="text-[13px] font-normal text-text-primary group-hover:text-black">Queue overflow alert (&gt;15 waiting)</span>
+<input checked="" class="w-4 h-4 rounded-[4px] border-border-strong text-border-focus focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</label>
+<!-- Toggle 2 -->
+<label class="h-10 flex items-center justify-between cursor-pointer group">
+<span class="text-[13px] font-normal text-text-primary group-hover:text-black">Long wait alert (&gt;20 min)</span>
+<input checked="" class="w-4 h-4 rounded-[4px] border-border-strong text-border-focus focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</label>
+<!-- Toggle 3 -->
+<label class="h-10 flex items-center justify-between cursor-pointer group">
+<span class="text-[13px] font-normal text-text-primary group-hover:text-black">Daily summary report</span>
+<input class="w-4 h-4 rounded-[4px] border-border-strong text-border-focus focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</label>
+</div>
+</section>
+<!-- 1px hairline divider -->
+<div class="border-t border-border-hairline"></div>
+<!-- Footer Actions -->
+<div class="flex items-center justify-end gap-3 pt-1">
+<button class="h-8 px-4 text-[13px] font-medium text-text-secondary hover:text-text-primary transition-colors" type="button">
+          Discard
+        </button>
+<button class="h-8 px-4 bg-border-focus hover:bg-accent-primary-hover active:bg-accent-primary-active text-text-on-accent text-[13px] font-semibold rounded-[4px] transition-colors" type="button">
+          Save Changes
+        </button>
+</div>
+</div>
+</main>
+<!-- Interactive script for toggling profile dropdown -->
+<script>
+    const avatarBtn = document.getElementById('avatar-btn');
+    const profileDropdown = document.getElementById('profile-dropdown');
+
+    avatarBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!profileDropdown.contains(e.target) && !avatarBtn.contains(e.target)) {
+        profileDropdown.classList.add('hidden');
+      }
+    });
+  </script>
+</body></html>

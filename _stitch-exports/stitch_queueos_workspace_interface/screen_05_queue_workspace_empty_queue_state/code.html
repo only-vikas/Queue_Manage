@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QueueOS — VIP Support (Empty Queue)</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-surface": "#1a1c1b",
+            "status-completed-text": "#166534",
+            "status-cancelled-text": "#B91C1C",
+            "surface-dim": "#dadad8",
+            "error-container": "#ffdad6",
+            "bg-hover": "#F1F0EC",
+            "surface-tint": "#b22c00",
+            "bg-canvas": "#F7F7F5",
+            "surface-variant": "#e2e3e1",
+            "on-error": "#ffffff",
+            "secondary-fixed": "#dce1ff",
+            "bg-serving": "#FEF5F1",
+            "surface": "#f9f9f7",
+            "surface-container-lowest": "#ffffff",
+            "border-focus": "#D9481E",
+            "on-error-container": "#93000a",
+            "on-primary-fixed": "#3b0900",
+            "secondary": "#1d4ed8",
+            "on-secondary-fixed": "#001551",
+            "on-tertiary-fixed": "#001d35",
+            "bg-input": "#FAFAF9",
+            "inverse-surface": "#2f3130",
+            "border-hairline": "#E4E3DD",
+            "surface-container-highest": "#e2e3e1",
+            "text-primary": "#181816",
+            "on-surface-variant": "#5a413a",
+            "primary-fixed": "#ffdbd1",
+            "primary": "#ad2b00",
+            "accent-primary-active": "#A33110",
+            "border-strong": "#CFCBC2",
+            "on-secondary-fixed-variant": "#0039b5",
+            "surface-container-high": "#e8e8e6",
+            "on-secondary": "#ffffff",
+            "status-serving-border": "#99F6E4",
+            "primary-fixed-dim": "#ffb5a1",
+            "inverse-on-surface": "#f1f1ef",
+            "surface-bright": "#f9f9f7",
+            "background": "#f9f9f7",
+            "border-serving": "#F5C7B8",
+            "tertiary": "#005f9d",
+            "outline": "#8e7069",
+            "tertiary-container": "#0078c5",
+            "on-primary": "#ffffff",
+            "outline-variant": "#e2bfb5",
+            "text-secondary": "#57554E",
+            "status-completed-bg": "#F0FDF4",
+            "tertiary-fixed": "#d0e4ff",
+            "accent-primary-hover": "#BF3B15",
+            "on-tertiary-fixed-variant": "#00497b",
+            "bg-active-row": "#EBEAE4",
+            "surface-container-low": "#f4f4f2",
+            "on-secondary-container": "#fffbff",
+            "secondary-container": "#4069f2",
+            "on-tertiary-container": "#fdfcff",
+            "surface-container": "#eeeeec",
+            "secondary-fixed-dim": "#b7c4ff",
+            "status-serving-bg": "#F0FDFA",
+            "error": "#ba1a1a",
+            "on-tertiary": "#ffffff",
+            "text-muted": "#8C8980",
+            "bg-surface": "#FFFFFF",
+            "inverse-primary": "#ffb5a1",
+            "tertiary-fixed-dim": "#9ccaff",
+            "status-cancelled-bg": "#FEF2F2",
+            "status-serving-text": "#0F766E",
+            "on-primary-fixed-variant": "#882000",
+            "on-background": "#1a1c1b",
+            "on-primary-container": "#fffbff",
+            "text-on-accent": "#FFFFFF",
+            "primary-container": "#d14219"
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            lg: "0.25rem",
+            xl: "0.5rem",
+            full: "0.75rem"
+          },
+          spacing: {
+            gutter: "1rem",
+            "space-lg": "1rem",
+            "space-sm": "0.5rem",
+            "space-xl": "1.5rem",
+            "margin-desktop": "1.5rem",
+            "space-xs": "0.25rem",
+            margin: "1rem",
+            "space-md": "0.75rem",
+            "gutter-desktop": "1.5rem"
+          },
+          fontFamily: {
+            "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "body-mono-token": ["JetBrains Mono", "monospace"],
+            "body-sm-medium": ["Plus Jakarta Sans", "sans-serif"],
+            "banner-token": ["JetBrains Mono", "monospace"],
+            "label-timer": ["JetBrains Mono", "monospace"],
+            "body-default": ["Plus Jakarta Sans", "sans-serif"],
+            "label-xs": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-kpi-mobile": ["JetBrains Mono", "monospace"],
+            "headline-kpi": ["JetBrains Mono", "monospace"],
+            "label-mono-xs": ["JetBrains Mono", "monospace"],
+            "body-row-primary": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          fontSize: {
+            "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+            "body-mono-token": ["15px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "700" }],
+            "body-sm-medium": ["13px", { lineHeight: "18px", fontWeight: "500" }],
+            "banner-token": ["20px", { lineHeight: "24px", letterSpacing: "0.02em", fontWeight: "700" }],
+            "label-timer": ["13px", { lineHeight: "18px", fontWeight: "500" }],
+            "body-default": ["14px", { lineHeight: "21px", fontWeight: "400" }],
+            "label-xs": ["11px", { lineHeight: "14px", letterSpacing: "0.04em", fontWeight: "500" }],
+            "headline-md": ["16px", { lineHeight: "22px", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "headline-kpi-mobile": ["24px", { lineHeight: "24px", fontWeight: "700" }],
+            "headline-kpi": ["28px", { lineHeight: "28px", fontWeight: "700" }],
+            "label-mono-xs": ["11px", { lineHeight: "14px", fontWeight: "600" }],
+            "body-row-primary": ["15px", { lineHeight: "20px", fontWeight: "500" }],
+            "headline-lg": ["20px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "600" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-bg-canvas text-text-primary antialiased selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col font-['Plus_Jakarta_Sans']">
+<!-- Top Navigation Bar (Shared Shell Component Structure) -->
+<header class="h-14 border-b border-border-hairline bg-bg-surface px-6 flex items-center justify-between z-20 shrink-0">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 text-primary flex items-center justify-center">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<span class="text-text-primary text-[15px] font-bold tracking-tight">QueueOS</span>
+</div>
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted text-[16px]">search</span>
+<input class="w-full h-8 pl-8 pr-3 text-body-sm bg-bg-canvas border border-border-hairline rounded focus:border-border-focus focus:ring-0 focus:outline-none placeholder:text-text-muted transition-colors" placeholder="Search tokens, guests..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="flex items-center gap-6">
+<a class="text-text-primary text-body-sm-medium hover:text-primary transition-colors" href="#">Workspaces</a>
+<a class="text-text-secondary text-body-sm hover:text-text-primary transition-colors" href="#">Analytics</a>
+<a class="text-text-secondary text-body-sm hover:text-text-primary transition-colors" href="#">Settings</a>
+</nav>
+<div class="h-4 w-px bg-border-hairline"></div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 px-2.5 h-7 rounded bg-status-serving-bg border border-status-serving-border text-status-serving-text text-label-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-status-serving-text animate-pulse"></span>
+<span>ONLINE</span>
+</div>
+<button class="h-7 px-2.5 rounded border border-border-hairline bg-bg-surface hover:bg-bg-hover text-text-primary text-label-xs font-medium transition-colors">
+          Operator Mode
+        </button>
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border-hairline bg-bg-surface hover:bg-bg-hover text-text-secondary transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-[16px]">notifications</span>
+</button>
+</div>
+<div class="w-7 h-7 rounded border border-border-hairline bg-surface-container overflow-hidden flex items-center justify-center font-['JetBrains_Mono'] text-label-xs font-semibold text-text-secondary">
+        OP
+      </div>
+</div>
+</header>
+<!-- Dashboard Workspace Container (Sidebar + Queue Content Area) -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar: Fixed 240px, Background #F7F7F5, 1px right border #E4E3DD -->
+<aside class="w-[240px] shrink-0 border-r border-border-hairline bg-bg-canvas flex flex-col justify-between p-3 select-none">
+<div class="flex flex-col gap-4">
+<!-- Hub Context Metadata -->
+<div class="px-2 py-1 flex flex-col">
+<span class="text-headline-md font-semibold text-text-primary truncate">Downtown Hub #104</span>
+<span class="text-label-mono-xs text-text-muted uppercase tracking-wider mt-0.5">Triage Area A</span>
+</div>
+<!-- Queues List -->
+<div class="flex flex-col gap-1">
+<div class="px-2 pb-1.5 pt-2 text-[10px] font-semibold text-text-muted tracking-wider uppercase">Active Queues</div>
+<!-- VIP Support: ACTIVE -->
+<div class="relative flex items-center justify-between px-2.5 h-9 rounded bg-bg-active-row group cursor-pointer">
+<!-- 2px Signal Vermilion Left Accent Bar -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-5 bg-border-focus rounded-r-sm" data-flip-id="active-queue-pill"></div>
+<div class="flex items-center gap-2 pl-1.5">
+<span class="material-symbols-outlined text-text-primary text-[16px]">verified_user</span>
+<span class="text-body-sm-medium text-text-primary">VIP Support</span>
+</div>
+<!-- Count badge: 0 in JetBrains Mono 11px 600 #8C8980 on #F1F0EC -->
+<span class="font-['JetBrains_Mono'] text-[11px] font-semibold text-text-muted bg-bg-hover px-1.5 py-0.5 rounded leading-none">
+              0
+            </span>
+</div>
+<!-- General Consultation: INACTIVE -->
+<div class="flex items-center justify-between px-2.5 h-9 rounded hover:bg-bg-hover group cursor-pointer transition-colors">
+<div class="flex items-center gap-2 pl-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-text-secondary text-[16px]">groups</span>
+<span class="text-body-sm text-text-secondary group-hover:text-text-primary">General Consultation</span>
+</div>
+<span class="font-['JetBrains_Mono'] text-[11px] font-semibold text-text-secondary bg-surface-container-high px-1.5 py-0.5 rounded leading-none">
+              12
+            </span>
+</div>
+<!-- Billing Desk: INACTIVE -->
+<div class="flex items-center justify-between px-2.5 h-9 rounded hover:bg-bg-hover group cursor-pointer transition-colors">
+<div class="flex items-center gap-2 pl-1.5">
+<span class="material-symbols-outlined text-text-muted group-hover:text-text-secondary text-[16px]">receipt_long</span>
+<span class="text-body-sm text-text-secondary group-hover:text-text-primary">Billing Desk</span>
+</div>
+<span class="font-['JetBrains_Mono'] text-[11px] font-semibold text-text-secondary bg-surface-container-high px-1.5 py-0.5 rounded leading-none">
+              4
+            </span>
+</div>
+</div>
+</div>
+<!-- Sidebar Bottom Action -->
+<div class="pt-3 border-t border-border-hairline">
+<button class="w-full h-8 flex items-center justify-center gap-1.5 rounded border border-dashed border-border-strong hover:border-border-focus text-border-focus hover:bg-bg-hover text-body-sm-medium transition-colors">
+<span class="material-symbols-outlined text-[15px]">add</span>
+<span>+ New Queue</span>
+</button>
+</div>
+</aside>
+<!-- Queue Panel Work Area -->
+<main class="flex-1 flex flex-col bg-bg-surface overflow-hidden">
+<!-- Queue Panel Header: Height 52px, 1px bottom border #E4E3DD, padding 0 16px, background #FFFFFF -->
+<div class="h-[52px] shrink-0 border-b border-border-hairline px-4 bg-bg-surface flex items-center justify-between z-10">
+<!-- Left: Queue name & Count badge -->
+<div class="flex items-center gap-2.5">
+<h1 class="text-headline-md text-text-primary font-semibold tracking-[-0.02em]">VIP Support</h1>
+<div class="font-['JetBrains_Mono'] text-[11px] font-semibold text-text-muted bg-bg-hover px-2 py-0.5 rounded-[4px] leading-tight">
+            0 waiting
+          </div>
+</div>
+<!-- Right actions -->
+<div class="flex items-center gap-2">
+<!-- Secondary button -->
+<button class="h-8 px-3 rounded-[4px] border border-border-strong bg-bg-surface hover:bg-bg-hover text-text-primary text-[13px] font-medium transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-text-secondary">add</span>
+<span>+ Add Token</span>
+</button>
+<!-- Primary Vermilion CTA: DISABLED STATE -->
+<button class="h-8 px-3.5 rounded-[4px] bg-[#D9481E] text-text-on-accent text-[13px] font-semibold opacity-40 cursor-not-allowed pointer-events-none flex items-center gap-1 select-none" disabled="">
+<span>Assign Next Token</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- NO SERVING BANNER: Completely hidden/collapsed when no token is serving -->
+<!-- Quick-Add Entry Bar: Height 48px, padding 0 16px, border-bottom 1px solid #E4E3DD, background #FFFFFF -->
+<div class="h-12 shrink-0 border-b border-border-hairline px-4 bg-bg-surface flex items-center gap-3">
+<!-- User icon -->
+<span class="material-symbols-outlined text-text-muted text-[16px] shrink-0">person_add</span>
+<!-- Primary Name Input -->
+<input class="flex-1 h-8 bg-transparent border-0 p-0 text-[14px] font-normal text-text-primary placeholder:text-text-muted focus:ring-0 focus:outline-none" placeholder="Person name..." type="text"/>
+<!-- Vertical 1px hairline divider #E4E3DD -->
+<div class="h-4 w-px bg-border-hairline shrink-0"></div>
+<!-- Phone input (width 140px) -->
+<input class="w-[140px] h-8 bg-transparent border-0 p-0 text-[14px] font-normal text-text-primary placeholder:text-text-muted focus:ring-0 focus:outline-none" placeholder="Phone (optional)" type="text"/>
+<!-- Submit button -->
+<button class="h-7 px-3 rounded-[4px] bg-bg-active-row border border-border-strong text-text-secondary hover:text-text-primary hover:bg-bg-hover text-[11px] font-medium transition-colors shrink-0 flex items-center justify-center">
+          Issue Token
+        </button>
+</div>
+<!-- Main Content Area — Empty State (occupies remaining height of workspace) -->
+<div class="flex-1 flex flex-col items-center justify-center text-center p-8 bg-bg-surface select-none">
+<!-- Subtle upward-pointing indicator arrow pointing directly to the Quick-Add bar -->
+<div class="flex flex-col items-center mb-3">
+<span class="font-['JetBrains_Mono'] text-[16px] text-border-strong tracking-normal">↑</span>
+</div>
+<!-- Large ghost monospace zero: "0" in JetBrains Mono 48px 700 color #E4E3DD (tabular-nums) -->
+<div class="font-['JetBrains_Mono'] text-[48px] font-bold leading-none text-border-hairline tracking-tight mb-2 tabular-nums">
+          0
+        </div>
+<!-- Title: "Queue is empty" in Plus Jakarta Sans 16px 600 color #8C8980 -->
+<h2 class="text-headline-md font-semibold text-text-muted mb-1.5">
+          Queue is empty
+        </h2>
+<!-- Subtitle / instructions: "Add a token above to start managing this queue." in Plus Jakarta Sans 13px 400 color #8C8980, max-w-[240px], line-height 1.6 -->
+<p class="text-body-sm text-text-muted max-w-[240px] leading-[1.6]">
+          Add a token above to start managing this queue.
+        </p>
+</div>
+<!-- Minimal Swiss Status Footer Line -->
+<footer class="h-7 border-t border-border-hairline px-4 bg-bg-canvas flex items-center justify-between text-label-mono-xs text-text-muted shrink-0">
+<div class="flex items-center gap-3">
+<span>PORT: 8084</span>
+<span class="text-border-hairline">|</span>
+<span>LATENCY: 14ms</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-[#166534]"></span>
+<span>SYNCED TO CLOUD</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

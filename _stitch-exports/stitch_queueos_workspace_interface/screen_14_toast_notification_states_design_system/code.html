@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary-container": "#fffbff", "on-secondary-fixed-variant": "#0039b5", "secondary-fixed": "#dce1ff", "primary-fixed": "#ffdbd1", "outline-variant": "#e2bfb5", "surface-dim": "#dadad8", "primary": "#ad2b00", "surface-container-lowest": "#ffffff", "status-cancelled-bg": "#FEF2F2", "on-tertiary-container": "#fdfcff", "status-cancelled-text": "#B91C1C", "surface-tint": "#b22c00", "on-primary-fixed-variant": "#882000", "text-on-accent": "#FFFFFF", "accent-primary-active": "#A33110", "border-strong": "#CFCBC2", "on-secondary-fixed": "#001551", "secondary": "#1d4ed8", "on-background": "#1a1c1b", "status-completed-bg": "#F0FDF4", "surface-bright": "#f9f9f7", "surface-container-high": "#e8e8e6", "status-serving-text": "#0F766E", "tertiary": "#005f9d", "text-muted": "#8C8980", "error": "#ba1a1a", "on-tertiary": "#ffffff", "bg-input": "#FAFAF9", "on-tertiary-fixed": "#001d35", "on-secondary": "#ffffff", "accent-primary-hover": "#BF3B15", "outline": "#8e7069", "tertiary-container": "#0078c5", "text-primary": "#181816", "tertiary-fixed-dim": "#9ccaff", "bg-serving": "#FEF5F1", "secondary-fixed-dim": "#b7c4ff", "on-primary": "#ffffff", "surface": "#f9f9f7", "surface-variant": "#e2e3e1", "status-serving-bg": "#F0FDFA", "border-focus": "#D9481E", "on-primary-fixed": "#3b0900", "border-serving": "#F5C7B8", "bg-canvas": "#F7F7F5", "on-surface": "#1a1c1b", "on-surface-variant": "#5a413a", "error-container": "#ffdad6", "on-secondary-container": "#fffbff", "surface-container-low": "#f4f4f2", "border-hairline": "#E4E3DD", "inverse-surface": "#2f3130", "bg-surface": "#FFFFFF", "bg-active-row": "#EBEAE4", "background": "#f9f9f7", "inverse-on-surface": "#f1f1ef", "tertiary-fixed": "#d0e4ff", "on-error-container": "#93000a", "surface-container-highest": "#e2e3e1", "primary-container": "#d14219", "on-error": "#ffffff", "surface-container": "#eeeeec", "on-tertiary-fixed-variant": "#00497b", "status-completed-text": "#166534", "status-serving-border": "#99F6E4", "text-secondary": "#57554E", "bg-hover": "#F1F0EC", "secondary-container": "#4069f2", "inverse-primary": "#ffb5a1", "primary-fixed-dim": "#ffb5a1" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-xl": "1.5rem", "margin": "1rem", "margin-desktop": "1.5rem", "space-xs": "0.25rem", "space-lg": "1rem", "gutter-desktop": "1.5rem", "gutter": "1rem", "space-md": "0.75rem", "space-sm": "0.5rem" }, "fontFamily": { "body-sm": [ "Plus Jakarta Sans" ], "headline-kpi": [ "JetBrains Mono" ], "label-mono-xs": [ "JetBrains Mono" ], "label-xs": [ "Plus Jakarta Sans" ], "body-sm-medium": [ "Plus Jakarta Sans" ], "headline-kpi-mobile": [ "JetBrains Mono" ], "headline-md": [ "Plus Jakarta Sans" ], "label-timer": [ "JetBrains Mono" ], "body-default": [ "Plus Jakarta Sans" ], "body-row-primary": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "banner-token": [ "JetBrains Mono" ], "body-mono-token": [ "JetBrains Mono" ] }, "fontSize": { "body-sm": [ "13px", { "lineHeight": "18px", "fontWeight": "400" } ], "headline-kpi": [ "28px", { "lineHeight": "28px", "fontWeight": "700" } ], "label-mono-xs": [ "11px", { "lineHeight": "14px", "fontWeight": "600" } ], "label-xs": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" } ], "body-sm-medium": [ "13px", { "lineHeight": "18px", "fontWeight": "500" } ], "headline-kpi-mobile": [ "24px", { "lineHeight": "24px", "fontWeight": "700" } ], "headline-md": [ "16px", { "lineHeight": "22px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-timer": [ "13px", { "lineHeight": "18px", "fontWeight": "500" } ], "body-default": [ "14px", { "lineHeight": "21px", "fontWeight": "400" } ], "body-row-primary": [ "15px", { "lineHeight": "20px", "fontWeight": "500" } ], "headline-lg": [ "20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "banner-token": [ "20px", { "lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "700" } ], "body-mono-token": [ "15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700" } ] } } } };</script></head><body class="bg-bg-canvas font-body-default text-text-primary min-h-screen"><header class="fixed top-0 left-0 right-0 h-[52px] z-50 bg-bg-surface border-b border-border-hairline"><div class="h-[52px] w-full px-gutter-desktop flex items-center justify-between"><div class="flex items-center gap-space-xl"><div class="flex items-center gap-space-xs"><span class="w-2.5 h-2.5 bg-primary rounded-[2px]"></span><span class="font-banner-token text-banner-token tracking-tight text-text-primary">QueueOS</span></div><div class="h-4 w-[1px] bg-border-hairline"></div><nav class="flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-medium rounded-lg"><a class="px-space-sm py-1 font-body-sm text-body-sm text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded-lg transition-colors" data-path="artboards" href="#">Artboards</a><a class="px-space-sm py-1 font-body-sm text-body-sm text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded-lg transition-colors" data-path="queues" href="#">Queues</a><a aria-current="page" class="px-space-sm py-1 transition-colors bg-primary-container text-on-primary-container font-medium rounded-lg" data-path="notifications-showcase" href="#">Notifications</a><a class="px-space-sm py-1 font-body-sm text-body-sm text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded-lg transition-colors" data-path="analytics" href="#">Analytics</a><a class="px-space-sm py-1 font-body-sm text-body-sm text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded-lg transition-colors" data-path="settings" href="#">Settings</a></nav></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs border border-border-hairline px-space-xs py-0.5 rounded-lg bg-bg-canvas"><span class="w-1.5 h-1.5 rounded-full bg-status-serving-text"></span><span class="font-label-mono-xs text-label-mono-xs text-text-secondary uppercase tracking-wider">Node 01 // Live</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-[52px] bg-bg-canvas"><div class="flex flex-col w-full">
+<!-- Artboard Top Sub-Bar (Specimen Metadata Header) -->
+<div class="w-full bg-bg-surface border-b border-border-hairline px-gutter-desktop py-space-md flex flex-wrap items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs text-text-muted font-label-mono-xs text-label-mono-xs uppercase tracking-wider">
+<span>Component Specimen Registry</span>
+<span>/</span>
+<span class="text-text-secondary">DS-MOD-14</span>
+<span>/</span>
+<span class="text-primary font-bold">QueueOS Core</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight mt-0.5">
+        SCREEN 14 — Toast &amp; Notification States (Design System Component Artboard)
+      </h1>
+<p class="font-body-sm text-body-sm text-text-secondary mt-0.5">
+        Live notification queue, auto-dismiss physics, status accents, and interactive action links.
+      </p>
+</div>
+<!-- Quick Action / Interactive Trigger Bar -->
+<div class="flex items-center gap-space-sm">
+<div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1 bg-bg-canvas border border-border-hairline rounded-lg">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-mono-xs text-label-mono-xs text-text-secondary">STACK ENGINE: 4 SLOTS ACTIVE</span>
+</div>
+<button class="h-8 px-space-md bg-bg-surface hover:bg-bg-hover text-text-primary border border-border-strong rounded-lg font-body-sm text-body-sm font-medium transition-colors flex items-center gap-1.5" id="trigger-success-btn">
+<span class="w-2 h-2 rounded-[1px] bg-[#166534]"></span>
+<span>Test Success</span>
+</button>
+<button class="h-8 px-space-md bg-bg-surface hover:bg-bg-hover text-text-primary border border-border-strong rounded-lg font-body-sm text-body-sm font-medium transition-colors flex items-center gap-1.5" id="trigger-error-btn">
+<span class="w-2 h-2 rounded-[1px] bg-[#B91C1C]"></span>
+<span>Test Error</span>
+</button>
+<button class="h-8 px-space-md bg-primary hover:bg-accent-primary-hover active:bg-accent-primary-active text-text-on-accent rounded-lg font-body-sm text-body-sm font-semibold transition-colors flex items-center gap-1.5" id="trigger-serving-btn">
+<span class="material-symbols-outlined text-[16px]">campaign</span>
+<span>Broadcast Serving</span>
+</button>
+</div>
+</div>
+<!-- Primary Artboard Layout Split: 60% Component Matrix & Engineering Specs | 40% Live In-Situ Simulation -->
+<div class="w-full grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-140px)]">
+<!-- LEFT COLUMN: Exhaustive Design Specimen Matrix (7 cols) -->
+<div class="lg:col-span-7 p-gutter-desktop space-y-space-xl border-b lg:border-b-0 lg:border-r border-border-hairline bg-bg-canvas">
+<!-- Section 1: Standard Architectural Variants Specification -->
+<div class="space-y-space-md">
+<div class="flex items-center justify-between border-b border-border-hairline pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-xs text-label-mono-xs text-primary font-bold">01 //</span>
+<span class="font-headline-md text-headline-md text-text-primary uppercase tracking-wider text-[13px]">Status Rail Variants Matrix</span>
+</div>
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted">WIDTH: 340PX · FIXED RADIUS: 6PX</span>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-space-lg">
+<!-- VARIANT 1: SUCCESS -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between text-text-secondary font-label-mono-xs text-label-mono-xs uppercase">
+<span class="flex items-center gap-1 font-semibold text-text-primary">
+<span class="w-2 h-2 bg-[#166534]"></span> Variant 1: Success (Token Issuance)
+              </span>
+<span class="text-text-muted">#166534 RAIL</span>
+</div>
+<!-- Toast Component Preview -->
+<div class="w-full max-w-[340px] bg-bg-surface border border-border-strong rounded-[6px] relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+<!-- Left Accent Rail (3px solid, full height, no radius on left edge) -->
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#166534]"></div>
+<div class="py-3 pr-4 pl-[19px] flex items-start gap-space-sm">
+<!-- Icon -->
+<div class="mt-0.5 shrink-0 text-[#166534]">
+<span class="material-symbols-outlined text-[16px] leading-none">check_circle</span>
+</div>
+<!-- Body Text Stack -->
+<div class="flex-1 min-w-0 pr-1">
+<div class="font-body-default text-[13px] leading-[18px] font-semibold text-text-primary truncate">
+                    Token <span class="font-body-mono-token text-[13px] tracking-tight">A-015</span> issued for Priya Nair
+                  </div>
+<div class="font-body-sm text-[11px] leading-[15px] text-text-secondary mt-0.5 font-normal">
+                    Queue: General Consultation • Pos <span class="font-label-mono-xs text-[11px] font-semibold text-text-primary">#01</span>
+</div>
+</div>
+<!-- Right Actions: Action Text + Dismiss -->
+<div class="shrink-0 flex items-center gap-space-xs mt-0.5">
+<button class="font-label-mono-xs text-[11px] font-semibold text-[#D9481E] hover:underline focus:outline-none tracking-tight" type="button">
+                    [Undo]
+                  </button>
+<button aria-label="Dismiss" class="w-5 h-5 flex items-center justify-center text-text-muted hover:text-text-primary transition-colors focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[16px] leading-none">close</span>
+</button>
+</div>
+</div>
+<!-- Bottom 4px Flat Vermilion Auto-Dismiss Progress Bar -->
+<div class="w-full h-1 bg-border-hairline relative">
+<div class="h-full bg-[#D9481E] w-[65%]"></div>
+</div>
+</div>
+<div class="font-label-mono-xs text-[10px] text-text-muted">
+              Auto-dismiss: Active • Linear drain 4000ms • Dismissable on click
+            </div>
+</div>
+<!-- VARIANT 2: ERROR -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between text-text-secondary font-label-mono-xs text-label-mono-xs uppercase">
+<span class="flex items-center gap-1 font-semibold text-text-primary">
+<span class="w-2 h-2 bg-[#B91C1C]"></span> Variant 2: Error (Gateway Failure)
+              </span>
+<span class="text-text-muted">#B91C1C RAIL</span>
+</div>
+<!-- Toast Component Preview -->
+<div class="w-full max-w-[340px] bg-bg-surface border border-border-strong rounded-[6px] relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+<!-- Left Accent Rail -->
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#B91C1C]"></div>
+<div class="py-3 pr-4 pl-[19px] flex items-start gap-space-sm">
+<!-- Icon -->
+<div class="mt-0.5 shrink-0 text-[#B91C1C]">
+<span class="material-symbols-outlined text-[16px] leading-none">error</span>
+</div>
+<!-- Body Text Stack -->
+<div class="flex-1 min-w-0 pr-1">
+<div class="font-body-default text-[13px] leading-[18px] font-semibold text-text-primary truncate">
+                    Failed to issue token. Network error.
+                  </div>
+<div class="font-body-sm text-[11px] leading-[15px] text-text-secondary mt-0.5 font-normal truncate">
+                    Connection to Triage Gateway timed out.
+                  </div>
+</div>
+<!-- Right Actions -->
+<div class="shrink-0 flex items-center gap-space-xs mt-0.5">
+<button class="font-label-mono-xs text-[11px] font-semibold text-[#D9481E] hover:underline focus:outline-none tracking-tight" type="button">
+                    [Retry]
+                  </button>
+<button aria-label="Dismiss" class="w-5 h-5 flex items-center justify-center text-text-muted hover:text-text-primary transition-colors focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[16px] leading-none">close</span>
+</button>
+</div>
+</div>
+<!-- Bottom Progress Bar (Paused/Error Persistent representation or drain) -->
+<div class="w-full h-1 bg-border-hairline relative">
+<div class="h-full bg-[#D9481E] w-[90%]"></div>
+</div>
+</div>
+<div class="font-label-mono-xs text-[10px] text-text-muted">
+              Auto-dismiss: Paused on error • Manual interaction required
+            </div>
+</div>
+<!-- VARIANT 3: INFO / NEUTRAL -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between text-text-secondary font-label-mono-xs text-label-mono-xs uppercase">
+<span class="flex items-center gap-1 font-semibold text-text-primary">
+<span class="w-2 h-2 bg-[#1D4ED8]"></span> Variant 3: Info (Session Expiry)
+              </span>
+<span class="text-text-muted">#1D4ED8 RAIL</span>
+</div>
+<!-- Toast Component Preview -->
+<div class="w-full max-w-[340px] bg-bg-surface border border-border-strong rounded-[6px] relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+<!-- Left Accent Rail -->
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#1D4ED8]"></div>
+<div class="py-3 pr-4 pl-[19px] flex items-start gap-space-sm">
+<!-- Icon -->
+<div class="mt-0.5 shrink-0 text-[#1D4ED8]">
+<span class="material-symbols-outlined text-[16px] leading-none">info</span>
+</div>
+<!-- Body Text Stack -->
+<div class="flex-1 min-w-0 pr-1">
+<div class="font-body-default text-[13px] leading-[18px] font-semibold text-text-primary truncate">
+                    Session expires in 5 minutes
+                  </div>
+<div class="font-body-sm text-[11px] leading-[15px] text-text-secondary mt-0.5 font-normal truncate">
+                    Operator auth: Dr. Rugas • Desk #02
+                  </div>
+</div>
+<!-- Right Actions -->
+<div class="shrink-0 flex items-center gap-space-xs mt-0.5">
+<button class="font-label-mono-xs text-[11px] font-semibold text-[#D9481E] hover:underline focus:outline-none tracking-tight" type="button">
+                    [Renew]
+                  </button>
+<button aria-label="Dismiss" class="w-5 h-5 flex items-center justify-center text-text-muted hover:text-text-primary transition-colors focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[16px] leading-none">close</span>
+</button>
+</div>
+</div>
+<!-- Bottom Progress Bar -->
+<div class="w-full h-1 bg-border-hairline relative">
+<div class="h-full bg-[#D9481E] w-[40%]"></div>
+</div>
+</div>
+<div class="font-label-mono-xs text-[10px] text-text-muted">
+              Auto-dismiss: 4s default • JetBrains Mono numeric telemetry
+            </div>
+</div>
+<!-- VARIANT 4: NOW SERVING -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between text-text-secondary font-label-mono-xs text-label-mono-xs uppercase">
+<span class="flex items-center gap-1 font-semibold text-text-primary">
+<span class="w-2 h-2 bg-[#0F766E]"></span> Variant 4: Broadcast (Now Serving)
+              </span>
+<span class="text-text-muted">#0F766E RAIL</span>
+</div>
+<!-- Toast Component Preview -->
+<div class="w-full max-w-[340px] bg-bg-surface border border-border-strong rounded-[6px] relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+<!-- Left Accent Rail -->
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#0F766E]"></div>
+<div class="py-3 pr-4 pl-[19px] flex items-start gap-space-sm">
+<!-- Icon -->
+<div class="mt-0.5 shrink-0 text-[#0F766E]">
+<span class="material-symbols-outlined text-[16px] leading-none">campaign</span>
+</div>
+<!-- Body Text Stack -->
+<div class="flex-1 min-w-0 pr-1">
+<div class="font-body-default text-[13px] leading-[18px] font-semibold text-text-primary truncate">
+                    Now serving <span class="font-body-mono-token text-[13px] font-bold text-text-primary">A-014</span> • Rohan S.
+                  </div>
+<div class="font-body-sm text-[11px] leading-[15px] text-text-secondary mt-0.5 font-normal truncate">
+                    Dispatched to Consultation Room 104
+                  </div>
+</div>
+<!-- Right Actions -->
+<div class="shrink-0 flex items-center gap-space-xs mt-0.5">
+<button class="font-label-mono-xs text-[11px] font-semibold text-[#D9481E] hover:underline focus:outline-none tracking-tight" type="button">
+                    [Recall]
+                  </button>
+<button aria-label="Dismiss" class="w-5 h-5 flex items-center justify-center text-text-muted hover:text-text-primary transition-colors focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[16px] leading-none">close</span>
+</button>
+</div>
+</div>
+<!-- Bottom Progress Bar -->
+<div class="w-full h-1 bg-border-hairline relative">
+<div class="h-full bg-[#D9481E] w-[82%]"></div>
+</div>
+</div>
+<div class="font-label-mono-xs text-[10px] text-text-muted">
+              Auto-dismiss: Active • Auditory beacon paired • Priority Level 1
+            </div>
+</div>
+</div>
+</div>
+<!-- Section 2: Component Architecture & Metric Token Tables -->
+<div class="space-y-space-md">
+<div class="flex items-center justify-between border-b border-border-hairline pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-xs text-label-mono-xs text-primary font-bold">02 //</span>
+<span class="font-headline-md text-headline-md text-text-primary uppercase tracking-wider text-[13px]">Dimensional Specs &amp; Motion Physics</span>
+</div>
+<span class="font-label-mono-xs text-label-mono-xs text-text-muted">MECHANICAL SYSTEM DEFINITION</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Geometry & Spacing Spec Box -->
+<div class="bg-bg-surface border border-border-hairline rounded-[6px] p-space-md space-y-space-sm">
+<div class="font-label-mono-xs text-label-mono-xs text-text-secondary uppercase tracking-wider font-semibold">
+              Geometry &amp; Spatial Constraints
+            </div>
+<div class="space-y-1.5 font-body-sm text-[12px]">
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Max Envelope Width:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">340px (Fixed Desktop)</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Corner Radius:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">6px (Rigid maximum)</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Padding Grid:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">12px Top/Bottom • 16px Left/Right</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Indicator Accent Rail:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">3px Full-Height (No curve)</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Dismiss Progress Rail:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">4px Bottom Flush #D9481E</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="text-text-muted font-label-mono-xs">Elevation Grounding:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">0 4px 12px rgba(0,0,0,0.06)</span>
+</div>
+</div>
+</div>
+<!-- Motion & State Machine Spec Box -->
+<div class="bg-bg-surface border border-border-hairline rounded-[6px] p-space-md space-y-space-sm">
+<div class="font-label-mono-xs text-label-mono-xs text-text-secondary uppercase tracking-wider font-semibold">
+              Motion Physics &amp; Lifecycle
+            </div>
+<div class="space-y-1.5 font-body-sm text-[12px]">
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Stack Entry Stage:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">translateY(16px) → 0 (220ms ease-out)</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Stack Exit / Dismiss:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">translateX(16px) • opacity:0 (180ms)</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Vertical Cascade Shift:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">Gap 8px • transition: 200ms power2.out</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Linear Drain Duration:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">4000ms (100% to 0% width)</span>
+</div>
+<div class="flex justify-between py-1 border-b border-border-hairline">
+<span class="text-text-muted font-label-mono-xs">Hover Interruption:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">Timer pauses indefinitely on mouseover</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="text-text-muted font-label-mono-xs">Maximum Stack Depth:</span>
+<span class="font-label-mono-xs font-semibold text-text-primary">4 Visible Toasts (FIFO drop)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Braun Architectural Hardware Principles -->
+<div class="bg-bg-surface border border-border-hairline rounded-[6px] p-space-md">
+<div class="flex items-center gap-space-xs text-text-primary font-body-sm font-semibold mb-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span>Braun / Swiss Minimalist Strict Constraints Applied</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-secondary leading-relaxed">
+          Zero gradients and zero ambient glows. Signal Vermilion (<span class="font-label-mono-xs text-primary font-bold">#D9481E</span>) remains strictly quarantined for primary calls-to-action, critical notifications, and timer mechanics. Contrast ratios exceed WCAG AAA standards across all status indicators, ensuring instantaneous comprehension at glance distances.
+        </p>
+</div>
+</div>
+<!-- RIGHT COLUMN: Live In-Situ Command Station Background with Floating Notification Stack -->
+<div class="lg:col-span-5 relative flex flex-col bg-bg-canvas overflow-hidden min-h-[640px]">
+<!-- Stage Label / Workspace Watermark -->
+<div class="p-gutter-desktop border-b border-border-hairline bg-bg-surface/60 flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-status-serving-text"></span>
+<span class="font-label-mono-xs text-label-mono-xs font-bold text-text-primary uppercase tracking-wider">
+            In-Situ Viewport Simulation (Desk #01)
+          </span>
+</div>
+<span class="font-label-mono-xs text-[11px] text-text-muted uppercase">Z-INDEX: 60 (OVERLAY)</span>
+</div>
+<!-- Background Simulated Triage Workspace (Gives context to the floating toasts) -->
+<div class="p-gutter-desktop flex-1 opacity-70 select-none pointer-events-none space-y-space-md">
+<!-- Mock Top Banner: Currently Serving -->
+<div class="w-full h-14 bg-bg-serving border-b-2 border-border-serving rounded-[4px] px-space-md flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-mono-xs text-[10px] uppercase font-bold text-primary tracking-wider">SERVING NOW</span>
+<span class="font-banner-token text-[18px] text-text-primary">A-014</span>
+<span class="font-body-sm font-medium text-text-secondary">• Rohan Sharma</span>
+</div>
+<div class="font-label-timer text-label-timer text-text-primary">03:42</div>
+</div>
+<!-- Mock Queue KPI Row -->
+<div class="grid grid-cols-3 gap-space-sm">
+<div class="bg-bg-surface p-space-sm border border-border-hairline rounded-[4px]">
+<div class="font-label-mono-xs text-[10px] text-text-secondary uppercase">Waiting</div>
+<div class="font-headline-kpi text-[20px] font-bold text-text-primary mt-0.5">14</div>
+</div>
+<div class="bg-bg-surface p-space-sm border border-border-hairline rounded-[4px]">
+<div class="font-label-mono-xs text-[10px] text-text-secondary uppercase">Avg Wait</div>
+<div class="font-headline-kpi text-[20px] font-bold text-text-primary mt-0.5">08m</div>
+</div>
+<div class="bg-bg-surface p-space-sm border border-border-hairline rounded-[4px]">
+<div class="font-label-mono-xs text-[10px] text-text-secondary uppercase">Throughput</div>
+<div class="font-headline-kpi text-[20px] font-bold text-text-primary mt-0.5">94%</div>
+</div>
+</div>
+<!-- Mock Queue Table Rows -->
+<div class="bg-bg-surface border border-border-hairline rounded-[4px] divide-y divide-border-hairline overflow-hidden">
+<div class="px-space-md py-2.5 flex items-center justify-between font-label-mono-xs text-[11px] text-text-muted bg-bg-canvas">
+<span>POS / TOKEN</span>
+<span>PATIENT</span>
+<span>WAIT TIME</span>
+</div>
+<div class="px-space-md py-2 flex items-center justify-between font-body-sm text-[13px]">
+<span class="font-body-mono-token text-[13px] text-text-primary">01 • A-015</span>
+<span class="text-text-secondary">Priya Nair</span>
+<span class="font-label-timer text-[12px] text-text-muted">01:14</span>
+</div>
+<div class="px-space-md py-2 flex items-center justify-between font-body-sm text-[13px]">
+<span class="font-body-mono-token text-[13px] text-text-primary">02 • A-016</span>
+<span class="text-text-secondary">David Kim</span>
+<span class="font-label-timer text-[12px] text-text-muted">03:45</span>
+</div>
+<div class="px-space-md py-2 flex items-center justify-between font-body-sm text-[13px]">
+<span class="font-body-mono-token text-[13px] text-text-primary">03 • B-002</span>
+<span class="text-text-secondary">Evelyn Vance</span>
+<span class="font-label-timer text-[12px] text-text-muted">06:20</span>
+</div>
+<div class="px-space-md py-2 flex items-center justify-between font-body-sm text-[13px]">
+<span class="font-body-mono-token text-[13px] text-text-primary">04 • A-017</span>
+<span class="text-text-secondary">Marcus Zhang</span>
+<span class="font-label-timer text-[12px] text-text-muted">08:12</span>
+</div>
+</div>
+</div>
+<!-- Live Floating Notification Stack (Anchored to Bottom-Right, z-index 60) -->
+<!-- Contains realistic active stacking with +8px gap and functional progress animations -->
+<div class="absolute bottom-6 right-6 z-[60] flex flex-col gap-2 pointer-events-auto w-[340px] max-w-[calc(100%-2rem)]" id="live-toast-stack">
+<!-- Live Toast 1: Info (Background stack item) -->
+<div class="toast-item w-full bg-bg-surface border border-border-strong rounded-[6px] relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-200">
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#1D4ED8]"></div>
+<div class="py-3 pr-4 pl-[19px] flex items-start gap-space-sm">
+<div class="mt-0.5 shrink-0 text-[#1D4ED8]">
+<span class="material-symbols-outlined text-[16px] leading-none">info</span>
+</div>
+<div class="flex-1 min-w-0 pr-1">
+<div class="font-body-default text-[13px] leading-[18px] font-semibold text-text-primary truncate">
+                Session expires in 5 minutes
+              </div>
+<div class="font-body-sm text-[11px] leading-[15px] text-text-secondary mt-0.5 truncate">
+                Operator auth: Dr. Rugas • Desk #02
+              </div>
+</div>
+<div class="shrink-0 flex items-center gap-space-xs mt-0.5">
+<button class="font-label-mono-xs text-[11px] font-semibold text-[#D9481E] hover:underline focus:outline-none" type="button">
+                [Renew]
+              </button>
+<button class="w-5 h-5 flex items-center justify-center text-text-muted hover:text-text-primary transition-colors focus:outline-none" onclick="this.closest('.toast-item').remove()" type="button">
+<span class="material-symbols-outlined text-[16px] leading-none">close</span>
+</button>
+</div>
+</div>
+<!-- Animated Progress Rail -->
+<div class="w-full h-1 bg-border-hairline relative">
+<div class="toast-progress-bar h-full bg-[#D9481E] w-full" style="animation: drainProgress 4s linear forwards;"></div>
+</div>
+</div>
+<!-- Live Toast 2: Success (Foreground primary item) -->
+<div class="toast-item w-full bg-bg-surface border border-border-strong rounded-[6px] relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-200">
+<div class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#166534]"></div>
+<div class="py-3 pr-4 pl-[19px] flex items-start gap-space-sm">
+<div class="mt-0.5 shrink-0 text-[#166534]">
+<span class="material-symbols-outlined text-[16px] leading-none">check_circle</span>
+</div>
+<div class="flex-1 min-w-0 pr-1">
+<div class="font-body-default text-[13px] leading-[18px] font-semibold text-text-primary truncate">
+                Token <span class="font-body-mono-token text-[13px]">A-015</span> issued for Priya Nair
+              </div>
+<div class="font-body-sm text-[11px] leading-[15px] text-text-secondary mt-0.5 truncate">
+                Queue: General Consultation • Pos #01
+              </div>
+</div>
+<div class="shrink-0 flex items-center gap-space-xs mt-0.5">
+<button class="font-label-mono-xs text-[11px] font-semibold text-[#D9481E] hover:underline focus:outline-none" type="button">
+                [Undo]
+              </button>
+<button class="w-5 h-5 flex items-center justify-center text-text-muted hover:text-text-primary transition-colors focus:outline-none" onclick="this.closest('.toast-item').remove()" type="button">
+<span class="material-symbols-outlined text-[16px] leading-none">close</span>
+</button>
+</div>
+</div>
+<!-- Animated Progress Rail -->
+<div class="w-full h-1 bg-border-hairline relative">
+<div class="toast-progress-bar h-full bg-[#D9481E] w-full" style="animation: drainProgress 4s linear forwards;"></div>
+</div>
+</div>
+</div>
+<!-- Dock Helper Instructions Footer -->
+<div class="p-space-md border-t border-border-hairline bg-bg-surface/80 flex items-center justify-between text-text-muted font-label-mono-xs text-[11px]">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#166534]"></span>
+<span>STACK STABILITY: LOCKED</span>
+</div>
+<div class="flex items-center gap-2">
+<span>HOVER PAUSES TIMER</span>
+<span>•</span>
+<span>DISMISS: 'ESC' OR ×</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Inline Mechanical CSS for Linear Progress Drain & Entry Physics -->
+<style>
+@keyframes drainProgress {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+.toast-item:hover .toast-progress-bar {
+  animation-play-state: paused !important;
+}
+</style>
+<!-- Micro-Interactions Client Script for Stack Demonstration -->
+<script>
+(function() {
+  const stack = document.getElementById('live-toast-stack');
+  const btnSuccess = document.getElementById('trigger-success-btn');
+  const btnError = document.getElementById('trigger-error-btn');
+  const btnServing = document.getElementById('trigger-serving-btn');
+
+  function createToastElement({ accentColor, icon, titleHtml, subtext, actionLabel, actionCallback }) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-item w-full bg-bg-surface border border-border-strong rounded-[6px] relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.06)] transform translate-y-4 opacity-0 transition-all duration-200';
+    
+    toast.innerHTML = `
+      <div class="absolute left-0 top-0 bottom-0 w-[3px]" style="background-color: ${accentColor};"></div>
+      <div class="py-3 pr-4 pl-[19px] flex items-start gap-space-sm">
+        <div class="mt-0.5 shrink-0" style="color: ${accentColor};">
+          <span class="material-symbols-outlined text-[16px] leading-none">${icon}</span>
+        </div>
+        <div class="flex-1 min-w-0 pr-1">
+          <div class="font-body-default text-[13px] leading-[18px] font-semibold text-text-primary truncate">
+            ${titleHtml}
+          </div>
+          <div class="font-body-sm text-[11px] leading-[15px] text-text-secondary mt-0.5 truncate">
+            ${subtext}
+          </div>
+        </div>
+        <div class="shrink-0 flex items-center gap-space-xs mt-0.5">
+          <button type="button" class="toast-action-btn font-label-mono-xs text-[11px] font-semibold text-[#D9481E] hover:underline focus:outline-none">
+            [${actionLabel}]
+          </button>
+          <button type="button" class="toast-dismiss-btn w-5 h-5 flex items-center justify-center text-text-muted hover:text-text-primary transition-colors focus:outline-none">
+            <span class="material-symbols-outlined text-[16px] leading-none">close</span>
+          </button>
+        </div>
+      </div>
+      <div class="w-full h-1 bg-border-hairline relative">
+        <div class="toast-progress-bar h-full bg-[#D9481E] w-full" style="animation: drainProgress 4s linear forwards;"></div>
+      </div>
+    `;
+
+    // Connect close trigger
+    const dismissBtn = toast.querySelector('.toast-dismiss-btn');
+    dismissBtn.addEventListener('click', () => {
+      dismissToast(toast);
+    });
+
+    // Auto dismiss on animation finish
+    const progressBar = toast.querySelector('.toast-progress-bar');
+    progressBar.addEventListener('animationend', () => {
+      dismissToast(toast);
+    });
+
+    // Max capacity management (FIFO prune if stack exceeds 4)
+    if (stack.children.length >= 4) {
+      const oldest = stack.firstElementChild;
+      if (oldest) oldest.remove();
+    }
+
+    stack.appendChild(toast);
+
+    // Entry animation tick
+    requestAnimationFrame(() => {
+      toast.classList.remove('translate-y-4', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+    });
+  }
+
+  function dismissToast(toastEl) {
+    toastEl.classList.remove('translate-y-0', 'opacity-100');
+    toastEl.classList.add('translate-x-4', 'opacity-0');
+    setTimeout(() => {
+      if (toastEl.parentNode) {
+        toastEl.remove();
+      }
+    }, 180);
+  }
+
+  // Hook test button triggers
+  let tokenCounter = 16;
+  if (btnSuccess) {
+    btnSuccess.addEventListener('click', () => {
+      const cur = tokenCounter++;
+      createToastElement({
+        accentColor: '#166534',
+        icon: 'check_circle',
+        titleHtml: `Token <span class="font-body-mono-token text-[13px]">A-0${cur}</span> issued for Patient`,
+        subtext: 'Queue: General Consultation &bull; Pos #01',
+        actionLabel: 'Undo'
+      });
+    });
+  }
+
+  if (btnError) {
+    btnError.addEventListener('click', () => {
+      createToastElement({
+        accentColor: '#B91C1C',
+        icon: 'error',
+        titleHtml: 'Failed to issue token. Network error.',
+        subtext: 'Connection to Triage Dispatch Gateway timed out.',
+        actionLabel: 'Retry'
+      });
+    });
+  }
+
+  if (btnServing) {
+    btnServing.addEventListener('click', () => {
+      createToastElement({
+        accentColor: '#0F766E',
+        icon: 'campaign',
+        titleHtml: 'Now serving <span class="font-body-mono-token text-[13px]">A-018</span> &bull; Priya S.',
+        subtext: 'Dispatched to Consultation Room 102',
+        actionLabel: 'Recall'
+      });
+    });
+  }
+})();
+</script></main><footer class="w-full bg-bg-surface border-t border-border-hairline py-space-md"><div class="w-full px-gutter-desktop flex items-center justify-between text-text-muted font-label-mono-xs text-label-mono-xs uppercase"><div>QueueOS Instrumentation Panel • v2.4.0-triage</div><div>System State: Optimal • Latency: 12ms</div></div></footer></body></html>

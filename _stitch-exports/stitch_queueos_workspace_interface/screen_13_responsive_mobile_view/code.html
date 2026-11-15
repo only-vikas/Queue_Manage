@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-surface-container-low" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>QueueOS - Mobile View</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-surface": "#1a1c1b",
+            "surface-container-low": "#f4f4f2",
+            "on-error": "#ffffff",
+            "bg-input": "#FAFAF9",
+            "tertiary-container": "#0078c5",
+            "status-serving-text": "#0F766E",
+            "text-secondary": "#57554E",
+            "status-cancelled-bg": "#FEF2F2",
+            "primary-fixed": "#ffdbd1",
+            "inverse-primary": "#ffb5a1",
+            "outline": "#8e7069",
+            "border-hairline": "#E4E3DD",
+            "on-primary": "#ffffff",
+            "text-primary": "#181816",
+            "surface-container": "#eeeeec",
+            "bg-serving": "#FEF5F1",
+            "on-tertiary-fixed": "#001d35",
+            "primary-fixed-dim": "#ffb5a1",
+            "status-cancelled-text": "#B91C1C",
+            "inverse-surface": "#2f3130",
+            "error-container": "#ffdad6",
+            "border-strong": "#CFCBC2",
+            "tertiary": "#005f9d",
+            "outline-variant": "#e2bfb5",
+            "on-secondary-fixed": "#001551",
+            "surface-variant": "#e2e3e1",
+            "on-tertiary-container": "#fdfcff",
+            "surface-bright": "#f9f9f7",
+            "bg-active-row": "#EBEAE4",
+            "accent-primary-hover": "#BF3B15",
+            "border-serving": "#F5C7B8",
+            "surface-container-highest": "#e2e3e1",
+            "border-focus": "#D9481E",
+            "secondary-fixed": "#dce1ff",
+            "surface-container-high": "#e8e8e6",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#fffbff",
+            "status-serving-bg": "#F0FDFA",
+            "on-primary-fixed-variant": "#882000",
+            "bg-surface": "#FFFFFF",
+            "on-surface-variant": "#5a413a",
+            "status-completed-text": "#166534",
+            "surface-container-lowest": "#ffffff",
+            "secondary": "#1d4ed8",
+            "accent-primary-active": "#A33110",
+            "bg-hover": "#F1F0EC",
+            "on-primary-container": "#fffbff",
+            "on-primary-fixed": "#3b0900",
+            "text-on-accent": "#FFFFFF",
+            "error": "#ba1a1a",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#b7c4ff",
+            "inverse-on-surface": "#f1f1ef",
+            "surface-tint": "#b22c00",
+            "secondary-container": "#4069f2",
+            "on-secondary": "#ffffff",
+            "status-completed-bg": "#F0FDF4",
+            "surface-dim": "#dadad8",
+            "primary": "#D9481E",
+            "background": "#F7F7F5",
+            "status-serving-border": "#99F6E4",
+            "tertiary-fixed": "#d0e4ff",
+            "surface": "#F7F7F5",
+            "on-secondary-fixed-variant": "#0039b5",
+            "text-muted": "#8C8980",
+            "on-tertiary-fixed-variant": "#00497b",
+            "tertiary-fixed-dim": "#9ccaff",
+            "primary-container": "#d14219",
+            "bg-canvas": "#F7F7F5",
+            "on-background": "#1a1c1b"
+          },
+          borderRadius: {
+            DEFAULT: "2px",
+            sm: "2px",
+            md: "4px",
+            lg: "4px",
+            xl: "6px",
+            full: "9999px"
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            mono: ["'JetBrains Mono'", "monospace"],
+            headline: ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    * {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="h-full flex items-center justify-center bg-surface-container-low text-text-primary font-sans antialiased selection:bg-primary-fixed selection:text-text-primary p-0 md:p-6">
+<!-- Mobile Viewport Simulation Shell (390px x 844px) -->
+<div class="relative w-full max-w-[390px] h-full max-h-[844px] bg-bg-canvas flex flex-col overflow-hidden border border-border-hairline shadow-none select-none">
+<!-- Topbar (52px) -->
+<header class="h-[52px] shrink-0 bg-bg-surface border-b border-border-hairline px-4 flex items-center justify-between z-30">
+<div class="flex items-center gap-3">
+<button aria-label="Open sidebar menu" class="w-7 h-7 rounded-[4px] border border-border-strong bg-bg-surface flex items-center justify-center text-text-primary active:bg-bg-hover focus:outline-none" id="toggle-drawer-btn">
+<span class="material-symbols-outlined text-[18px]">menu</span>
+</button>
+<span class="font-mono font-bold text-[14px] tracking-tight text-text-primary">QueueOS</span>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="Quick Add Token" class="w-7 h-7 rounded-[4px] border border-border-strong bg-bg-surface flex items-center justify-center text-text-primary active:bg-bg-hover focus:outline-none" id="quick-add-top-btn">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-border-hairline flex items-center justify-center text-[11px] font-mono font-bold text-text-secondary tracking-tighter">
+          RM
+        </div>
+</div>
+</header>
+<!-- Slide-Over Sidebar Drawer -->
+<div class="absolute inset-0 bg-[#181816]/30 z-40 transition-opacity duration-200 opacity-0 pointer-events-none" id="drawer-backdrop"></div>
+<aside class="absolute left-0 top-0 bottom-0 w-[240px] bg-bg-surface z-50 transform -translate-x-full transition-transform duration-200 border-r border-border-hairline flex flex-col justify-between" id="sidebar-drawer">
+<div class="p-4">
+<div class="flex items-center justify-between pb-3 border-b border-border-hairline">
+<span class="font-mono text-[12px] font-bold uppercase tracking-wider text-text-muted">Queues Workspace</span>
+<button class="w-6 h-6 rounded-[4px] flex items-center justify-center text-text-secondary active:bg-bg-hover" id="close-drawer-btn">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<nav class="mt-3 flex flex-col gap-1">
+<a class="flex items-center justify-between px-3 py-2 rounded-[4px] bg-bg-serving border border-border-serving text-text-primary font-medium text-[13px]" href="#">
+<span class="truncate">General Consultation</span>
+<span class="font-mono text-[11px] font-semibold text-primary">12</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-[4px] text-text-secondary hover:bg-bg-hover font-medium text-[13px]" href="#">
+<span class="truncate">Billing Desk</span>
+<span class="font-mono text-[11px] text-text-muted">4</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-[4px] text-text-secondary hover:bg-bg-hover font-medium text-[13px]" href="#">
+<span class="truncate">VIP Support</span>
+<span class="font-mono text-[11px] text-text-muted">0</span>
+</a>
+<button class="mt-2 flex items-center gap-2 px-3 py-2 rounded-[4px] border border-dashed border-border-strong text-text-secondary hover:text-text-primary text-[12px] font-medium w-full text-left">
+<span class="material-symbols-outlined text-[15px]">add</span>
+<span>New Queue</span>
+</button>
+</nav>
+</div>
+<div class="p-4 border-t border-border-hairline bg-bg-canvas text-[11px] font-mono text-text-muted flex justify-between">
+<span>Station 04</span>
+<span class="text-status-serving-text">Online</span>
+</div>
+</aside>
+<!-- Main Scrollable Content Area -->
+<main class="flex-1 overflow-y-auto bg-bg-canvas flex flex-col divide-y divide-border-hairline">
+<!-- Queue Header (52px) -->
+<section class="h-[52px] shrink-0 px-4 bg-bg-surface flex items-center justify-between">
+<div class="flex items-center gap-2 min-w-0">
+<h1 class="text-[15px] font-semibold text-text-primary truncate">General Consultation</h1>
+<span class="shrink-0 font-mono text-[11px] px-1.5 py-0.5 rounded-[4px] bg-bg-hover border border-border-hairline text-text-secondary tabular-nums">
+            12 waiting
+          </span>
+</div>
+<button class="h-[30px] px-3 rounded-[4px] bg-primary text-text-on-accent text-[11px] font-bold tracking-tight shrink-0 flex items-center gap-1 active:bg-accent-primary-active focus:outline-none">
+<span>Assign Next</span>
+<span class="material-symbols-outlined text-[13px]">arrow_forward</span>
+</button>
+</section>
+<!-- Currently Serving Banner (Auto-height, stacked mobile) -->
+<section class="bg-bg-serving border-b border-border-serving p-3 px-4 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-serving-text animate-pulse"></span>
+<span class="text-[10px] uppercase font-bold tracking-wider text-status-serving-text">Now Serving</span>
+</div>
+<span class="font-mono font-bold text-[18px] text-status-serving-text tracking-tight tabular-nums">A-014</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-[14px] font-medium text-text-primary">Rohan Sharma</span>
+<div class="flex items-center gap-1 text-status-serving-text font-mono text-[13px] tabular-nums font-semibold">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span>08m 42s</span>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<button class="flex-1 h-8 rounded-[4px] bg-status-serving-text text-white text-[12px] font-semibold active:opacity-95 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+<span>Complete Consultation</span>
+</button>
+<button class="h-8 px-3 rounded-[4px] border border-status-serving-border bg-white text-status-serving-text text-[12px] font-medium active:bg-bg-hover flex items-center justify-center">
+            Recall
+          </button>
+</div>
+</section>
+<!-- Mobile Quick-Add Bar (48px) -->
+<section class="h-12 shrink-0 bg-bg-surface px-4 flex items-center gap-2 border-b border-border-hairline">
+<div class="relative flex-1">
+<input class="w-full h-8 px-2.5 bg-bg-input border border-border-strong rounded-[4px] text-[13px] text-text-primary placeholder:text-text-muted focus:border-border-focus focus:ring-0 focus:outline-none" id="quick-add-input" placeholder="Quick-add person name..." type="text"/>
+</div>
+<button aria-label="Submit quick add" class="w-8 h-8 rounded-[4px] bg-primary text-text-on-accent flex items-center justify-center shrink-0 active:bg-accent-primary-active">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</section>
+<!-- Token Rows List -->
+<section class="flex flex-col bg-bg-canvas divide-y divide-border-hairline">
+<!-- Row 1 (Expanded Touch State: 72px) -->
+<div class="h-[74px] bg-bg-hover px-4 py-2 flex flex-col justify-between border-l-2 border-l-primary">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-mono text-[11px] font-semibold text-text-muted tabular-nums">#01</span>
+<span class="font-mono text-[15px] font-bold text-primary tabular-nums">A-015</span>
+<span class="text-[14px] font-semibold text-text-primary">Priya Nair</span>
+</div>
+<span class="font-mono text-[12px] text-text-secondary tabular-nums">06m 14s</span>
+</div>
+<div class="flex items-center justify-between pt-1 gap-2">
+<div class="flex items-center gap-1.5">
+<button class="h-[26px] px-2 rounded-[4px] border border-border-strong bg-bg-surface text-text-primary text-[11px] font-medium flex items-center gap-0.5 active:bg-surface-variant" title="Move Up">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span>
+<span>Up</span>
+</button>
+<button class="h-[26px] px-2 rounded-[4px] border border-border-strong bg-bg-surface text-text-primary text-[11px] font-medium flex items-center gap-0.5 active:bg-surface-variant" title="Move Down">
+<span class="material-symbols-outlined text-[13px]">arrow_downward</span>
+<span>Down</span>
+</button>
+<button class="h-[26px] px-2 rounded-[4px] text-text-secondary text-[11px] font-medium active:bg-surface-variant">
+                Detail
+              </button>
+</div>
+<button class="h-[26px] px-2 rounded-[4px] bg-status-cancelled-bg border border-[#FCA5A5] text-status-cancelled-text text-[11px] font-semibold flex items-center gap-0.5 active:bg-red-100">
+<span class="material-symbols-outlined text-[13px]">close</span>
+<span>Cancel</span>
+</button>
+</div>
+</div>
+<!-- Row 2 (Standard Compressed State: 44px) -->
+<div class="h-[44px] bg-bg-surface px-4 flex items-center justify-between active:bg-bg-hover cursor-pointer transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="font-mono text-[11px] font-semibold text-text-muted tabular-nums">#02</span>
+<span class="font-mono text-[14px] font-bold text-text-primary tabular-nums">A-016</span>
+<span class="text-[13px] font-medium text-text-primary truncate max-w-[120px]">Karthik Rao</span>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="font-mono text-[12px] text-text-muted tabular-nums">04m 02s</span>
+<span class="material-symbols-outlined text-text-muted text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Row 3 (Standard Compressed State: 44px) -->
+<div class="h-[44px] bg-bg-surface px-4 flex items-center justify-between active:bg-bg-hover cursor-pointer transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="font-mono text-[11px] font-semibold text-text-muted tabular-nums">#03</span>
+<span class="font-mono text-[14px] font-bold text-text-primary tabular-nums">A-017</span>
+<span class="text-[13px] font-medium text-text-primary truncate max-w-[120px]">Ananya Hegde</span>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="font-mono text-[12px] text-text-muted tabular-nums">01m 55s</span>
+<span class="material-symbols-outlined text-text-muted text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Row 4 (Standard Compressed State: 44px) -->
+<div class="h-[44px] bg-bg-surface px-4 flex items-center justify-between active:bg-bg-hover cursor-pointer transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="font-mono text-[11px] font-semibold text-text-muted tabular-nums">#04</span>
+<span class="font-mono text-[14px] font-bold text-text-primary tabular-nums">A-018</span>
+<span class="text-[13px] font-medium text-text-primary truncate max-w-[120px]">Dev Patel</span>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="font-mono text-[12px] text-text-muted tabular-nums">00m 48s</span>
+<span class="material-symbols-outlined text-text-muted text-[16px]">chevron_right</span>
+</div>
+</div>
+<!-- Row 5 (Standard Compressed State: 44px) -->
+<div class="h-[44px] bg-bg-surface px-4 flex items-center justify-between active:bg-bg-hover cursor-pointer transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="font-mono text-[11px] font-semibold text-text-muted tabular-nums">#05</span>
+<span class="font-mono text-[14px] font-bold text-text-primary tabular-nums">A-019</span>
+<span class="text-[13px] font-medium text-text-primary truncate max-w-[120px]">Meera Joshi</span>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="font-mono text-[12px] text-text-muted tabular-nums">00m 22s</span>
+<span class="material-symbols-outlined text-text-muted text-[16px]">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Subtle Queue Footer Indicator -->
+<div class="py-4 text-center">
+<span class="font-mono text-[11px] text-text-muted tracking-tight">Queue throughput: 18/hr · 7 in backlog</span>
+</div>
+</main>
+<!-- Bottom Navigation Bar (56px Fixed) -->
+<nav class="h-[56px] shrink-0 bg-bg-surface border-t border-border-hairline flex items-stretch z-30">
+<!-- Queues Tab (Active: Signal Vermilion) -->
+<a class="flex-1 flex flex-col items-center justify-center gap-0.5 text-primary" href="#">
+<div class="h-5 flex items-center justify-center">
+<svg fill="currentColor" height="20px" viewbox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg">
+<path d="M220,169.09l-92,53.65L36,169.09A8,8,0,0,0,28,182.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,169.09Z"></path>
+<path d="M220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09Z"></path>
+<path d="M28,86.91l96,56a8,8,0,0,0,8.06,0l96-56a8,8,0,0,0,0-13.82l-96-56a8,8,0,0,0-8.06,0l-96,56a8,8,0,0,0,0,13.82Z"></path>
+</svg>
+</div>
+<span class="text-[11px] font-bold tracking-tight">Queues</span>
+</a>
+<!-- Analytics Tab (Inactive: #57554E) -->
+<a class="flex-1 flex flex-col items-center justify-center gap-0.5 text-text-secondary active:text-text-primary" href="#">
+<div class="h-5 flex items-center justify-center">
+<svg fill="currentColor" height="20px" viewbox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg">
+<path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"></path>
+</svg>
+</div>
+<span class="text-[11px] font-medium tracking-tight">Analytics</span>
+</a>
+</nav>
+</div>
+<!-- Interactive Slide-over & Quick-focus behavior script -->
+<script>
+    const toggleBtn = document.getElementById('toggle-drawer-btn');
+    const closeBtn = document.getElementById('close-drawer-btn');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const drawer = document.getElementById('sidebar-drawer');
+    const topQuickAdd = document.getElementById('quick-add-top-btn');
+    const quickInput = document.getElementById('quick-add-input');
+
+    function openDrawer() {
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      backdrop.classList.add('opacity-100');
+      drawer.classList.remove('-translate-x-full');
+    }
+
+    function closeDrawer() {
+      backdrop.classList.remove('opacity-100');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      drawer.classList.add('-translate-x-full');
+    }
+
+    toggleBtn.addEventListener('click', openDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+
+    topQuickAdd.addEventListener('click', () => {
+      quickInput.focus();
+    });
+  </script>
+</body></html>
