@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Menu,
@@ -165,13 +166,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               color: "var(--text-primary)",
             }}
           >
-            <span
+            <Image
+              src="/logo.png"
+              alt="QueueOS Logo"
+              width={24}
+              height={24}
+              priority
               style={{
-                width: "10px",
-                height: "10px",
-                backgroundColor: "var(--accent-primary)",
-                borderRadius: "2px",
-                display: "inline-block",
+                borderRadius: "3px",
+                objectFit: "contain",
               }}
             />
             <span

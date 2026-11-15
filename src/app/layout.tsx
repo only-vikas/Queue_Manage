@@ -20,6 +20,10 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "QueueOS — Operational Command Desk",
   description: "Rugas Technologies Queue Management System",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

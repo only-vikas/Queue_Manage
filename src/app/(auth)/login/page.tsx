@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Eye, EyeOff, AlertCircle, ArrowRight } from "lucide-react";
 import { useToast } from "@/components/ui/ToastProvider";
 
@@ -114,16 +115,18 @@ export default function LoginPage() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "6px",
+                gap: "8px",
               }}
             >
-              <span
+              <Image
+                src="/logo.png"
+                alt="QueueOS Logo"
+                width={26}
+                height={26}
+                priority
                 style={{
-                  width: "10px",
-                  height: "10px",
-                  backgroundColor: "var(--accent-primary)",
-                  borderRadius: "2px",
-                  display: "inline-block",
+                  borderRadius: "3px",
+                  objectFit: "contain",
                 }}
               />
               <span
